@@ -1,0 +1,451 @@
+/**
+ * Global header.
+ *  - Desktop: brand, primary links, two grouped dropdown menus, language, auth.
+ *  - Mobile:  brand, "Ask AI" call-to-action, hamburger drawer.
+ *  - Role-aware: citizens see Dashboard; administrators also see Admin. Admin is
+ *    never present for ordinary users or guests.
+ *  - Dropdowns are keyboard operable with Escape to close and outside-click close.
+ */
+import { useEffect, useId, useRef, useState } from 'react';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import {
+  AlertTriangle,
+  BriefcaseBusiness,
+  Building2,
+  ChevronDown,
+  FileText,
+  Gauge,
+  HeartHandshake,
+  Landmark,
+  LayoutDashboard,
+  Menu,
+  Scale,
+  ShieldAlert,
+  Upload,
+  UserRound,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
+import { BrandLockup } from '@/components/common/BrandMark';
+import { Button, LinkButton } from '@/components/common/Button';
+import { LanguageMenu } from '@/components/common/LanguageSelector';
+import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { cn, initials } from '@/utils/cn';
+import { toolGroups, resourceLinks } from '@/components/layout/navigation';
+
+const iconFor: Record<string, LucideIcon> = {
+  '/applications': FileText,
+  '/complaints': FileText,
+  '/readiness': Gauge,
+  '/scam-detector': ShieldAlert,
+  '/documents': Upload,
+  '/welfare': HeartHandshake,
+  '/emergency': AlertTriangle,
+  '/offices': Building2,
+  '/legal': Scale,
+  '/lawyers': BriefcaseBusiness,
+  '/about': Landmark,
+  '/feedback': UserRound,
+};
+
+function DesktopDropdown({ group }: { group: (typeof toolGroups)[number] }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const menuId = useId();
+  const location = useLocation();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  const active = group.items.some((i) => location.pathname.startsWith(i.to));
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={menuId}
+        aria-haspopup="true"
+        onClick={() => setOpen((v) => !v)}
+        className={cn(
+          'inline-flex h-9 items-center gap-1 rounded-lg px-2.5 text-sm font-medium transition-colors',
+          active ? 'text-brand-900' : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900',
+        )}
+      >
+        {group.label}
+        <ChevronDown className={cn('size-3.5 transition-transform', open && 'rotate-180')} aria-hidden="true" />
+      </button>
+
+      {open && (
+        <div
+          id={menuId}
+          className="absolute start-0 z-50 mt-1.5 w-80 rounded-xl border border-ink-200 bg-white p-1.5 shadow-overlay animate-slide-up"
+        >
+          {group.items.map((item) => {
+            const Icon = iconFor[item.to] ?? FileText;
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="flex items-start gap-2.5 rounded-lg px-2 py-2 hover:bg-ink-50"
+              >
+                <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-md bg-brand-50 text-brand-800" aria-hidden="true">
+                  <Icon className="size-4" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-ink-900">{item.label}</span>
+                  {item.description && (
+                    <span className="mt-0.5 block text-xs leading-relaxed text-ink-500">{item.description}</span>
+                  )}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function UserMenu() {
+  const { user, logout, isAdmin } = useAuth();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  if (!user) return null;
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="menu"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-2 rounded-full py-1 ps-1 pe-2.5 text-sm hover:bg-ink-100"
+      >
+        <span
+          className="grid size-7 place-items-center rounded-full bg-brand-900 text-[0.6875rem] font-semibold text-white"
+          aria-hidden="true"
+        >
+          {initials(user.name)}
+        </span>
+        <span className="hidden max-w-24 truncate font-medium text-ink-800 lg:inline">{user.name}</span>
+        <ChevronDown className="size-3.5 text-ink-400" aria-hidden="true" />
+      </button>
+
+      {open && (
+        <div
+          role="menu"
+          className="absolute end-0 z-50 mt-1.5 w-60 rounded-xl border border-ink-200 bg-white p-1.5 shadow-overlay animate-slide-up"
+        >
+          <div className="border-b border-ink-100 px-2 pb-2 pt-1.5">
+            <p className="truncate text-sm font-medium text-ink-900">{user.name}</p>
+            <p className="truncate text-xs text-ink-500">{user.email}</p>
+            <p className="mt-1 inline-flex items-center gap-1 rounded bg-ink-100 px-1.5 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wide text-ink-600">
+              {user.role} · demo session
+            </p>
+          </div>
+          <Link
+            to="/dashboard"
+            role="menuitem"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-ink-700 hover:bg-ink-100"
+          >
+            <LayoutDashboard className="size-4" aria-hidden="true" /> Dashboard
+          </Link>
+          <Link
+            to="/profile"
+            role="menuitem"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-ink-700 hover:bg-ink-100"
+          >
+            <UserRound className="size-4" aria-hidden="true" /> Profile & settings
+          </Link>
+          {isAdmin && (
+            <Link
+              to="/admin"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-ink-700 hover:bg-ink-100"
+            >
+              <ShieldAlert className="size-4" aria-hidden="true" /> Admin area
+            </Link>
+          )}
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              setOpen(false);
+              void logout();
+            }}
+            className="mt-0.5 flex w-full items-center gap-2 rounded-lg border-t border-ink-100 px-2 py-2 text-start text-sm text-ink-700 hover:bg-ink-100"
+          >
+            Log out
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function Header() {
+  const { t } = useLanguage();
+  const { isAuthenticated, user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const location = useLocation();
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    setDrawerOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setDrawerOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    const original = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = original;
+    };
+  }, [drawerOpen]);
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur-sm">
+      <div className="container-page flex h-16 items-center justify-between gap-3">
+        <div className="flex items-center gap-1 lg:gap-4">
+          <BrandLockup />
+
+          <nav aria-label="Main" className="hidden items-center gap-0.5 lg:flex">
+            <NavLink
+              to="/services"
+              className={({ isActive }) =>
+                cn(
+                  'inline-flex h-9 items-center rounded-lg px-2.5 text-sm font-medium transition-colors',
+                  isActive ? 'text-brand-900' : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900',
+                )
+              }
+            >
+              {t('nav.services')}
+            </NavLink>
+            <NavLink
+              to="/assistant"
+              className={({ isActive }) =>
+                cn(
+                  'inline-flex h-9 items-center rounded-lg px-2.5 text-sm font-medium transition-colors',
+                  isActive ? 'text-brand-900' : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900',
+                )
+              }
+            >
+              {t('nav.assistant')}
+            </NavLink>
+            {toolGroups.map((group) => (
+              <DesktopDropdown key={group.label} group={group} />
+            ))}
+            <DesktopDropdown
+              group={{
+                labelKey: 'nav.resources',
+                label: 'Resources',
+                items: resourceLinks,
+              }}
+            />
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <div className="hidden sm:block">
+            <LanguageMenu />
+          </div>
+
+          {isAuthenticated ? (
+            <UserMenu />
+          ) : (
+            <div className="hidden items-center gap-1.5 sm:flex">
+              <LinkButton to="/login" variant="ghost" size="sm">
+                {t('nav.login')}
+              </LinkButton>
+              <LinkButton to="/register" variant="primary" size="sm">
+                {t('nav.register')}
+              </LinkButton>
+            </div>
+          )}
+
+          <LinkButton to="/assistant" variant="subtle" size="sm" className="hidden md:inline-flex">
+            {t('nav.assistant')}
+          </LinkButton>
+
+          <button
+            type="button"
+            onClick={() => setDrawerOpen(true)}
+            className="inline-flex size-10 items-center justify-center rounded-lg text-ink-700 hover:bg-ink-100 lg:hidden"
+            aria-label={t('nav.menu')}
+            aria-expanded={drawerOpen}
+          >
+            <Menu className="size-5" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile drawer */}
+      {drawerOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="absolute inset-0 bg-ink-950/40" onClick={() => setDrawerOpen(false)} aria-hidden="true" />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            className="absolute inset-y-0 end-0 flex w-[min(21rem,88vw)] flex-col bg-white shadow-overlay animate-slide-up"
+          >
+            <div className="flex h-16 items-center justify-between border-b border-ink-200 px-4">
+              <BrandLockup />
+              <button
+                ref={closeRef}
+                type="button"
+                onClick={() => setDrawerOpen(false)}
+                className="inline-flex size-10 items-center justify-center rounded-lg text-ink-600 hover:bg-ink-100"
+                aria-label={t('nav.close')}
+              >
+                <X className="size-5" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto scrollbar-slim px-3 py-4">
+              <nav aria-label="Mobile main">
+                <MobileSection title="Main">
+                  <MobileLink to="/" icon={Landmark} label={t('nav.home')} />
+                  <MobileLink to="/services" icon={Landmark} label={t('nav.services')} />
+                  <MobileLink to="/assistant" icon={FileText} label={t('nav.assistant')} />
+                </MobileSection>
+
+                {toolGroups.map((group) => (
+                  <MobileSection key={group.label} title={group.label}>
+                    {group.items.map((item) => (
+                      <MobileLink
+                        key={item.to}
+                        to={item.to}
+                        icon={iconFor[item.to] ?? FileText}
+                        label={item.label}
+                      />
+                    ))}
+                  </MobileSection>
+                ))}
+
+                <MobileSection title="Resources">
+                  {resourceLinks.map((item) => (
+                    <MobileLink key={item.to} to={item.to} icon={iconFor[item.to] ?? FileText} label={item.label} />
+                  ))}
+                </MobileSection>
+
+                {isAuthenticated && (
+                  <MobileSection title="Account">
+                    <MobileLink to="/dashboard" icon={LayoutDashboard} label="Dashboard" />
+                    <MobileLink to="/profile" icon={UserRound} label="Profile & settings" />
+                    {user?.role === 'admin' && (
+                      <MobileLink to="/admin" icon={ShieldAlert} label="Admin area" />
+                    )}
+                  </MobileSection>
+                )}
+              </nav>
+            </div>
+
+            <div className="space-y-2 border-t border-ink-200 p-4">
+              <LinkButton to="/assistant" variant="primary" fullWidth>
+                {t('nav.assistant')}
+              </LinkButton>
+              <div className="flex items-center justify-between gap-2">
+                <LanguageMenu />
+                {isAuthenticated ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      void logout().then(() => navigate('/', { replace: true }));
+                    }}
+                  >
+                    {t('nav.logout')}
+                  </Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <LinkButton to="/login" variant="outline" size="sm">
+                      {t('nav.login')}
+                    </LinkButton>
+                    <LinkButton to="/register" variant="primary" size="sm">
+                      {t('nav.register')}
+                    </LinkButton>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function MobileSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="mb-4">
+      <p className="mb-1 px-2 text-[0.6875rem] font-semibold uppercase tracking-wider text-ink-400">{title}</p>
+      <div className="space-y-0.5">{children}</div>
+    </div>
+  );
+}
+
+function MobileLink({ to, label, icon: Icon }: { to: string; label: string; icon: LucideIcon }) {
+  return (
+    <NavLink
+      to={to}
+      end={to === '/'}
+      className={({ isActive }) =>
+        cn(
+          'flex items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm font-medium',
+          isActive ? 'bg-brand-50 text-brand-900' : 'text-ink-700 hover:bg-ink-100',
+        )
+      }
+    >
+      <Icon className="size-4 shrink-0 text-ink-400" aria-hidden="true" />
+      {label}
+    </NavLink>
+  );
+}
