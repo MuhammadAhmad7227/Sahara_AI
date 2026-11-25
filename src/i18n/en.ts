@@ -296,6 +296,15 @@ export const en = {
   'error.notFound': 'The requested page could not be found.',
 
   // ---- Auth --------------------------------------------------------------
+  'auth.citizenAccount': 'Citizen account',
+  'auth.hidePassword': 'Hide password',
+  'auth.showPassword': 'Show password',
+  'auth.keepSignedIn': 'Keep me signed in on this device',
+  'auth.signingIn': 'Signing in…',
+  'auth.login': 'Log in',
+  'auth.createOne': 'Create one',
+  'auth.demoBody':
+    'Authentication is mocked in this build so the citizen and admin areas can be demonstrated. No password is stored or sent anywhere.',
   'auth.loginTitle': 'Log in to Sahara AI',
   'auth.loginSubtitle':
     'An account saves your drafts, analyses and language preferences. Browsing and the assistant work without one.',
@@ -352,6 +361,23 @@ export const en = {
   'visual.videoUnsupported': 'Your browser cannot play this video.',
   'visual.captions': 'Captions',
   'visual.comingSoon': 'Coming soon',
+  'validation.emailRequired': 'Email is required.',
+  'validation.emailTooLong': 'Email address is too long.',
+  'validation.emailInvalid': 'Enter a valid email address, for example name@example.com.',
+  'validation.passwordMin': 'Password must be at least 8 characters.',
+  'validation.passwordMax': 'Password must be 128 characters or fewer.',
+  'validation.passwordLetter': 'Password must include at least one letter.',
+  'validation.passwordNumber': 'Password must include at least one number.',
+  'validation.passwordRequired': 'Password is required.',
+  'validation.nameRequired': 'Please enter your full name.',
+  'validation.nameTooLong': 'Name must be 80 characters or fewer.',
+  'validation.confirmRequired': 'Please confirm your password.',
+  'validation.termsRequired': 'Please confirm you understand the limits of the service.',
+  'validation.passwordMismatch': 'Passwords do not match.',
+  'validation.subjectMin': 'Please write a short subject (at least 5 characters).',
+  'validation.subjectMax': 'Subject must be 120 characters or fewer.',
+  'validation.messageMin': 'Please describe the issue in at least 20 characters.',
+  'validation.messageMax': 'Message must be 2000 characters or fewer.',
   'system.goHome': 'Go to the homepage',
 } as const;
 

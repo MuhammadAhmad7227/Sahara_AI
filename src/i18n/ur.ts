@@ -294,6 +294,15 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'error.notFound': 'مطلوبہ صفحہ نہیں مل سکا۔',
 
   // ---- Auth --------------------------------------------------------------
+  'auth.citizenAccount': 'شہری اکاؤنٹ',
+  'auth.hidePassword': 'پاس ورڈ چھپائیں',
+  'auth.showPassword': 'پاس ورڈ دکھائیں',
+  'auth.keepSignedIn': 'اس ڈیوائس پر مجھے سائن اِن رکھیں',
+  'auth.signingIn': 'سائن اِن ہو رہے ہیں…',
+  'auth.login': 'سائن اِن کریں',
+  'auth.createOne': 'اکاؤنٹ بنائیں',
+  'auth.demoBody':
+    'اس بلڈ میں تصدیق کا عمل مظاہرے کے لیے فرضی ہے تاکہ شہری اور ایڈمن حصے دکھائے جا سکیں۔ کوئی پاس ورڈ محفوظ یا کہیں بھیجا نہیں جاتا۔',
   'auth.loginTitle': 'صحرا AI میں لاگ اِن کریں',
   'auth.loginSubtitle':
     'اکاؤنٹ آپ کے ڈرافٹ، تجزیے اور زبان کی ترجیح محفوظ رکھتا ہے۔ بغیر اکاؤنٹ بھی سروسز اور معاون کام کرتے ہیں۔',
@@ -347,6 +356,23 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'visual.videoUnsupported': 'آپ کا براؤزر یہ ویڈیو نہیں چلا سکتا۔',
   'visual.captions': 'سب ٹائٹل',
   'visual.comingSoon': 'عنقریب',
+  'validation.emailRequired': 'ای میل درکار ہے۔',
+  'validation.emailTooLong': 'ای میل کا پتہ بہت لمبا ہے۔',
+  'validation.emailInvalid': 'درست ای میل پتہ لکھیں، مثلاً name@example.com۔',
+  'validation.passwordMin': 'پاس ورڈ کم از کم 8 حروف کا ہونا چاہیے۔',
+  'validation.passwordMax': 'پاس ورڈ 128 حروف سے زیادہ نہیں ہو سکتا۔',
+  'validation.passwordLetter': 'پاس ورڈ میں کم از کم ایک حرف ہونا چاہیے۔',
+  'validation.passwordNumber': 'پاس ورڈ میں کم از کم ایک عدد ہونا چاہیے۔',
+  'validation.passwordRequired': 'پاس ورڈ درکار ہے۔',
+  'validation.nameRequired': 'اپنا پورا نام لکھیں۔',
+  'validation.nameTooLong': 'نام 80 حروف سے زیادہ نہیں ہو سکتا۔',
+  'validation.confirmRequired': 'براہِ کرم اپنے پاس ورڈ کی تصدیق کریں۔',
+  'validation.termsRequired': 'براہِ کرم تصدیق کریں کہ آپ اس سروس کی حدود سمجھتے ہیں۔',
+  'validation.passwordMismatch': 'پاس ورڈ آپس میں نہیں ملتے۔',
+  'validation.subjectMin': 'مختصر عنوان لکھیں (کم از کم 5 حروف)۔',
+  'validation.subjectMax': 'عنوان 120 حروف سے زیادہ نہیں ہو سکتا۔',
+  'validation.messageMin': 'براہِ کرم مسئلہ کم از کم 20 حروف میں بیان کریں۔',
+  'validation.messageMax': 'پیغام 2000 حروف سے زیادہ نہیں ہو سکتا۔',
   'system.goHome': 'ہوم پیج پر جائیں',
 };
 

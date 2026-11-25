@@ -293,6 +293,15 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'error.notFound': 'منگیا صفحہ نئیں لبھ سکیا۔',
 
   // ---- Auth --------------------------------------------------------------
+  'auth.citizenAccount': 'شہری اکاؤنٹ',
+  'auth.hidePassword': 'پاس ورڈ لکاؤ',
+  'auth.showPassword': 'پاس ورڈ وکھاؤ',
+  'auth.keepSignedIn': 'ایس ڈیوائس تے مینوں سائن اِن رکھو',
+  'auth.signingIn': 'سائن اِن ہو رہے آں…',
+  'auth.login': 'سائن اِن کرو',
+  'auth.createOne': 'اکاؤنٹ بناؤ',
+  'auth.demoBody':
+    'ایس بلڈ وچ تصدیق دا عمل مظاہرے لئی فرضی اے تاکہ شہری تے ایڈمن حصے وکھائے جا سکن۔ کوئی پاس ورڈ محفوظ یا کتھے وی نئیں بھیجیا جاندا۔',
   'auth.loginTitle': 'صحرا AI وچ لاگ اِن کرو',
   'auth.loginSubtitle':
     'کھاتہ تہاڈے ڈرافٹ، تجزیے تے زبان دی ترجیح محفوظ رکھدا اے۔ بغیر کھاتے وی خدمتاں تے مددگار کم کردے نیں۔',
@@ -346,5 +355,22 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'visual.videoUnsupported': 'تہاڈا براؤزر ایہ ویڈیو نئیں چلا سکدا۔',
   'visual.captions': 'سب ٹائٹل',
   'visual.comingSoon': 'نیڑے ای',
+  'validation.emailRequired': 'ای میل ضروری اے۔',
+  'validation.emailTooLong': 'ای میل دا پتہ بہتا لمبا اے۔',
+  'validation.emailInvalid': 'صحیح ای میل پتہ لکھو، جیویں name@example.com۔',
+  'validation.passwordMin': 'پاس ورڈ گھٹ توں گھٹ 8 اکھراں دا ہونا چاہیدا اے۔',
+  'validation.passwordMax': 'پاس ورڈ 128 اکھراں توں ودھ نئیں ہو سکدا۔',
+  'validation.passwordLetter': 'پاس ورڈ وچ گھٹ توں گھٹ اک اکھر ہونا چاہیدا اے۔',
+  'validation.passwordNumber': 'پاس ورڈ وچ گھٹ توں گھٹ اک عدد ہونا چاہیدا اے۔',
+  'validation.passwordRequired': 'پاس ورڈ ضروری اے۔',
+  'validation.nameRequired': 'اپنا پورا ناں لکھو۔',
+  'validation.nameTooLong': 'ناں 80 اکھراں توں ودھ نئیں ہو سکدا۔',
+  'validation.confirmRequired': 'مہربانی کر کے اپنے پاس ورڈ دی تصدیق کرو۔',
+  'validation.termsRequired': 'مہربانی کر کے تصدیق کرو جے تُسی ایس خدمت دیاں حداں سمجھدے او۔',
+  'validation.passwordMismatch': 'پاس ورڈ آپس وچ نئیں ملدے۔',
+  'validation.subjectMin': 'چھوٹا عنوان لکھو (گھٹ توں گھٹ 5 اکھر)۔',
+  'validation.subjectMax': 'عنوان 120 اکھراں توں ودھ نئیں ہو سکدا۔',
+  'validation.messageMin': 'مہربانی کر کے مسئلہ گھٹ توں گھٹ 20 اکھراں وچ دسو۔',
+  'validation.messageMax': 'پیغام 2000 اکھراں توں ودھ نئیں ہو سکدا۔',
   'system.goHome': 'گھر والے صفحے تے جاؤ',
 };

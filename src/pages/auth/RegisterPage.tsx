@@ -4,7 +4,7 @@ import { Eye, EyeOff, UserPlus } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { BrandLockup } from '@/components/common/BrandMark';
 import { LanguageSelector } from '@/components/common/LanguageSelector';
-import { fieldErrorsFrom, registerSchema } from '@/services/validation/schemas';
+import { fieldErrorsFrom, isValidationKey, registerSchema } from '@/services/validation/schemas';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
@@ -16,8 +16,12 @@ export default function RegisterPage() {
   useDocumentTitle('Create an account', 'Create a Sahara AI account to save drafts, analyses and preferences.');
 
   const { register } = useAuth();
-  const { setLanguage } = useLanguage();
+  const { setLanguage, t } = useLanguage();
   const navigate = useNavigate();
+
+  /** Field errors carry translation keys; render through t() safely. */
+  const renderError = (message?: string) =>
+    message ? (isValidationKey(message) ? t(message) : message) : null;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -104,7 +108,7 @@ export default function RegisterPage() {
               />
               {errors.name && (
                 <p id="reg-name-error" className="mt-1 text-xs font-medium text-red-700" role="alert">
-                  {errors.name}
+                  {renderError(errors.name)}
                 </p>
               )}
             </div>
@@ -128,7 +132,7 @@ export default function RegisterPage() {
               </p>
               {errors.email && (
                 <p id="reg-email-error" className="mt-1 text-xs font-medium text-red-700" role="alert">
-                  {errors.email}
+                  {renderError(errors.email)}
                 </p>
               )}
             </div>
@@ -182,7 +186,7 @@ export default function RegisterPage() {
                 </p>
                 {errors.password && (
                   <p className="mt-1 text-xs font-medium text-red-700" role="alert">
-                    {errors.password}
+                    {renderError(errors.password)}
                   </p>
                 )}
               </div>
@@ -203,7 +207,7 @@ export default function RegisterPage() {
                 />
                 {errors.confirmPassword && (
                   <p id="reg-confirm-error" className="mt-1 text-xs font-medium text-red-700" role="alert">
-                    {errors.confirmPassword}
+                    {renderError(errors.confirmPassword)}
                   </p>
                 )}
               </div>
@@ -231,7 +235,7 @@ export default function RegisterPage() {
               </label>
               {errors.acceptTerms && (
                 <p className="mt-1 text-xs font-medium text-red-700" role="alert">
-                  {errors.acceptTerms}
+                  {renderError(errors.acceptTerms)}
                 </p>
               )}
             </div>
