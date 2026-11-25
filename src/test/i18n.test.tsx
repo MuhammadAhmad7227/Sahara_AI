@@ -15,7 +15,9 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LanguageProvider, useLanguage } from '@/contexts/LanguageContext';
 import { dictionaries, en, languageMeta, pa, ur } from '@/i18n';
-import { VerificationBadge } from '@/components/common/Badge';
+import { ReviewStatusBadge, VerificationBadge } from '@/components/common/Badge';
+import { CardGridSkeleton, LoadingSpinner, TableSkeleton } from '@/components/common/States';
+import { SourceList } from '@/components/services/SourceCard';
 import { TextRun } from '@/components/common/TextRun';
 
 function Probe() {
@@ -179,5 +181,33 @@ describe('Localised badges', () => {
     expect(screen.getByText('Verified')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Urdu' }));
     expect(screen.getByText('تصدیق شدہ')).toBeInTheDocument();
+  });
+});
+
+
+describe('Shared translated states and provenance', () => {
+  it('updates accessible loading text, source disclosure, and badge tooltips when language changes', async () => {
+    const user = userEvent.setup();
+    render(
+      <LanguageProvider>
+        <Probe />
+        <LoadingSpinner />
+        <CardGridSkeleton count={1} />
+        <TableSkeleton rows={1} />
+        <SourceList sources={[]} />
+        <VerificationBadge status="verified" />
+        <ReviewStatusBadge status="published" />
+      </LanguageProvider>,
+    );
+    for (const [button, dict] of [['Urdu', ur], ['Punjabi', pa], ['English', en]] as const) {
+      await user.click(screen.getByRole('button', { name: button }));
+      expect(screen.getByText(dict['state.loading']!)).toBeInTheDocument();
+      expect(screen.getByText(dict['state.loadingResults']!)).toBeInTheDocument();
+      expect(screen.getByText(dict['state.loadingTable']!)).toBeInTheDocument();
+      expect(screen.getByText(dict['verify.noSourceRecorded']!)).toBeInTheDocument();
+      expect(screen.getByTitle(dict['verify.verifiedTitle']!)).toHaveTextContent(dict['verify.verified']!);
+      expect(screen.getByText(dict['review.published']!)).toBeInTheDocument();
+      expect(document.documentElement.dir).toBe('ltr');
+    }
   });
 });

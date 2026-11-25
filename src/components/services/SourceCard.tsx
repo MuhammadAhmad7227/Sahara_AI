@@ -56,11 +56,12 @@ export function SourceCard({ source, compact }: { source: SourceRecord; compact?
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-xs font-medium text-brand-800 hover:underline"
                 >
-                  Open source <ExternalLink className="size-3" aria-hidden="true" />
+                  {t('verify.openSource')}{' '}
+                  <ExternalLink className="size-3" aria-hidden="true" />
                 </a>
               ) : (
                 <Badge tone="warning" icon={<FileText className="size-3" aria-hidden="true" />}>
-                  URL not recorded yet
+                  {t('verify.urlNotRecorded')}
                 </Badge>
               )}
             </div>
@@ -74,11 +75,11 @@ export function SourceCard({ source, compact }: { source: SourceRecord; compact?
 }
 
 export function SourceList({ sources, compact }: { sources: SourceRecord[]; compact?: boolean }) {
+  const { t } = useLanguage();
   if (!sources.length) {
     return (
       <div className="rounded-lg border border-dashed border-ink-300 bg-ink-50/40 p-3 text-sm text-ink-600">
-        No official source has been recorded for this service yet. Treat the information below as
-        unverified and confirm it with the department.
+        {t('verify.noSourceRecorded')}
       </div>
     );
   }

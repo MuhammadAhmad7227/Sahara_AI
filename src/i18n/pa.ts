@@ -284,6 +284,9 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'review.published': 'شائع شدہ',
   'review.archived': 'محفوظ شدہ',
   'review.rejected': 'مسترد شدہ',
+  'verify.openSource': 'ماخذ کھولو',
+  'verify.noSourceRecorded':
+    'ایس خدمت لئی ہالے کوئی سرکاری ماخذ درج نئیں ہویا۔ تھلے دتی معلومات نوں غیر تصدیق شدہ سمجھو تے محکمے توں تصدیق کرو۔',
   'verify.verified': 'تصدیق شدہ',
   'verify.pending': 'تصدیق باقی',
   'verify.demo': 'ڈیمو ڈیٹا',
@@ -308,6 +311,8 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'trust.does': 'جیہڑا ایہ کردا اے',
 
   // ---- States ------------------------------------------------------------
+  'state.loadingResults': 'نتیجے لوڈ ہو رہے نیں…',
+  'state.loadingTable': 'جدول لوڈ ہو رہیا اے…',
   'state.loading': 'لوڈ ہو رہیا اے…',
   'state.errorTitle': 'کجھ غلط ہو گیا',
   'state.emptyTitle': 'ہالے کجھ نئیں',

@@ -283,6 +283,9 @@ export const en = {
   'review.published': 'Published',
   'review.archived': 'Archived',
   'review.rejected': 'Rejected',
+  'verify.openSource': 'Open source',
+  'verify.noSourceRecorded':
+    'No official source has been recorded for this service yet. Treat the information below as unverified and confirm it with the department.',
   'verify.verified': 'Verified',
   'verify.pending': 'Pending verification',
   'verify.demo': 'Demo data',
@@ -307,6 +310,8 @@ export const en = {
   'trust.does': 'What it does',
 
   // ---- States ------------------------------------------------------------
+  'state.loadingResults': 'Loading results…',
+  'state.loadingTable': 'Loading table…',
   'state.loading': 'Loading…',
   'state.errorTitle': 'Something went wrong',
   'state.emptyTitle': 'Nothing here yet',
