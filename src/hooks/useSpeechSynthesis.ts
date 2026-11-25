@@ -84,6 +84,7 @@ export function useSpeechSynthesis() {
   const [voices, setVoices] = useState<VoiceLike[]>([]);
   const utteranceRef = useRef<UtteranceLike | null>(null);
   const ctorRef = useRef<UtteranceCtor | null>(null);
+  const keepAliveRef = useRef<number | null>(null);
 
   useEffect(() => {
     const { supported: isSupported, ctor } = getSupport();
@@ -97,6 +98,10 @@ export function useSpeechSynthesis() {
     window.speechSynthesis.addEventListener('voiceschanged', load);
     return () => {
       window.speechSynthesis.removeEventListener('voiceschanged', load);
+      if (keepAliveRef.current !== null) {
+        window.clearInterval(keepAliveRef.current);
+        keepAliveRef.current = null;
+      }
       window.speechSynthesis.cancel();
     };
   }, []);
@@ -109,6 +114,10 @@ export function useSpeechSynthesis() {
 
   const stop = useCallback(() => {
     if (!supported) return;
+    if (keepAliveRef.current !== null) {
+      window.clearInterval(keepAliveRef.current);
+      keepAliveRef.current = null;
+    }
     window.speechSynthesis.cancel();
     utteranceRef.current = null;
     setState('idle');
@@ -133,6 +142,10 @@ export function useSpeechSynthesis() {
         return;
       }
       // Always cancel first: two overlapping utterances is the classic bug.
+      if (keepAliveRef.current !== null) {
+        window.clearInterval(keepAliveRef.current);
+        keepAliveRef.current = null;
+      }
       window.speechSynthesis.cancel();
 
       const voice = pickVoice(voices, lang);
@@ -149,11 +162,20 @@ export function useSpeechSynthesis() {
       utterance.pitch = 1;
       utterance.volume = 1;
 
+      const clearKeepAlive = () => {
+        if (keepAliveRef.current !== null) {
+          window.clearInterval(keepAliveRef.current);
+          keepAliveRef.current = null;
+        }
+      };
+
       utterance.onend = () => {
+        clearKeepAlive();
         utteranceRef.current = null;
         setState('idle');
       };
       utterance.onerror = () => {
+        clearKeepAlive();
         utteranceRef.current = null;
         setState('error');
       };
@@ -165,6 +187,24 @@ export function useSpeechSynthesis() {
       // Structural type is narrower than lib.dom's SpeechSynthesisUtterance;
       // the object is a real utterance at runtime.
       window.speechSynthesis.speak(utterance as unknown as SpeechSynthesisUtterance);
+
+      /*
+       * Chrome stops speaking after roughly 15 seconds of a single utterance
+       * unless it is nudged. Assistant answers are long, so a describe-timer
+       * keeps it alive; `resume()` on an already-speaking engine is a no-op.
+       * Cleared on end/error/unmount so it cannot leak.
+       */
+      const keepAlive = window.setInterval(() => {
+        if (!window.speechSynthesis.speaking) {
+          window.clearInterval(keepAlive);
+          return;
+        }
+        if (!window.speechSynthesis.paused) {
+          window.speechSynthesis.pause();
+          window.speechSynthesis.resume();
+        }
+      }, 10_000);
+      keepAliveRef.current = keepAlive;
     },
     [supported, voices],
   );

@@ -95,7 +95,10 @@ describe('Voice never uses the wrong locale', () => {
 
   it('cancels playback when the hook unmounts', () => {
     const hook = read('src/hooks/useSpeechSynthesis.ts');
-    expect(hook).toMatch(/removeEventListener\('voiceschanged'[\s\S]{0,120}speechSynthesis\.cancel\(\)/);
+    // The cleanup must stop audio and clear the keep-alive interval, in either
+    // order, inside the same return handler.
+    expect(hook).toMatch(/removeEventListener\('voiceschanged', load\)[\s\S]{0,300}speechSynthesis\.cancel\(\)/);
+    expect(hook).toMatch(/removeEventListener\('voiceschanged', load\)[\s\S]{0,300}clearInterval\(keepAliveRef\.current\)/);
   });
 
   it('every assistant message offers Listen', () => {
