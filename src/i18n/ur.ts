@@ -223,6 +223,20 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'services.aboutBody':
     'اس ڈیمو بلڈ میں درج ریکارڈ مظاہرے کا ڈیٹا ہیں۔ جس ریکارڈ پر "زیرِ تصدیق" لکھا ہو وہ کسی سرکاری ماخذ سے نہیں جانچا گیا، اور فیس صرف اس وقت دکھائی جاتی ہے جب جانچنے والے نے اس کی تصدیق کی ہو۔',
   'action.resetFilters': 'فلٹرز ہٹائیں',
+  'service.notFound': 'سروس نہیں ملی',
+  'service.notFoundBody':
+    'آپ جس سروس کو تلاش کر رہے ہیں وہ کیٹلاگ میں موجود نہیں۔ ممکن ہے ہٹا دی گئی ہو یا لنک غلط ہو۔',
+  'service.browseAll': 'تمام سروسز دیکھیں',
+  'service.loadError': 'یہ سروس لوڈ نہیں ہو سکی',
+  'service.awaitingReviewer': 'جانچنے والے کا انتظار',
+  'service.unverifiedBody':
+    'یہ ریکارڈ مظاہرے کا ڈیٹا ہے اور کسی سرکاری ماخذ سے تصدیق شدہ نہیں۔ دستاویزات، فیس اور مراحل پر بھروسا کرنے سے پہلے {department} سے تصدیق کریں۔',
+  'service.requiredCount': '{count} لازمی',
+  'service.optionalCount': '{count} اختیاری',
+  'service.processingTime': 'درج شدہ مدتِ کار: ',
+  'service.sourceNote': 'ہر شائع شدہ ریکارڈ میں ناشر، ماخذ کا عنوان اور جانچ کی تاریخ ہونا لازمی ہے۔',
+  'service.related': 'متعلقہ سروسز',
+  'service.whatToDo': 'آپ کیا کرنا چاہیں گے؟',
   'services.title': 'سروسز',
   'services.subtitle':
     'جانچے گئے سرکاری سروسز کے ریکارڈ، دستاویزات، طریقۂ کار اور ماخذ کے ساتھ۔ جہاں کوئی تفصیل غیر تصدیق شدہ ہو، ریکارڈ خود بتا دیتا ہے۔',

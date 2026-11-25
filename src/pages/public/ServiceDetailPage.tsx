@@ -23,6 +23,7 @@ import { ServiceCard } from '@/components/services/ServiceCard';
 import { useSavedServices } from '@/hooks/useSavedServices';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import { useAsync } from '@/hooks/useAsync';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { getRelatedServices, getServiceBySlug } from '@/services/api/services';
 import { errorMessage } from '@/services/api/errors';
@@ -30,6 +31,7 @@ import { formatDate } from '@/utils/cn';
 import { useToast } from '@/components/common/Feedback';
 
 export default function ServiceDetailPage() {
+  const { t } = useLanguage();
   const { slug = '' } = useParams();
   const { data: service, loading, error, reload } = useAsync(() => getServiceBySlug(slug), [slug]);
   const { isSaved, toggle } = useSavedServices();
@@ -101,12 +103,16 @@ export default function ServiceDetailPage() {
       <div className="container-page py-10">
         {error.status === 404 ? (
           <EmptyState
-            title="Service not found"
-            description="The service you are looking for is not in the catalogue. It may have been removed, or the link may be incorrect."
-            action={<LinkButton to="/services">Browse all services</LinkButton>}
+            title={t('service.notFound')}
+            description={t('service.notFoundBody')}
+            action={<LinkButton to="/services">{t('service.browseAll')}</LinkButton>}
           />
         ) : (
-          <ErrorState title="Unable to load this service" message={errorMessage(error)} onRetry={reload} />
+          <ErrorState
+            title={t('service.loadError')}
+            message={errorMessage(error)}
+            onRetry={reload}
+          />
         )}
       </div>
     );
@@ -120,8 +126,8 @@ export default function ServiceDetailPage() {
     <div className="container-page py-6 sm:py-8">
       <Breadcrumbs
         items={[
-          { label: 'Home', to: '/' },
-          { label: 'Services', to: '/services' },
+          { label: t('nav.home'), to: '/' },
+          { label: t('nav.services'), to: '/services' },
           { label: service.name },
         ]}
       />
@@ -138,7 +144,7 @@ export default function ServiceDetailPage() {
             <div className="relative flex flex-wrap items-center gap-2">
               <Badge tone="brand">{service.category.replace('_', ' ')}</Badge>
               <VerificationBadge status={service.verification} />
-              {service.status === 'pending_review' && <Badge tone="warning">Awaiting reviewer</Badge>}
+              {service.status === 'pending_review' && <Badge tone="warning">{t('service.awaitingReviewer')}</Badge>}
             </div>
 
             <h1 className="relative mt-3 text-[1.6rem] font-semibold leading-tight tracking-[-0.025em] text-ink-950 sm:text-[2rem]">
@@ -155,13 +161,13 @@ export default function ServiceDetailPage() {
             <dl className="relative mt-5 grid gap-3 rounded-xl border border-brand-900/[0.06] bg-cream/70 p-3.5 text-sm sm:grid-cols-3">
               <div>
                 <dt className="flex items-center gap-1 text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">
-                  <Building2 className="size-3.5" aria-hidden="true" /> Department
+                  <Building2 className="size-3.5" aria-hidden="true" /> {t('services.departmentLabel')}
                 </dt>
                 <dd className="mt-1 text-[0.8125rem] font-medium leading-snug text-ink-900">{service.department}</dd>
               </div>
               <div>
                 <dt className="flex items-center gap-1 text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">
-                  <MapPin className="size-3.5" aria-hidden="true" /> Jurisdiction
+                  <MapPin className="size-3.5" aria-hidden="true" /> {t('services.jurisdictionLabel')}
                 </dt>
                 <dd className="mt-1 text-[0.8125rem] font-medium leading-snug text-ink-900">
                   {service.jurisdiction}
@@ -170,10 +176,10 @@ export default function ServiceDetailPage() {
               </div>
               <div>
                 <dt className="flex items-center gap-1 text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">
-                  <Clock3 className="size-3.5" aria-hidden="true" /> Last checked
+                  <Clock3 className="size-3.5" aria-hidden="true" /> {t('verify.lastChecked')}
                 </dt>
                 <dd className="mt-1 text-[0.8125rem] font-medium leading-snug text-ink-900 tabular">
-                  {service.lastVerifiedAt ? formatDate(service.lastVerifiedAt) : 'Not recorded'}
+                  {service.lastVerifiedAt ? formatDate(service.lastVerifiedAt) : t('verify.notRecorded')}
                 </dd>
               </div>
             </dl>
@@ -181,8 +187,7 @@ export default function ServiceDetailPage() {
 
           {(service.verification === 'demo' || service.verification === 'pending_verification') && (
             <UnverifiedNotice>
-              This record is demonstration data and has not been verified against an official source.
-              Requirements, fees and steps must be confirmed with {service.department} before you rely on them.
+              {t('service.unverifiedBody', { department: service.department })}
             </UnverifiedNotice>
           )}
 
@@ -190,11 +195,16 @@ export default function ServiceDetailPage() {
           <section aria-labelledby="requirements" className="relative overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper p-5 shadow-2 shadow-bevel">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 id="requirements" className="text-base font-semibold text-ink-900">
-                Required documents
+                {t('services.requirements')}
               </h2>
               <Badge tone="neutral">
-                {service.requirements.filter((r) => r.mandatory).length} required ·{' '}
-                {service.requirements.filter((r) => !r.mandatory).length} optional
+                {t('service.requiredCount', {
+                  count: String(service.requirements.filter((r) => r.mandatory).length),
+                })}{' '}
+                ·{' '}
+                {t('service.optionalCount', {
+                  count: String(service.requirements.filter((r) => !r.mandatory).length),
+                })}
               </Badge>
             </div>
             <ul className="mt-1 divide-y divide-ink-100">
@@ -242,12 +252,12 @@ export default function ServiceDetailPage() {
           {/* Fee */}
           <section aria-labelledby="fee" className="relative overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper p-5 shadow-2 shadow-bevel">
             <h2 id="fee" className="mb-2 text-base font-semibold text-ink-900">
-              Fee
+              {t('services.fees')}
             </h2>
             {feeBlock}
             {service.processingTime && (
               <p className="mt-2 text-sm text-ink-600">
-                <span className="font-medium text-ink-800">Processing time as recorded: </span>
+                <span className="font-medium text-ink-800">{t('service.processingTime')}</span>
                 {service.processingTime}
               </p>
             )}
@@ -256,11 +266,9 @@ export default function ServiceDetailPage() {
           {/* Sources */}
           <section aria-labelledby="sources" className="relative overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper p-5 shadow-2 shadow-bevel">
             <h2 id="sources" className="text-base font-semibold text-ink-900">
-              Official source
+              {t('services.officialSource')}
             </h2>
-            <p className="mt-0.5 text-sm text-ink-500">
-              Every published record must carry the publisher, the source title and the date it was checked.
-            </p>
+            <p className="mt-0.5 text-sm text-ink-500">{t('service.sourceNote')}</p>
             <div className="mt-3">
               <SourceList sources={service.sources} />
             </div>
@@ -270,7 +278,7 @@ export default function ServiceDetailPage() {
           {related.data && related.data.length > 0 && (
             <section aria-labelledby="related">
               <h2 id="related" className="mb-2 text-base font-semibold text-ink-900">
-                Related services
+                {t('service.related')}
               </h2>
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {related.data.map((item) => (
@@ -284,14 +292,14 @@ export default function ServiceDetailPage() {
         {/* Sidebar actions */}
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
           <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card">
-            <h2 className="text-sm font-semibold text-ink-900">What would you like to do?</h2>
+            <h2 className="text-sm font-semibold text-ink-900">{t('service.whatToDo')}</h2>
             <div className="mt-3 space-y-2">
               <LinkButton
                 to={`/assistant?q=${encodeURIComponent(`Explain the ${service.name} procedure in simple words.`)}`}
                 fullWidth
                 leadingIcon={<MessagesSquare className="size-4" aria-hidden="true" />}
               >
-                Ask Sahara AI
+                {t('services.askSahara')}
               </LinkButton>
               <LinkButton
                 to={`/applications?service=${service.slug}`}
@@ -299,7 +307,7 @@ export default function ServiceDetailPage() {
                 fullWidth
                 leadingIcon={<PenLine className="size-4" aria-hidden="true" />}
               >
-                Generate application
+                {t('services.generateApplication')}
               </LinkButton>
               <LinkButton
                 to={`/readiness?service=${service.slug}`}
@@ -307,7 +315,7 @@ export default function ServiceDetailPage() {
                 fullWidth
                 leadingIcon={<Gauge className="size-4" aria-hidden="true" />}
               >
-                Check readiness
+                {t('services.checkReadiness')}
               </LinkButton>
               <Button
                 variant="ghost"
@@ -329,7 +337,7 @@ export default function ServiceDetailPage() {
                   )
                 }
               >
-                {saved ? 'Saved' : 'Save service'}
+                {saved ? t('action.saved') : t('services.saveService')}
               </Button>
             </div>
             <p className="mt-3 border-t border-ink-100 pt-3 text-[0.6875rem] leading-relaxed text-ink-500">

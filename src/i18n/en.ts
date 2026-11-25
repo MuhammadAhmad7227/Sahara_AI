@@ -220,6 +220,21 @@ export const en = {
   'services.aboutBody':
     'Records in this development build are demonstration data. A record marked Pending verification has not been checked against an official source, and fees are shown only when a reviewer has confirmed them.',
   'action.resetFilters': 'Reset filters',
+  'service.notFound': 'Service not found',
+  'service.notFoundBody':
+    'The service you are looking for is not in the catalogue. It may have been removed, or the link may be incorrect.',
+  'service.browseAll': 'Browse all services',
+  'service.loadError': 'Unable to load this service',
+  'service.awaitingReviewer': 'Awaiting reviewer',
+  'service.unverifiedBody':
+    'This record is demonstration data and has not been verified against an official source. Requirements, fees and steps must be confirmed with {department} before you rely on them.',
+  'service.requiredCount': '{count} required',
+  'service.optionalCount': '{count} optional',
+  'service.processingTime': 'Processing time as recorded: ',
+  'service.sourceNote':
+    'Every published record must carry the publisher, the source title and the date it was checked.',
+  'service.related': 'Related services',
+  'service.whatToDo': 'What would you like to do?',
   'services.title': 'Services',
   'services.subtitle':
     'Reviewed public-service records with documents, procedure and source. Where a detail is unverified, the record says so.',

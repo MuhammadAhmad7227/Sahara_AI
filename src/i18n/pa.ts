@@ -222,6 +222,20 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'services.aboutBody':
     'ایس ڈیمو بلڈ وچ درج ریکارڈ مظاہرے دا ڈیٹا نیں۔ جس ریکارڈ تے "تصدیق ہو رہی اے" لکھیا ہووے اوہ کسے سرکاری ماخذ توں نئیں جانچیا گیا، تے فیس صرف اوہدوں وکھائی جاندی اے جدوں جانچن والے نے اوہدی تصدیق کیتی ہووے۔',
   'action.resetFilters': 'فلٹر ہٹاؤ',
+  'service.notFound': 'خدمت نئیں لبھی',
+  'service.notFoundBody':
+    'تُسی جیہدی خدمت لبھدے اوہ کیٹلاگ وچ موجود نئیں۔ ہو سکدا اے ہٹا دتی گئی ہووے یا لنک غلط ہووے۔',
+  'service.browseAll': 'ساریاں خدمتاں ویکھو',
+  'service.loadError': 'ایہ خدمت لوڈ نئیں ہو سکی',
+  'service.awaitingReviewer': 'جانچن والے دا انتظار',
+  'service.unverifiedBody':
+    'ایہ ریکارڈ مظاہرے دا ڈیٹا اے تے کسے سرکاری ماخذ توں تصدیق شدہ نئیں۔ دستاویزاں، فیس تے مرحلیاں تے بھروسا کرن توں پہلاں {department} توں تصدیق کرو۔',
+  'service.requiredCount': '{count} لازمی',
+  'service.optionalCount': '{count} اختیاری',
+  'service.processingTime': 'درج شدہ مدت: ',
+  'service.sourceNote': 'ہر شائع شدہ ریکارڈ وچ ناشر، ماخذ دا عنوان تے جانچ دی تریخ ہونی لازمی اے۔',
+  'service.related': 'متعلقہ خدمتاں',
+  'service.whatToDo': 'تُسی کی کرنا چاہو گے؟',
   'services.title': 'خدمتاں',
   'services.subtitle':
     'جانچے گئے سرکاری خدمتاں دے ریکارڈ، دستاویزاں، طریقۂ کار تے ماخذ نال۔ جتھے کوئی تفصیل غیر تصدیق شدہ ہووے، ریکارڈ خود دس دیندا اے۔',
