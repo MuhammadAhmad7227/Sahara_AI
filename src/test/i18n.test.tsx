@@ -141,11 +141,14 @@ describe('Dictionary integrity', () => {
     }
   });
 
-  it('translates at least 85% of the dictionary into Urdu and Punjabi', () => {
+  it('translates every dictionary key into Urdu and Punjabi', () => {
     const total = Object.keys(en).length;
     for (const [lang, dict] of Object.entries({ ur, pa })) {
       const coverage = Object.keys(dict).length / total;
-      expect(coverage, `${lang} coverage ${Math.round(coverage * 100)}%`).toBeGreaterThan(0.85);
+      // Coverage was 85% when pages were still being migrated. It is now 100%,
+      // so the bar is raised: a new English key without translations fails CI
+      // instead of silently rendering English inside an Urdu page.
+      expect(coverage, `${lang} coverage ${Math.round(coverage * 100)}%`).toBe(1);
     }
   });
 

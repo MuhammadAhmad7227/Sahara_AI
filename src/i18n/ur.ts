@@ -13,6 +13,10 @@ import type { Dictionary } from '@/i18n/en';
 
 export const ur: Partial<Record<keyof Dictionary, string>> = {
   // ---- Product -----------------------------------------------------------
+  'app.name': 'Sahara AI',
+  'footer.services': 'سروسز',
+  'footer.tools': 'ٹولز',
+  'footer.information': 'معلومات',
   'app.tagline': 'پاکستان کے لیے شہری، قانونی اور عوامی خدمات کی رہنمائی',
   'app.civicAssistant': 'شہری معاون',
   'skip.toContent': 'مرکزی مواد پر جائیں',
