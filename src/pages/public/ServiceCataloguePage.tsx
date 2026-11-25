@@ -7,6 +7,7 @@ import { CardGridSkeleton, EmptyState, ErrorState, InlineNotice } from '@/compon
 import { ServiceCard } from '@/components/services/ServiceCard';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useAsync } from '@/hooks/useAsync';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import { listServices, getDepartments } from '@/services/api/services';
 import { errorMessage } from '@/services/api/errors';
@@ -19,10 +20,8 @@ const PAGE_SIZE = 9;
 const jurisdictions = ['all', 'Punjab', 'Federal'] as const;
 
 export default function ServiceCataloguePage() {
-  useDocumentTitle(
-    'Public service catalogue',
-    'Browse reviewed public-service records for Punjab and federal services: documents, steps, fees where verified, and the source each record comes from.',
-  );
+  const { t } = useLanguage();
+  useDocumentTitle(t('services.pageTitle'), t('services.pageDesc'));
 
   const [params, setParams] = useSearchParams();
   const { items: recentlyViewed, clear: clearRecent } = useRecentlyViewed();
@@ -163,17 +162,17 @@ export default function ServiceCataloguePage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <PageHeader
-        eyebrow="Service catalogue"
-        title="Public services, in plain language"
-        description="Search reviewed records for Punjab and federal services. Every record lists its required documents and steps, and shows its source and the date it was last checked — or says that a detail is not yet verified."
+        eyebrow={t('services.eyebrow')}
+        title={t('services.heading')}
+        description={t('services.headingDesc')}
       />
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[16rem_1fr]">
         {/* Desktop filters */}
-        <aside className="hidden lg:block" aria-label="Filters">
+        <aside className="hidden lg:block" aria-label={t('services.filters')}>
           <div className="sticky top-20 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4">
             <h2 className="mb-3 flex items-center gap-1.5 text-sm font-semibold text-ink-900">
-              <SlidersHorizontal className="size-4" aria-hidden="true" /> Filters
+              <SlidersHorizontal className="size-4" aria-hidden="true" /> {t('services.filters')}
             </h2>
             {filterPanel}
           </div>
@@ -203,7 +202,7 @@ export default function ServiceCataloguePage() {
               leadingIcon={<Filter className="size-4" aria-hidden="true" />}
               aria-expanded={showFilters}
             >
-              Filters{activeFilters.length ? ` (${activeFilters.length})` : ''}
+              {t('services.filters')}{activeFilters.length ? ` (${activeFilters.length})` : ''}
             </Button>
           </div>
 
@@ -252,16 +251,20 @@ export default function ServiceCataloguePage() {
           {loading && <CardGridSkeleton count={6} />}
 
           {!loading && error && (
-            <ErrorState title="Unable to load services" message={errorMessage(error)} onRetry={reload} />
+            <ErrorState
+              title={t('services.loadError')}
+              message={errorMessage(error)}
+              onRetry={reload}
+            />
           )}
 
           {!loading && !error && data && data.items.length === 0 && (
             <EmptyState
-              title="No services match your filters"
-              description="Try a different keyword, or remove one of the filters. If the service you need is not listed, it has not yet been added to the reviewed catalogue."
+              title={t('services.noResults')}
+              description={t('services.noResultsHint')}
               action={
                 <Button variant="outline" onClick={() => setParams({}, { replace: true })}>
-                  Reset filters
+                  {t('action.resetFilters')}
                 </Button>
               }
             />
@@ -315,12 +318,8 @@ export default function ServiceCataloguePage() {
           )}
 
           <div className="mt-8">
-            <InlineNotice tone="info" title="About this catalogue">
-              <p>
-                Records in this development build are demonstration data. A record marked{' '}
-                <strong>Pending verification</strong> has not been checked against an official source, and fees
-                are shown only when a reviewer has confirmed them.
-              </p>
+            <InlineNotice tone="info" title={t('services.aboutTitle')}>
+              <p>{t('services.aboutBody')}</p>
             </InlineNotice>
           </div>
         </div>

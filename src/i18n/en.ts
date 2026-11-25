@@ -203,6 +203,19 @@ export const en = {
   'voice.readAloud': 'Read answers aloud',
 
   // ---- Services ----------------------------------------------------------
+  'services.pageTitle': 'Public service catalogue',
+  'services.pageDesc':
+    'Browse reviewed public-service records for Punjab and federal services: documents, steps, fees where verified, and the source each record comes from.',
+  'services.eyebrow': 'Service catalogue',
+  'services.heading': 'Public services, in plain language',
+  'services.headingDesc':
+    'Search reviewed records for Punjab and federal services. Every record lists its required documents and steps, and shows its source and the date it was last checked — or says that a detail is not yet verified.',
+  'services.filters': 'Filters',
+  'services.loadError': 'Unable to load services',
+  'services.aboutTitle': 'About this catalogue',
+  'services.aboutBody':
+    'Records in this development build are demonstration data. A record marked Pending verification has not been checked against an official source, and fees are shown only when a reviewer has confirmed them.',
+  'action.resetFilters': 'Reset filters',
   'services.title': 'Services',
   'services.subtitle':
     'Reviewed public-service records with documents, procedure and source. Where a detail is unverified, the record says so.',

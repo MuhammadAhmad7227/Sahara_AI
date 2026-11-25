@@ -88,13 +88,13 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
         aria-expanded={open}
         aria-label={`${t('lang.label')}: ${languageMeta[language].native}`}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm font-medium text-ink-700 transition-colors hover:bg-ink-900/[0.05]"
+        className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm font-medium text-ink-800 transition-colors hover:bg-ink-900/[0.05] dark:text-sand-100"
       >
         <Globe className="size-4" aria-hidden="true" />
         {compact ? (
           <span className="text-xs font-semibold uppercase">{language}</span>
         ) : (
-          <bdi dir="auto" className="font-arabic-body">
+          <bdi dir={languageMeta[language].dir} className="font-arabic-body">
             {languageMeta[language].native}
           </bdi>
         )}
@@ -130,8 +130,9 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
               >
                 <span className="flex min-w-0 flex-col">
                   <span className="flex items-center gap-1.5">
-                    {/* Native script, isolated so it cannot reorder the row. */}
-                    <bdi dir="auto" lang={lang} className="text-sm font-semibold">
+                    {/* Native script, isolated with its own direction so it
+                        cannot reorder the surrounding LTR menu row. */}
+                    <bdi dir={languageMeta[lang].dir} lang={lang} className="text-sm font-semibold">
                       {languageMeta[lang].native}
                     </bdi>
                     <span className="text-[0.6875rem] font-normal text-ink-400">
