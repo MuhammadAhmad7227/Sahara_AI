@@ -170,22 +170,20 @@ export default function HomePage() {
                 <span className="grid size-5 place-items-center rounded-full bg-brand-900 text-[0.5rem] text-accent-300">
                   ●
                 </span>
-                Built for citizens of Pakistan
+                {t('home.eyebrow')}
               </p>
 
               <h1
                 id="hero-heading"
                 className="mt-5 text-[2.15rem] font-semibold leading-[1.06] tracking-[-0.03em] text-ink-950 sm:text-[3rem] lg:text-[3.5rem]"
               >
-                Government services,
+                {t('home.heroLead')}
                 <br />
-                <span className="display-serif italic text-brand-800">explained simply.</span>
+                <span className="display-serif italic text-brand-800">{t('home.titleAccent')}</span>
               </h1>
 
               <p className="mt-5 max-w-[34rem] text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">
-                Ask Sahara about civic services, documents, applications, complaints and public
-                information in English, Urdu or Punjabi. Every answer points to the reviewed record it
-                came from — or tells you plainly that no reliable record exists.
+                {t('home.subtitle')}
               </p>
 
               <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:items-center">
@@ -197,15 +195,15 @@ export default function HomePage() {
                   {t('nav.talkToSahara')}
                 </LinkButton>
                 <LinkButton to="/services" size="lg" variant="outline">
-                  Explore services
+                  {t('home.secondaryCta')}
                 </LinkButton>
               </div>
 
               <dl className="mt-8 grid max-w-lg grid-cols-1 gap-x-6 gap-y-3 border-t border-brand-900/10 pt-5 min-[380px]:grid-cols-3">
                 {[
-                  ['Languages', 'Urdu · Punjabi · English'],
-                  ['Every answer', 'Source + date checked'],
-                  ['Access', 'Free, no account needed'],
+                  [t('home.languages'), t('home.languagesValue')],
+                  [t('home.everyAnswer'), t('home.everyAnswerValue')],
+                  [t('home.access'), t('home.accessValue')],
                 ].map(([dt, dd]) => (
                   <div key={dt}>
                     <dt className="text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">

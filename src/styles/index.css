@@ -301,53 +301,89 @@
 }
 
 /* -------------------------------------------------------------------------- */
-/* Urdu / RTL                                                                 */
+/* Per-language typography (never layout direction)                           */
 /* -------------------------------------------------------------------------- */
 
+/*
+ * RULE: language changes TYPE, never GEOMETRY.
+ *
+ * The document is always dir="ltr". These rules only switch the font stack and
+ * line-height so Urdu and Punjabi shape and breathe correctly. Nothing here
+ * touches flex-direction, grid order, floats, inset sides or text-align of
+ * containers — that is what caused the old build to mirror the whole UI.
+ */
+
+/* Urdu / Shahmukhi running text: Naskh reads far better than Nastaliq at small
+   sizes and in form controls, so body copy uses Naskh while display headings
+   keep Nastaliq. */
 html[lang='ur'] body,
 html[lang='ur'] input,
 html[lang='ur'] textarea,
 html[lang='ur'] select,
-html[lang='ur'] button {
+html[lang='ur'] button,
+html[lang='pa'] body,
+html[lang='pa'] input,
+html[lang='pa'] textarea,
+html[lang='pa'] select,
+html[lang='pa'] button {
   font-family: var(--font-arabic-body);
 }
 
-html[lang='ur'] .font-serif {
-  font-family: var(--font-arabic-body);
-}
-
-html[lang='ur'] h1,
-html[lang='ur'] h2,
-html[lang='ur'] .urdu-display {
-  font-family: var(--font-urdu);
-  line-height: 2.05;
-  letter-spacing: 0;
-}
-
+/* Urdu line-heights: Arabic-script text needs more leading to avoid collisions
+   between ascenders and descenders. */
 html[lang='ur'] p,
 html[lang='ur'] li,
 html[lang='ur'] label,
 html[lang='ur'] td,
-html[lang='ur'] th {
-  line-height: 1.95;
+html[lang='ur'] th,
+html[lang='pa'] p,
+html[lang='pa'] li,
+html[lang='pa'] label,
+html[lang='pa'] td,
+html[lang='pa'] th {
+  line-height: 1.85;
 }
 
-html[lang='pa'] body {
-  font-family: var(--font-arabic-body);
+/* Display headings keep Nastaliq in Urdu only; Punjabi uses Naskh throughout
+   because Nastaliq is not the usual Shahmukhi book face. */
+html[lang='ur'] h1,
+html[lang='ur'] h2,
+html[lang='ur'] .urdu-display {
+  font-family: var(--font-urdu);
+  line-height: 1.9;
+  letter-spacing: 0;
 }
 
 html[lang='pa'] h1,
 html[lang='pa'] h2,
 html[lang='pa'] h3 {
-  line-height: 1.65;
+  font-family: var(--font-arabic-body);
+  line-height: 1.7;
+  letter-spacing: 0;
 }
 
-[dir='rtl'] .rtl-flip {
-  transform: scaleX(-1);
+/* The serif display accent is Latin-only; it must not be applied to Urdu or
+   Shahmukhi, where Source Serif has no glyphs and the browser substitutes
+   unpredictably. */
+html[lang='ur'] .display-serif,
+html[lang='pa'] .display-serif {
+  font-family: var(--font-arabic-body);
+  font-style: normal;
 }
 
-[dir='rtl'] .dir-arrow {
-  transform: scaleX(-1);
+/*
+ * Text runs isolated with <bdi dir="rtl"> need to align to the start of their
+ * own line box, not to the container. `unicode-bidi: isolate` is the default for
+ * <bdi>; the rule below only guarantees it in older engines.
+ */
+bdi {
+  unicode-bidi: isolate;
+}
+
+/* Mixed Urdu + Latin (e.g. "CNIC کی نقل") inside one line: the Arabic run keeps
+   its own direction while the line itself starts on the left. */
+[dir='rtl'] {
+  unicode-bidi: isolate;
 }
 
 /* -------------------------------------------------------------------------- */

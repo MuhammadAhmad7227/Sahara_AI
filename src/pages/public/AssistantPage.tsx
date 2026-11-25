@@ -15,11 +15,13 @@ import { SaharaOrb } from '@/components/brand/SaharaOrb';
 import { Drawer } from '@/components/ui/Drawer';
 import { AssistantGuide } from '@/components/assistant/AssistantGuide';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { languageMeta } from '@/i18n';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { askAssistant, sendAssistantFeedback, supportedLanguages } from '@/services/api/assistant';
 import { errorMessage } from '@/services/api/errors';
 import { cn } from '@/utils/cn';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
+import { useSpeechSynthesis } from '@/hooks/useSpeechSynthesis';
 import type { AssistantAnswer, Language } from '@/types/domain';
 
 interface Turn {
@@ -40,16 +42,28 @@ const suggestedQuestions = [
 const SESSION_KEY = 'sahara.assistant.thread';
 
 export default function AssistantPage() {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage, t, speechLocale } = useLanguage();
   const { toast } = useToast();
   const [params, setParams] = useSearchParams();
   const [answerLanguage, setAnswerLanguage] = useState<Language>(language);
+
+  // Choosing a new interface language also selects it for answers and voice:
+  // two languages on screen at once was the source of the mixed-language bug.
+  useEffect(() => {
+    setAnswerLanguage(language);
+  }, [language]);
   const [input, setInput] = useState('');
   const [turns, setTurns] = useState<Turn[]>([]);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [feedbackFor, setFeedbackFor] = useState<Record<string, boolean>>({});
-  const [speakAnswers, setSpeakAnswers] = useState(false);
+  /**
+   * "Read answers aloud" — an opt-in for continuous use. It is a convenience on
+   * top of the per-answer Listen button, and it goes through the same engine so
+   * the voice always matches the answer language.
+   */
+  const [autoRead, setAutoRead] = useState(false);
+  const tts = useSpeechSynthesis();
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -100,11 +114,8 @@ export default function AssistantPage() {
         ]);
         setParams({}, { replace: true });
 
-        if (speakAnswers && 'speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance(answer.answer.slice(0, 500));
-          utterance.lang = answerLanguage === 'en' ? 'en-PK' : 'ur-PK';
-          window.speechSynthesis.speak(utterance);
-        }
+        if (autoRead) tts.speak(answer.answer, answer.language);
+
       } catch (err) {
         setError(errorMessage(err));
       } finally {
@@ -112,7 +123,7 @@ export default function AssistantPage() {
         requestAnimationFrame(() => inputRef.current?.focus());
       }
     },
-    [answerLanguage, pending, setParams, speakAnswers],
+    [answerLanguage, pending, setParams, autoRead, tts],
   );
 
   // Handle ?q= deep links from service cards (asked once).
@@ -126,8 +137,15 @@ export default function AssistantPage() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [turns, pending]);
 
+  /*
+   * Recognition locale follows the SELECTED language via the shared registry,
+   * so a Punjabi speaker is never silently given the Urdu model. When the
+   * browser reports it has no model for the locale, `languageUnsupported` turns
+   * true and the composer shows a plain, honest fallback instead of a mic that
+   * does nothing.
+   */
   const speech = useSpeechRecognition({
-    language: answerLanguage === 'en' ? 'en-PK' : 'ur-PK',
+    language: speechLocale,
     onResult: (transcript) => setInput((current) => `${current} ${transcript}`.trim()),
   });
 
@@ -315,50 +333,56 @@ export default function AssistantPage() {
                 }}
                 rows={2}
                 maxLength={800}
-                placeholder="Ask about a public service, document, complaint or suspicious message…"
+                placeholder={t('assistant.placeholder')}
                 className="max-h-40 min-h-11 w-full resize-none border-0 bg-transparent px-2 py-1.5 text-sm text-ink-900 placeholder:text-ink-400 focus:outline-none"
               />
               <div className="flex items-center justify-between gap-2 px-1">
                 <div className="flex items-center gap-1">
-                  {speech.supported ? (
+                  {speech.supported && !speech.languageUnsupported ? (
                     <button
                       type="button"
                       onClick={speech.listening ? speech.stop : speech.start}
                       aria-pressed={speech.listening}
+                      aria-label={speech.listening ? t('voice.stop') : t('voice.speak')}
                       className={cn(
                         'inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors',
                         speech.listening
                           ? 'bg-red-100 text-red-800'
                           : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900',
                       )}
-                      title={speech.listening ? 'Stop recording' : 'Speak your question'}
+                      title={speech.listening ? t('voice.stop') : t('voice.speak')}
                     >
                       {speech.listening ? (
                         <>
-                          <MicOff className="size-3.5" aria-hidden="true" /> Stop
+                          <MicOff className="size-3.5" aria-hidden="true" /> {t('voice.stopShort')}
                         </>
                       ) : (
                         <>
-                          <Mic className="size-3.5" aria-hidden="true" /> Speak
+                          <Mic className="size-3.5" aria-hidden="true" /> {t('voice.speakShort')}
                         </>
                       )}
                     </button>
                   ) : (
                     <span
-                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-ink-400"
-                      title="Voice input is not available in this browser. You can still type your question."
+                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-ink-500"
+                      title={
+                        speech.languageUnsupported
+                          ? t('voice.languageUnsupported', { language: languageMeta[answerLanguage].native })
+                          : t('voice.browserUnsupported')
+                      }
                     >
-                      <MicOff className="size-3.5" aria-hidden="true" /> Voice unavailable
+                      <MicOff className="size-3.5" aria-hidden="true" />
+                      {speech.languageUnsupported ? t('voice.speakUnavailable') : t('voice.unavailable')}
                     </span>
                   )}
                   <label className="inline-flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs text-ink-600 hover:bg-ink-100">
                     <input
                       type="checkbox"
-                      checked={speakAnswers}
-                      onChange={(e) => setSpeakAnswers(e.target.checked)}
+                      checked={autoRead}
+                      onChange={(e) => setAutoRead(e.target.checked)}
                       className="size-3.5 accent-brand-800"
                     />
-                    Read answers aloud
+                    {t('voice.readAloud')}
                   </label>
                 </div>
 
@@ -368,7 +392,7 @@ export default function AssistantPage() {
                     type="submit"
                     size="sm"
                     disabled={pending || !input.trim()}
-                    aria-label="Send question"
+                    aria-label={t('assistant.send')}
                     className="size-8 !px-0"
                   >
                     <ArrowUp className="size-4" aria-hidden="true" />
@@ -377,13 +401,20 @@ export default function AssistantPage() {
               </div>
             </form>
             {speech.listening && (
-              <p className="mt-1.5 px-2 text-xs text-red-700" role="status">
-                Listening… your speech appears in the box so you can check it before sending.
+              <p className="mt-1.5 px-2 text-xs text-ink-600" role="status">
+                {t('voice.listeningNote')}
               </p>
             )}
-            {speech.error && (
+            {/* A locale without a model is a permanent condition, so it gets a
+                standing message rather than an error the user cannot fix. */}
+            {speech.languageUnsupported && (
+              <p className="mt-1.5 px-2 text-xs leading-relaxed text-ink-500" role="status">
+                {t('voice.languageUnsupported', { language: languageMeta[answerLanguage].native })}
+              </p>
+            )}
+            {speech.error && !speech.languageUnsupported && (
               <p className="mt-1.5 px-2 text-xs text-amber-800" role="status">
-                {speech.error} You can type your question instead.
+                {speech.error}
               </p>
             )}
           </div>

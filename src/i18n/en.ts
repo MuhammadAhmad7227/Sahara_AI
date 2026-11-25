@@ -1,0 +1,366 @@
+/**
+ * English — the reference dictionary.
+ *
+ * This file is the TypeScript source of truth: `TranslationKey` is derived from
+ * its keys, so a key used in a component but missing here is a compile error, and
+ * Urdu/Punjabi are checked against it as `Partial<>` with English fallback.
+ *
+ * Terminology is fixed (see TERMINOLOGY in this file) so the same civic concept
+ * always uses the same word across the product and across languages.
+ */
+export const en = {
+  // ---- Product -----------------------------------------------------------
+  'app.name': 'Sahara AI',
+  'app.tagline': 'Civic, legal and public service guidance for Pakistan',
+  'app.civicAssistant': 'Civic assistant',
+  'skip.toContent': 'Skip to main content',
+
+  // ---- Navigation --------------------------------------------------------
+  'nav.home': 'Home',
+  'nav.services': 'Services',
+  'nav.assistant': 'Assistant',
+  'nav.tools': 'Tools',
+  'nav.resources': 'Resources',
+  'nav.topics': 'Topics',
+  'nav.applications': 'Applications',
+  'nav.readiness': 'Readiness',
+  'nav.scam': 'Scam detector',
+  'nav.complaints': 'Complaints',
+  'nav.documents': 'Documents',
+  'nav.welfare': 'Welfare',
+  'nav.emergency': 'Emergency',
+  'nav.offices': 'Offices',
+  'nav.legal': 'Legal awareness',
+  'nav.lawyers': 'Lawyers',
+  'nav.dashboard': 'Dashboard',
+  'nav.admin': 'Administration',
+  'nav.login': 'Log in',
+  'nav.register': 'Create account',
+  'nav.talkToSahara': 'Talk to Sahara',
+  'nav.logout': 'Log out',
+  'nav.profile': 'Profile',
+  'nav.settings': 'Settings',
+  'nav.menu': 'Menu',
+  'nav.close': 'Close',
+  'nav.about': 'About',
+  'nav.feedback': 'Feedback',
+  'nav.mainMenu': 'Main menu',
+  'nav.siteNavigation': 'Site navigation',
+
+  // ---- Generic actions ---------------------------------------------------
+  'action.search': 'Search',
+  'action.clear': 'Clear',
+  'action.reset': 'Reset',
+  'action.openRecord': 'Open record',
+  'action.copy': 'Copy',
+  'action.copied': 'Copied',
+  'action.download': 'Download',
+  'action.edit': 'Edit',
+  'action.delete': 'Delete',
+  'action.save': 'Save',
+  'action.saved': 'Saved',
+  'action.cancel': 'Cancel',
+  'action.continue': 'Continue',
+  'action.back': 'Back',
+  'action.next': 'Next',
+  'action.view': 'View',
+  'action.viewAll': 'View all',
+  'action.retry': 'Try again',
+  'action.askAi': 'Ask Sahara',
+  'action.exploreServices': 'Explore services',
+  'action.learnMore': 'Learn more',
+  'action.submit': 'Submit',
+  'action.generate': 'Generate',
+  'action.analyze': 'Analyse',
+  'action.close': 'Close',
+  'action.listen': 'Listen',
+  'action.listenAgain': 'Listen again',
+  'action.pause': 'Pause',
+  'action.resume': 'Resume',
+  'action.stop': 'Stop',
+  'action.send': 'Send',
+  'action.regenerate': 'Regenerate',
+  'action.helpful': 'Helpful',
+  'action.notHelpful': 'Not helpful',
+  'action.dismiss': 'Dismiss',
+
+  // ---- Language ----------------------------------------------------------
+  'lang.label': 'Language',
+  'lang.english': 'English',
+  'lang.urdu': 'Urdu',
+  'lang.punjabi': 'Punjabi',
+  'lang.interface': 'Interface language',
+  'lang.assistantLanguage': 'Answer language',
+  'lang.interfaceNote':
+    'The interface language changes the text only. The layout stays the same in every language.',
+  'lang.partialNote': 'Some pages are still being translated and show English in the meantime.',
+  'lang.changed': 'Language changed to {language}.',
+  'lang.voiceInput': 'Voice input',
+  'lang.voiceOutput': 'Voice',
+  'lang.supported': 'Supported in this browser',
+  'lang.unsupported': 'Not supported in this browser',
+  'lang.unsupportedVoiceInput':
+    '{language} voice input is not supported in this browser. You can type your question instead.',
+  'lang.unsupportedVoiceOutput':
+    'This browser has no {language} voice installed. Try installing a {language} language pack, or read the answer instead.',
+
+  // ---- Home --------------------------------------------------------------
+  'home.eyebrow': 'Built for citizens of Pakistan',
+  'home.title': 'Government services, explained simply.',
+  'home.heroLead': 'Government services,',
+  'home.languagesValue': 'Urdu · Punjabi · English',
+  'home.titleAccent': 'explained simply.',
+  'home.subtitle':
+    'Ask Sahara about civic services, documents, applications, complaints and public information in English, Urdu or Punjabi. Every answer points to the reviewed record it came from.',
+  'home.primaryCta': 'Talk to Sahara',
+  'home.secondaryCta': 'Explore services',
+  'home.languages': 'Languages',
+  'home.everyAnswer': 'Every answer',
+  'home.everyAnswerValue': 'Source and date checked',
+  'home.access': 'Access',
+  'home.accessValue': 'Free, no account needed',
+  'home.howItWorks': 'How Sahara works',
+  'home.popularServices': 'Most requested services',
+  'home.quickActions': 'Quick actions',
+  'home.whyTitle': 'What Sahara does, and what it refuses to do',
+  'home.trustTitle': 'Trust is shown, not claimed',
+  'home.demoNotice': 'Demonstration conversation · sample record with generic office labels',
+  'home.grounded': 'Grounded in reviewed records',
+  'home.source': 'Source',
+  'home.startWithQuestion': 'Start with a question',
+  'home.viewDisclaimer': 'Read the disclaimer',
+  'home.coverage': 'Coverage',
+  'home.capabilities': 'Capabilities and limits',
+  'home.serviceUniverse': 'Service universe',
+
+  // ---- Assistant ---------------------------------------------------------
+  'assistant.title': 'Sahara AI assistant',
+  'assistant.subtitle': 'Answers only from reviewed records',
+  'assistant.checking': 'Checking reviewed records…',
+  'assistant.greeting': 'What would you like to know?',
+  'assistant.intro':
+    'Ask about a public service, a document, a complaint or a suspicious message. Sahara answers from reviewed records and shows the source — or says plainly that it has none.',
+  'assistant.tryThese': 'Try one of these',
+  'assistant.noRecordInline':
+    'No reviewed record matched this question, so no factual answer was produced.',
+  'assistant.placeholder': 'Ask about a public service, document, complaint or suspicious message…',
+  'assistant.send': 'Send question',
+  'assistant.notSupported': 'The AI assistant is not available right now.',
+  'assistant.processing': 'Checking reviewed sources…',
+  'assistant.failed': 'The assistant could not answer.',
+  'assistant.stillWorks': 'Browsing services, checklists and helplines keep working without the assistant.',
+  'assistant.clear': 'Clear',
+  'assistant.clearConversation': 'Clear conversation',
+  'assistant.newConversation': 'Start a new conversation',
+  'assistant.sources': 'Sources',
+  'assistant.sourcesPanel': 'Sources and guidance',
+  'assistant.sourcesPanelDesc': 'How to read an answer, and what this assistant will not do',
+  'assistant.aiExplanation': 'Sahara explanation',
+  'assistant.verifiedSource': 'Verified source information',
+  'assistant.howToRead': 'How to read an answer',
+  'assistant.thisAnswer': 'This answer',
+  'assistant.neverShare': 'Never share secrets',
+  'assistant.neverShareBody':
+    'Do not type your password, OTP, PIN or full CNIC into this assistant. Sahara AI never asks for them.',
+  'assistant.storageNote':
+    'Conversations are kept in this browser tab only. Clearing the conversation removes them.',
+  'assistant.listen': 'Listen to response',
+  'assistant.listening': 'Reading the answer aloud',
+  'assistant.readAloud': 'Read answers aloud',
+  'assistant.voiceInput': 'Speak your question',
+  'assistant.stopListening': 'Stop recording',
+  'assistant.heard': 'Listening… your speech appears in the box so you can check it before sending.',
+  'assistant.speechFailed': 'Voice input failed. You can type your question instead.',
+  'assistant.feedbackThanks': 'Thank you — your feedback is recorded for this session.',
+  'assistant.feedbackFailed': 'Feedback could not be recorded. Nothing was lost on your device.',
+  'assistant.intent': 'Intent',
+  'assistant.recordsRetrieved': 'Records retrieved',
+  'assistant.sourcesCited': 'Sources cited',
+  'assistant.engine': 'Engine',
+  'assistant.demoRetrieval': 'Demo retrieval',
+  'assistant.engineNote':
+    'The language-model call is produced by the backend once the Gemini integration is connected. This build assembles the answer directly from the stored record.',
+
+  // ---- Voice states ------------------------------------------------------
+  'voice.idle': 'Listen',
+  'voice.speaking': 'Speaking',
+  'voice.paused': 'Paused',
+  'voice.processing': 'Preparing audio',
+  'voice.error': 'Audio could not be played',
+  'voice.notAvailable': 'No {language} voice installed',
+  'voice.speak': 'Speak your question',
+  'voice.stop': 'Stop recording',
+  'voice.speakShort': 'Speak',
+  'voice.stopShort': 'Stop',
+  'voice.unavailable': 'Voice unavailable',
+  'voice.speakUnavailable': 'Voice not available',
+  'voice.browserUnsupported':
+    'This browser does not provide speech input. You can type your question instead.',
+  'voice.languageUnsupported':
+    'Speech recognition for {language} is not provided by this browser, so voice input is unavailable for this language. You can type your question, or switch the answer language to English or Urdu to use the microphone. Nothing is assumed about your speech — we would rather say this than show a microphone that does not work.',
+  'voice.listeningNote':
+    'Listening — your speech appears in the box so you can check it before sending.',
+  'voice.readAloud': 'Read answers aloud',
+
+  // ---- Services ----------------------------------------------------------
+  'services.title': 'Services',
+  'services.subtitle':
+    'Reviewed public-service records with documents, procedure and source. Where a detail is unverified, the record says so.',
+  'services.search': 'Search services',
+  'services.searchPlaceholder': 'Search by service, department or document…',
+  'services.category': 'Category',
+  'services.department': 'Department',
+  'services.jurisdiction': 'Jurisdiction',
+  'services.sort': 'Sort by',
+  'services.allCategories': 'All categories',
+  'services.allDepartments': 'All departments',
+  'services.allJurisdictions': 'All jurisdictions',
+  'services.noResults': 'No services match your filters',
+  'services.noResultsHint': 'Try a broader search term, or clear the category filter.',
+  'services.showing': 'Showing {from}–{to} of {total}',
+  'services.viewDetails': 'View details',
+  'services.departmentLabel': 'Department',
+  'services.jurisdictionLabel': 'Jurisdiction',
+  'services.lastChecked': 'Last checked',
+  'services.notChecked': 'No check recorded',
+  'services.checkReadiness': 'Check readiness',
+  'services.generateApplication': 'Generate application',
+  'services.saveService': 'Save service',
+  'services.askSahara': 'Ask Sahara about this',
+  'services.requirements': 'Required documents',
+  'services.procedure': 'Procedure',
+  'services.fees': 'Fee',
+  'services.feeUnverified': 'Fee information not currently verified',
+  'services.officialSource': 'Official source',
+  'services.importantNotes': 'Important notes',
+  'services.notFound': 'Service not found',
+  'services.notFoundHint': 'That record may have been renamed or removed from the catalogue.',
+  'services.recentlyViewed': 'Recently viewed',
+
+  // ---- Verification ------------------------------------------------------
+  'verify.department': 'Department',
+  'verify.officialSource': 'Official source',
+  'verify.sourceInformation': 'Source information used',
+  'verify.verified': 'Verified',
+  'verify.pending': 'Pending verification',
+  'verify.demo': 'Demo data',
+  'verify.outdated': 'Review overdue',
+  'verify.lastChecked': 'Last checked',
+  'verify.notRecorded': 'Not recorded',
+  'verify.source': 'Source',
+  'verify.publisher': 'Publisher',
+  'verify.reviewer': 'Reviewer',
+  'verify.urlNotRecorded': 'Official URL not recorded yet',
+  'verify.unavailable': 'Information unavailable',
+  'verify.needsReview': 'Needs review',
+
+  // ---- Trust and safety --------------------------------------------------
+  'trust.aiExplanation': 'The AI explains; the reviewed record supplies the facts.',
+  'trust.legalAwareness': 'General legal awareness only — not legal advice.',
+  'trust.verifyOfficial': 'Confirm important details with the official office.',
+  'trust.scamIndicator': 'Risk assessment only — not definitive proof of fraud.',
+  'trust.noPrivateAccess': 'Sahara AI cannot access government databases or private records.',
+  'trust.notGovernment': 'Sahara AI is an independent assistant, not a government service.',
+  'trust.neverDoes': 'What it never does',
+  'trust.does': 'What it does',
+
+  // ---- States ------------------------------------------------------------
+  'state.loading': 'Loading…',
+  'state.errorTitle': 'Something went wrong',
+  'state.emptyTitle': 'Nothing here yet',
+  'state.success': 'Done',
+  'state.required': 'Required',
+  'state.offline': 'You appear to be offline. Check your connection and try again.',
+
+  // ---- Errors ------------------------------------------------------------
+  'error.network': 'Unable to connect to Sahara AI. Check your connection and try again.',
+  'error.generic': 'Something went wrong. Please try again.',
+  'error.aiUnavailable':
+    'The AI assistant is temporarily unavailable. You can still browse services and use the other tools.',
+  'error.invalidCredentials': 'The email or password you entered is not correct.',
+  'error.unauthorized': 'Please log in to continue.',
+  'error.emailTaken': 'An account with this email already exists. Try logging in instead.',
+  'error.notFound': 'The requested page could not be found.',
+
+  // ---- Auth --------------------------------------------------------------
+  'auth.loginTitle': 'Log in to Sahara AI',
+  'auth.loginSubtitle':
+    'An account saves your drafts, analyses and language preferences. Browsing and the assistant work without one.',
+  'auth.email': 'Email',
+  'auth.password': 'Password',
+  'auth.fullName': 'Full name',
+  'auth.confirmPassword': 'Confirm password',
+  'auth.forgot': 'Forgot password?',
+  'auth.noAccount': 'Do not have an account?',
+  'auth.haveAccount': 'Already have an account?',
+  'auth.registerTitle': 'Create your account',
+  'auth.demoAccounts': 'Demonstration accounts',
+  'auth.fillCitizen': 'Fill citizen demo',
+  'auth.fillAdmin': 'Fill admin demo',
+  'auth.neverAsk': 'Sahara AI will never ask for your password, OTP or PIN by message or phone call.',
+
+  // ---- Dashboard ---------------------------------------------------------
+  'dashboard.citizenCentre': 'Citizen centre',
+  'dashboard.welcome': 'Welcome back, {name}.',
+  'dashboard.welcomeGeneric': 'Welcome back.',
+  'dashboard.helpToday': 'How can Sahara help you today?',
+  'dashboard.demoNote': 'Development build — drafts, saved services and history are stored in this browser.',
+  'dashboard.overview': 'Overview',
+  'dashboard.drafts': 'Drafts',
+  'dashboard.saved': 'Saved services',
+  'dashboard.history': 'History',
+  'dashboard.profileSettings': 'Profile and settings',
+
+  // ---- Footer ------------------------------------------------------------
+  'footer.disclaimer':
+    'Sahara AI is an independent civic assistant. It is not a government service and does not submit applications or complaints on your behalf.',
+  'footer.services': 'Services',
+  'footer.tools': 'Tools',
+  'footer.information': 'Information',
+  'footer.privacy': 'Privacy and data',
+  'footer.terms': 'Disclaimer',
+  'footer.about': 'About',
+  'footer.feedback': 'Feedback',
+  'footer.project': 'Final Year Project, University of Agriculture Faisalabad (Burewala Campus)',
+  'footer.demoData': 'Frontend development build — demonstration data',
+
+  // ---- System ------------------------------------------------------------
+  'system.notFoundTitle': 'This page could not be found',
+  'system.notFoundBody': 'It may have moved, or the address may be mistyped.',
+  'system.forbiddenTitle': 'You do not have permission to view this page',
+  'system.forbiddenBody': 'This area is limited to administrators.',
+  'visual.notAvailable': '3D explainer not available yet',
+  'visual.notAvailableBody':
+    'This section is built to hold an interactive 3D explainer. No model has been produced, so nothing is shown rather than a placeholder pretending to be one.',
+  'visual.noSteps': 'No process steps have been recorded for this service yet.',
+  'visual.videoNotAvailable': 'Tutorial video not available yet',
+  'visual.videoNotAvailableBody':
+    'A walkthrough has not been recorded for this topic. The written steps on this page cover the same ground.',
+  'visual.videoUnsupported': 'Your browser cannot play this video.',
+  'visual.captions': 'Captions',
+  'visual.comingSoon': 'Coming soon',
+  'system.goHome': 'Go to the homepage',
+} as const;
+
+export type Dictionary = typeof en;
+export type TranslationKey = keyof Dictionary;
+
+/**
+ * Terminology glossary — the fixed translation for each civic concept.
+ *
+ * The point is consistency, not vocabulary: "government service" is always
+ * سرکاری سروس in Urdu and سرکاری خدمت in Punjabi, on every page. If a new string
+ * needs one of these concepts, it takes the wording from here.
+ */
+export const TERMINOLOGY = {
+  service: { en: 'government service', ur: 'سرکاری سروس', pa: 'سرکاری خدمت' },
+  application: { en: 'application', ur: 'درخواست', pa: 'درخواست' },
+  requirement: { en: 'requirement', ur: 'ضروری دستاویز', pa: 'لوڑیندی دستاویز' },
+  source: { en: 'official source', ur: 'سرکاری ماخذ', pa: 'سرکاری ماخذ' },
+  verified: { en: 'verified', ur: 'تصدیق شدہ', pa: 'تصدیق شدہ' },
+  complaint: { en: 'complaint', ur: 'شکایت', pa: 'شکایت' },
+  document: { en: 'document', ur: 'دستاویز', pa: 'دستاویز' },
+  readiness: { en: 'readiness', ur: 'تیاری', pa: 'تیاری' },
+  emergency: { en: 'emergency', ur: 'ہنگامی صورتِ حال', pa: 'ہنگامی حالت' },
+  privacy: { en: 'privacy', ur: 'رازداری', pa: 'رازداری' },
+} as const;

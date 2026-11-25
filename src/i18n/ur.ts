@@ -1,0 +1,352 @@
+/**
+ * اردو — Urdu dictionary.
+ *
+ * Written as natural, citizen-facing Urdu rather than literal translation.
+ * Terminology follows the Urdu terminology note at the bottom of this file:
+ * government service = سرکاری سروس, requirement = ضروری دستاویز, complaint = شکایت.
+ *
+ * Latin-script words that citizens genuinely use for civic concepts (CNIC, OTP,
+ * PIN, URL) are kept in Latin script, because transliterating them makes them
+ * harder to recognise, not easier.
+ */
+import type { Dictionary } from '@/i18n/en';
+
+export const ur: Partial<Record<keyof Dictionary, string>> = {
+  // ---- Product -----------------------------------------------------------
+  'app.tagline': 'پاکستان کے لیے شہری، قانونی اور عوامی خدمات کی رہنمائی',
+  'app.civicAssistant': 'شہری معاون',
+  'skip.toContent': 'مرکزی مواد پر جائیں',
+
+  // ---- Navigation --------------------------------------------------------
+  'nav.home': 'ہوم',
+  'nav.services': 'سروسز',
+  'nav.assistant': 'معاون',
+  'nav.tools': 'ٹولز',
+  'nav.resources': 'معلومات',
+  'nav.topics': 'موضوعات',
+  'nav.applications': 'درخواستیں',
+  'nav.readiness': 'تیاری',
+  'nav.scam': 'فراڈ کی جانچ',
+  'nav.complaints': 'شکایات',
+  'nav.documents': 'دستاویزات',
+  'nav.welfare': 'فلاح و بہبود',
+  'nav.emergency': 'ہنگامی مدد',
+  'nav.offices': 'دفاتر',
+  'nav.legal': 'قانونی آگاہی',
+  'nav.lawyers': 'وکلاء',
+  'nav.dashboard': 'ڈیش بورڈ',
+  'nav.admin': 'انتظامیہ',
+  'nav.login': 'لاگ اِن',
+  'nav.register': 'اکاؤنٹ بنائیں',
+  'nav.talkToSahara': 'صحرا سے بات کریں',
+  'nav.logout': 'لاگ آؤٹ',
+  'nav.profile': 'پروفائل',
+  'nav.settings': 'ترتیبات',
+  'nav.menu': 'مینو',
+  'nav.close': 'بند کریں',
+  'nav.about': 'تعارف',
+  'nav.feedback': 'رائے',
+  'nav.mainMenu': 'مرکزی مینو',
+  'nav.siteNavigation': 'سائٹ کی نیویگیشن',
+
+  // ---- Actions -----------------------------------------------------------
+  'action.search': 'تلاش کریں',
+  'action.clear': 'صاف کریں',
+  'action.reset': 'دوبارہ ترتیب دیں',
+  'action.openRecord': 'ریکارڈ کھولیں',
+  'action.copy': 'نقل کریں',
+  'action.copied': 'نقل ہو گیا',
+  'action.download': 'ڈاؤن لوڈ',
+  'action.edit': 'تبدیل کریں',
+  'action.delete': 'حذف کریں',
+  'action.save': 'محفوظ کریں',
+  'action.saved': 'محفوظ ہو گیا',
+  'action.cancel': 'منسوخ کریں',
+  'action.continue': 'جاری رکھیں',
+  'action.back': 'واپس',
+  'action.next': 'آگے',
+  'action.view': 'دیکھیں',
+  'action.viewAll': 'سب دیکھیں',
+  'action.retry': 'دوبارہ کوشش کریں',
+  'action.askAi': 'صحرا سے پوچھیں',
+  'action.exploreServices': 'سروسز دیکھیں',
+  'action.learnMore': 'مزید جانیں',
+  'action.submit': 'جمع کریں',
+  'action.generate': 'تیار کریں',
+  'action.analyze': 'جانچ کریں',
+  'action.close': 'بند کریں',
+  'action.listen': 'سنیں',
+  'action.listenAgain': 'دوبارہ سنیں',
+  'action.pause': 'روکیں',
+  'action.resume': 'جاری رکھیں',
+  'action.stop': 'بند کریں',
+  'action.send': 'بھیجیں',
+  'action.regenerate': 'دوبارہ بنائیں',
+  'action.helpful': 'مددگار',
+  'action.notHelpful': 'مددگار نہیں',
+  'action.dismiss': 'ختم کریں',
+
+  // ---- Language ----------------------------------------------------------
+  'lang.label': 'زبان',
+  'lang.english': 'انگریزی',
+  'lang.urdu': 'اردو',
+  'lang.punjabi': 'پنجابی',
+  'lang.interface': 'انٹرفیس کی زبان',
+  'lang.assistantLanguage': 'جواب کی زبان',
+  'lang.interfaceNote': 'زبان صرف عبارت بدلتی ہے۔ ترتیب ہر زبان میں یکساں رہتی ہے۔',
+  'lang.partialNote': 'کچھ صفحات کا ترجمہ ابھی باقی ہے اور فی الحال انگریزی میں دکھائی دیتے ہیں۔',
+  'lang.changed': 'زبان {language} میں تبدیل ہو گئی۔',
+  'lang.voiceInput': 'آواز سے پوچھیں',
+  'lang.voiceOutput': 'آواز',
+  'lang.supported': 'اس براؤزر میں دستیاب ہے',
+  'lang.unsupported': 'اس براؤزر میں دستیاب نہیں',
+  'lang.unsupportedVoiceInput':
+    'اس براؤزر میں {language} میں آواز سے پوچھنا ممکن نہیں۔ آپ اپنا سوال لکھ سکتے ہیں۔',
+  'lang.unsupportedVoiceOutput':
+    'اس براؤزر میں {language} کی آواز موجود نہیں۔ زبان کا پیکج انسٹال کریں یا جواب پڑھ لیں۔',
+
+  // ---- Home --------------------------------------------------------------
+  'home.eyebrow': 'پاکستان کے شہریوں کے لیے',
+  'home.title': 'سرکاری سروسز، آسان زبان میں۔',
+  'home.heroLead': 'سرکاری سروسز،',
+  'home.languagesValue': 'اردو · پنجابی · انگریزی',
+  'home.titleAccent': 'آسان زبان میں۔',
+  'home.subtitle':
+    'صحرا سے سرکاری سروسز، دستاویزات، درخواستوں، شکایات اور عوامی معلومات کے بارے میں اردو، پنجابی یا انگریزی میں پوچھیں۔ ہر جواب اُس محفوظ شدہ ریکارڈ کا حوالہ دیتا ہے جس سے وہ لیا گیا ہے۔',
+  'home.primaryCta': 'صحرا سے بات کریں',
+  'home.secondaryCta': 'سروسز دیکھیں',
+  'home.languages': 'زبانیں',
+  'home.everyAnswer': 'ہر جواب میں',
+  'home.everyAnswerValue': 'ماخذ اور جانچ کی تاریخ',
+  'home.access': 'رسائی',
+  'home.accessValue': 'مفت، اکاؤنٹ کی ضرورت نہیں',
+  'home.howItWorks': 'صحرا کیسے کام کرتا ہے',
+  'home.popularServices': 'سب سے زیادہ مانگی جانے والی سروسز',
+  'home.quickActions': 'فوری کام',
+  'home.whyTitle': 'صحرا کیا کرتا ہے، اور کیا نہیں کرتا',
+  'home.trustTitle': 'اعتماد دعوے سے نہیں، ثبوت سے بنتا ہے',
+  'home.demoNotice': 'مظاہرے کی گفتگو · فرضی دفتری ناموں کے ساتھ نمونہ ریکارڈ',
+  'home.grounded': 'جانچے گئے ریکارڈز پر مبنی',
+  'home.source': 'ماخذ',
+  'home.startWithQuestion': 'سوال سے شروعات کریں',
+  'home.viewDisclaimer': 'اعلانِ دستبرداری پڑھیں',
+  'home.coverage': 'دائرہ کار',
+  'home.capabilities': 'صلاحیتیں اور حدود',
+  'home.serviceUniverse': 'سروسز کا دائرہ',
+
+  // ---- Assistant ---------------------------------------------------------
+  'assistant.title': 'صحرا AI معاون',
+  'assistant.subtitle': 'جواب صرف جانچے گئے ریکارڈز سے',
+  'assistant.checking': 'جانچے گئے ریکارڈز دیکھے جا رہے ہیں…',
+  'assistant.greeting': 'آپ کیا جاننا چاہیں گے؟',
+  'assistant.intro':
+    'کسی سرکاری سروس، دستاویز، شکایت یا مشکوک پیغام کے بارے میں پوچھیں۔ صحرا جانچے گئے ریکارڈز سے جواب دیتا ہے اور ماخذ دکھاتا ہے — یا صاف کہتا ہے کہ اس کے پاس کوئی نہیں۔',
+  'assistant.tryThese': 'ان میں سے کچھ پوچھیں',
+  'assistant.noRecordInline':
+    'اس سوال سے کوئی جانچا گیا ریکارڈ نہیں ملا، اس لیے کوئی حقیقی جواب نہیں دیا گیا۔',
+  'assistant.placeholder': 'کسی سروس، دستاویز، شکایت یا مشکوک پیغام کے بارے میں پوچھیں…',
+  'assistant.send': 'سوال بھیجیں',
+  'assistant.notSupported': 'معاون ابھی دستیاب نہیں ہے۔',
+  'assistant.processing': 'جانچے گئے ماخذ دیکھے جا رہے ہیں…',
+  'assistant.failed': 'معاون جواب نہیں دے سکا۔',
+  'assistant.stillWorks': 'معاون کے بغیر بھی سروسز، چیک لسٹ اور ہیلپ لائنز کام کرتی رہتی ہیں۔',
+  'assistant.clear': 'صاف کریں',
+  'assistant.clearConversation': 'گفتگو صاف کریں',
+  'assistant.newConversation': 'نئی گفتگو شروع کریں',
+  'assistant.sources': 'ماخذ',
+  'assistant.sourcesPanel': 'ماخذ اور رہنمائی',
+  'assistant.sourcesPanelDesc': 'جواب کیسے پڑھیں، اور یہ معاون کیا نہیں کرے گا',
+  'assistant.aiExplanation': 'صحرا کی وضاحت',
+  'assistant.verifiedSource': 'جانچا گیا ماخذ',
+  'assistant.howToRead': 'جواب کیسے پڑھیں',
+  'assistant.thisAnswer': 'یہ جواب',
+  'assistant.neverShare': 'خفیہ معلومات کبھی نہ بتائیں',
+  'assistant.neverShareBody':
+    'اس معاون میں اپنا پاس ورڈ، OTP، PIN یا مکمل شناختی کارڈ نمبر نہ لکھیں۔ صحرا کبھی ان کی درخواست نہیں کرتا۔',
+  'assistant.storageNote': 'گفتگو صرف اسی براؤزر ٹیب میں محفوظ رہتی ہے۔ صاف کرنے سے ختم ہو جاتی ہے۔',
+  'assistant.listen': 'جواب سنیں',
+  'assistant.listening': 'جواب پڑھا جا رہا ہے',
+  'assistant.readAloud': 'جواب پڑھ کر سنائیں',
+  'assistant.voiceInput': 'اپنا سوال بولیں',
+  'assistant.stopListening': 'ریکارڈنگ بند کریں',
+  'assistant.heard': 'سن رہے ہیں… آپ کی آواز خانے میں آ جائے گی تاکہ بھیجنے سے پہلے دیکھ سکیں۔',
+  'assistant.speechFailed': 'آواز سے پوچھنا ممکن نہیں ہوا۔ آپ سوال لکھ سکتے ہیں۔',
+  'assistant.feedbackThanks': 'شکریہ — آپ کی رائے اس سیشن کے لیے محفوظ ہو گئی۔',
+  'assistant.feedbackFailed': 'رائے محفوظ نہیں ہو سکی۔ آپ کے ڈیوائس پر کچھ ضائع نہیں ہوا۔',
+  'assistant.intent': 'مقصد',
+  'assistant.recordsRetrieved': 'حاصل شدہ ریکارڈز',
+  'assistant.sourcesCited': 'دیے گئے ماخذ',
+  'assistant.engine': 'انجن',
+  'assistant.demoRetrieval': 'ڈیمو ریٹریول',
+  'assistant.engineNote':
+    'Gemini انٹیگریشن مکمل ہونے کے بعد زبان کا ماڈل بیک اینڈ پر چلے گا۔ یہ ورژن جواب محفوظ ریکارڈ سے براہِ راست تیار کرتا ہے۔',
+
+  // ---- Voice states ------------------------------------------------------
+  'voice.idle': 'سنیں',
+  'voice.speaking': 'بول رہے ہیں',
+  'voice.paused': 'روکا گیا',
+  'voice.processing': 'آواز تیار ہو رہی ہے',
+  'voice.error': 'آواز چلائی نہیں جا سکی',
+  'voice.notAvailable': '{language} کی آواز موجود نہیں',
+  'voice.speak': 'اپنا سوال بولیں',
+  'voice.stop': 'ریکارڈنگ روکیں',
+  'voice.speakShort': 'بولیں',
+  'voice.stopShort': 'رکیں',
+  'voice.unavailable': 'آواز دستیاب نہیں',
+  'voice.speakUnavailable': 'آواز دستیاب نہیں',
+  'voice.browserUnsupported':
+    'یہ براؤزر آواز کے ذریعے سوال لکھنے کی سہولت نہیں دیتا۔ آپ سوال ٹائپ کر سکتے ہیں۔',
+  'voice.languageUnsupported':
+    'اس براؤزر میں {language} کے لیے آواز کی شناخت کی سہولت موجود نہیں، اس لیے اس زبان میں آواز سے سوال نہیں لکھا جا سکتا۔ آپ سوال ٹائپ کر سکتے ہیں یا جواب کی زبان اردو یا انگریزی منتخب کر کے مائیک استعمال کر سکتے ہیں۔',
+  'voice.listeningNote': 'سن رہے ہیں — آپ کی آواز خانے میں لکھی جا رہی ہے تاکہ بھیجنے سے پہلے دیکھ سکیں۔',
+  'voice.readAloud': 'جوابات پڑھ کر سنائیں',
+
+  // ---- Services ----------------------------------------------------------
+  'services.title': 'سروسز',
+  'services.subtitle':
+    'جانچے گئے سرکاری سروسز کے ریکارڈ، دستاویزات، طریقۂ کار اور ماخذ کے ساتھ۔ جہاں کوئی تفصیل غیر تصدیق شدہ ہو، ریکارڈ خود بتا دیتا ہے۔',
+  'services.search': 'سروسز تلاش کریں',
+  'services.searchPlaceholder': 'سروس، محکمہ یا دستاویز کے ذریعے تلاش کریں…',
+  'services.category': 'قسم',
+  'services.department': 'محکمہ',
+  'services.jurisdiction': 'دائرہ اختیار',
+  'services.sort': 'ترتیب دیں',
+  'services.allCategories': 'تمام اقسام',
+  'services.allDepartments': 'تمام محکمے',
+  'services.allJurisdictions': 'تمام دائرے',
+  'services.noResults': 'کوئی سروس نہیں ملی',
+  'services.noResultsHint': 'کوئی عام لفظ تلاش کریں یا قسم کی فلٹر ہٹائیں۔',
+  'services.showing': '{total} میں سے {from}–{to} دکھائے جا رہے ہیں',
+  'services.viewDetails': 'تفصیل دیکھیں',
+  'services.departmentLabel': 'محکمہ',
+  'services.jurisdictionLabel': 'دائرہ اختیار',
+  'services.lastChecked': 'آخری جانچ',
+  'services.notChecked': 'جانچ درج نہیں',
+  'services.checkReadiness': 'تیاری جانچیں',
+  'services.generateApplication': 'درخواست تیار کریں',
+  'services.saveService': 'سروس محفوظ کریں',
+  'services.askSahara': 'اس بارے میں صحرا سے پوچھیں',
+  'services.requirements': 'ضروری دستاویزات',
+  'services.procedure': 'طریقۂ کار',
+  'services.fees': 'فیس',
+  'services.feeUnverified': 'فیس کی معلومات فی الحال تصدیق شدہ نہیں',
+  'services.officialSource': 'سرکاری ماخذ',
+  'services.importantNotes': 'اہم ہدایات',
+  'services.notFound': 'سروس نہیں ملی',
+  'services.notFoundHint': 'ممکن ہے یہ ریکارڈ تبدیل یا فہرست سے ہٹا دیا گیا ہو۔',
+  'services.recentlyViewed': 'حال ہی میں دیکھی گئی',
+
+  // ---- Verification ------------------------------------------------------
+  'verify.department': 'محکمہ',
+  'verify.officialSource': 'سرکاری ماخذ',
+  'verify.sourceInformation': 'استعمال شدہ ماخذ کی معلومات',
+  'verify.verified': 'تصدیق شدہ',
+  'verify.pending': 'تصدیق باقی ہے',
+  'verify.demo': 'ڈیمو ڈیٹا',
+  'verify.outdated': 'جانچ کی مدت گزر گئی',
+  'verify.lastChecked': 'آخری جانچ',
+  'verify.notRecorded': 'درج نہیں',
+  'verify.source': 'ماخذ',
+  'verify.publisher': 'ناشر',
+  'verify.reviewer': 'جائزہ لینے والا',
+  'verify.urlNotRecorded': 'سرکاری URL ابھی درج نہیں',
+  'verify.unavailable': 'معلومات دستیاب نہیں',
+  'verify.needsReview': 'جائزہ درکار',
+
+  // ---- Trust -------------------------------------------------------------
+  'trust.aiExplanation': 'وضاحت AI کرتا ہے، حقائق جانچے گئے ریکارڈ سے آتے ہیں۔',
+  'trust.legalAwareness': 'صرف عمومی قانونی آگاہی — یہ قانونی مشورہ نہیں ہے۔',
+  'trust.verifyOfficial': 'اہم تفصیلات کی تصدیق متعلقہ دفتر سے کریں۔',
+  'trust.scamIndicator': 'صرف خطرے کا اندازہ — فراڈ کا قطعی ثبوت نہیں۔',
+  'trust.noPrivateAccess': 'صحرا سرکاری ڈیٹا بیس یا نجی ریکارڈز تک رسائی نہیں رکھتا۔',
+  'trust.notGovernment': 'صحرا AI ایک خودمختار معاون ہے، سرکاری ادارہ نہیں۔',
+  'trust.neverDoes': 'جو یہ کبھی نہیں کرتا',
+  'trust.does': 'جو یہ کرتا ہے',
+
+  // ---- States ------------------------------------------------------------
+  'state.loading': 'لوڈ ہو رہا ہے…',
+  'state.errorTitle': 'کچھ غلط ہو گیا',
+  'state.emptyTitle': 'ابھی کچھ نہیں',
+  'state.success': 'مکمل',
+  'state.required': 'لازمی',
+  'state.offline': 'آپ آف لائن معلوم ہوتے ہیں۔ کنکشن جانچ کر دوبارہ کوشش کریں۔',
+
+  // ---- Errors ------------------------------------------------------------
+  'error.network': 'صحرا سے رابطہ نہیں ہو سکا۔ کنکشن جانچ کر دوبارہ کوشش کریں۔',
+  'error.generic': 'کچھ غلط ہو گیا۔ دوبارہ کوشش کریں۔',
+  'error.aiUnavailable': 'معاون عارضی طور پر دستیاب نہیں۔ سروسز اور دیگر ٹولز پھر بھی کام کرتے ہیں۔',
+  'error.invalidCredentials': 'ای میل یا پاس ورڈ درست نہیں ہے۔',
+  'error.unauthorized': 'جاری رکھنے کے لیے لاگ اِن کریں۔',
+  'error.emailTaken': 'اس ای میل سے اکاؤنٹ پہلے موجود ہے۔ لاگ اِن کرنے کی کوشش کریں۔',
+  'error.notFound': 'مطلوبہ صفحہ نہیں مل سکا۔',
+
+  // ---- Auth --------------------------------------------------------------
+  'auth.loginTitle': 'صحرا AI میں لاگ اِن کریں',
+  'auth.loginSubtitle':
+    'اکاؤنٹ آپ کے ڈرافٹ، تجزیے اور زبان کی ترجیح محفوظ رکھتا ہے۔ بغیر اکاؤنٹ بھی سروسز اور معاون کام کرتے ہیں۔',
+  'auth.email': 'ای میل',
+  'auth.password': 'پاس ورڈ',
+  'auth.fullName': 'پورا نام',
+  'auth.confirmPassword': 'پاس ورڈ دوبارہ لکھیں',
+  'auth.forgot': 'پاس ورڈ بھول گئے؟',
+  'auth.noAccount': 'اکاؤنٹ نہیں ہے؟',
+  'auth.haveAccount': 'پہلے سے اکاؤنٹ ہے؟',
+  'auth.registerTitle': 'اپنا اکاؤنٹ بنائیں',
+  'auth.demoAccounts': 'مظاہرے کے اکاؤنٹس',
+  'auth.fillCitizen': 'شہری ڈیمو بھریں',
+  'auth.fillAdmin': 'ایڈمن ڈیمو بھریں',
+  'auth.neverAsk': 'صحرا AI کبھی پیغام یا فون پر آپ کا پاس ورڈ، OTP یا PIN نہیں مانگے گا۔',
+
+  // ---- Dashboard ---------------------------------------------------------
+  'dashboard.citizenCentre': 'شہری مرکز',
+  'dashboard.welcome': 'خوش آمدید، {name}۔',
+  'dashboard.welcomeGeneric': 'خوش آمدید۔',
+  'dashboard.helpToday': 'صحرا آج آپ کی کیا مدد کرے؟',
+  'dashboard.demoNote': 'ڈویلپمنٹ ورژن — ڈرافٹ، محفوظ سروسز اور تاریخ اسی براؤزر میں محفوظ ہیں۔',
+  'dashboard.overview': 'خلاصہ',
+  'dashboard.drafts': 'ڈرافٹ',
+  'dashboard.saved': 'محفوظ سروسز',
+  'dashboard.history': 'تاریخ',
+  'dashboard.profileSettings': 'پروفائل اور ترتیبات',
+
+  // ---- Footer ------------------------------------------------------------
+  'footer.disclaimer':
+    'صحرا AI ایک خودمختار شہری معاون ہے۔ یہ سرکاری سروس نہیں ہے اور آپ کی طرف سے درخواست یا شکایت جمع نہیں کرتا۔',
+  'footer.privacy': 'پرائیویسی اور ڈیٹا',
+  'footer.terms': 'اعلانِ دستبرداری',
+  'footer.about': 'تعارف',
+  'footer.feedback': 'رائے',
+  'footer.project': 'فائنل ایئر پروجیکٹ، زرعی یونیورسٹی فیصل آباد (بریوالہ کیمپس)',
+  'footer.demoData': 'فرنٹ اینڈ ڈویلپمنٹ ورژن — مظاہرے کا ڈیٹا',
+
+  // ---- System ------------------------------------------------------------
+  'system.notFoundTitle': 'یہ صفحہ نہیں مل سکا',
+  'system.notFoundBody': 'ممکن ہے یہ منتقل ہو گیا ہو یا پتہ غلط لکھا گیا ہو۔',
+  'system.forbiddenTitle': 'آپ کو یہ صفحہ دیکھنے کی اجازت نہیں',
+  'system.forbiddenBody': 'یہ حصہ صرف منتظمین کے لیے ہے۔',
+  'visual.notAvailable': 'تھری ڈی وضاحت ابھی دستیاب نہیں',
+  'visual.notAvailableBody':
+    'یہ حصہ ایک انٹرایکٹو تھری ڈی وضاحت کے لیے بنایا گیا ہے۔ ابھی کوئی ماڈل تیار نہیں ہوا، اس لیے کچھ نہیں دکھایا جا رہا بجائے اس کے کہ کوئی جعلی تصویر دکھائی جائے۔',
+  'visual.noSteps': 'اس سروس کے لیے ابھی کوئی طریقۂ کار درج نہیں ہوا۔',
+  'visual.videoNotAvailable': 'ٹیوٹوریل ویڈیو ابھی دستیاب نہیں',
+  'visual.videoNotAvailableBody':
+    'اس موضوع پر ابھی کوئی ویڈیو ریکارڈ نہیں کی گئی۔ اس صفحے پر لکھے گئے مراحل وہی معلومات دیتے ہیں۔',
+  'visual.videoUnsupported': 'آپ کا براؤزر یہ ویڈیو نہیں چلا سکتا۔',
+  'visual.captions': 'سب ٹائٹل',
+  'visual.comingSoon': 'عنقریب',
+  'system.goHome': 'ہوم پیج پر جائیں',
+};
+
+/**
+ * Urdu terminology (kept consistent across the whole product):
+ *   government service  → سرکاری سروس
+ *   application         → درخواست
+ *   requirement         → ضروری دستاویز
+ *   official source     → سرکاری ماخذ
+ *   verified            → تصدیق شدہ
+ *   complaint           → شکایت
+ *   document            → دستاویز
+ *   readiness           → تیاری
+ *   emergency           → ہنگامی مدد
+ *   privacy             → پرائیویسی
+ */
