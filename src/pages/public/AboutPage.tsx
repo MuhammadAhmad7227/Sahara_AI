@@ -15,6 +15,8 @@ import {
 import { LinkButton } from '@/components/common/Button';
 import { PageHeader, Prose } from '@/components/common/Feedback';
 import { InlineNotice } from '@/components/common/States';
+import { InteractiveProcessVisual } from '@/components/visuals/ThreeDSection';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const pipeline = [
@@ -49,7 +51,19 @@ const guardrails = [
   { title: 'Three languages, one system', body: 'Urdu, Punjabi and English share one interface and one knowledge base. Urdu and Punjabi are laid out right-to-left.', icon: Languages },
 ];
 
+/**
+ * The verification workflow, defined once as data so the visual, the copy and
+ * any future 3D representation of the same process cannot drift apart.
+ */
+const verificationStages = [
+  { id: 'draft', titleKey: 'workflow.draft', descKey: 'workflow.draftDesc' },
+  { id: 'review', titleKey: 'workflow.review', descKey: 'workflow.reviewDesc' },
+  { id: 'approved', titleKey: 'workflow.approved', descKey: 'workflow.approvedDesc' },
+  { id: 'published', titleKey: 'workflow.published', descKey: 'workflow.publishedDesc' },
+] as const;
+
 export default function AboutPage() {
+  const { t } = useLanguage();
   useDocumentTitle(
     'How Sahara AI works',
     'How Sahara AI grounds civic answers in reviewed public records, displays sources and verification dates, and states the limits of what it can claim.',
@@ -101,33 +115,22 @@ export default function AboutPage() {
       <section className="mt-8 grid gap-5 lg:grid-cols-2" aria-labelledby="verification-workflow">
         <div>
           <h2 id="verification-workflow" className="text-lg font-semibold text-ink-900">
-            The verification workflow
+            {t('workflow.title')}
           </h2>
           <Prose className="mt-2">
-            <p>
-              A service record is created only after an official department page or document has been located and
-              compared with the stored content. It then moves through review before it is published.
-            </p>
+            <p>{t('workflow.intro')}</p>
           </Prose>
-          <ol className="mt-3 space-y-2">
-            {['Draft', 'Pending review', 'Approved', 'Published'].map((stage, index) => (
-              <li key={stage} className="flex items-center gap-2 rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm">
-                <span className="grid size-6 place-items-center rounded-full bg-brand-900 text-[0.625rem] font-semibold text-white" aria-hidden="true">
-                  {index + 1}
-                </span>
-                <span className="font-medium text-ink-800">{stage}</span>
-                <span className="ms-auto text-xs text-ink-500">
-                  {index === 0 && 'Content entered by an administrator'}
-                  {index === 1 && 'Reviewer compares it with the official source'}
-                  {index === 2 && 'Source URL, date checked and reviewer recorded'}
-                  {index === 3 && 'Visible to citizens with its provenance'}
-                </span>
-              </li>
-            ))}
-          </ol>
+          <InteractiveProcessVisual
+            className="mt-3"
+            steps={verificationStages.map((stage) => ({
+              id: stage.id,
+              title: t(stage.titleKey),
+              description: t(stage.descKey),
+            }))}
+          />
           <p className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-ink-500">
             <GitBranch className="mt-px size-3.5 shrink-0" aria-hidden="true" />
-            Every change to a published record is written to an audit log with the previous and new value.
+            {t('workflow.auditNote')}
           </p>
         </div>
 

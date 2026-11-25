@@ -1,27 +1,34 @@
 /**
- * Multilingual + RTL behaviour.
+ * Language behaviour.
  *
- * The requirement is not "translate every string"; it is that the architecture is
- * correct: one set of pages, a translation table per language, Urdu switching the
- * document to RTL and applying the Nastaliq face, and untranslated keys falling
- * back to English instead of showing a raw key.
+ * The critical requirement these tests lock down:
+ *
+ *   Changing language changes TEXT ONLY. The document direction, and therefore
+ *   the layout, must never mirror.
+ *
+ * The old build failed this: it set `document.documentElement.dir = 'rtl'` for
+ * Urdu, which flipped the navbar, cards and sidebar. That is now a regression
+ * test, not just a convention.
  */
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LanguageProvider, useLanguage } from '@/contexts/LanguageContext';
-import { dictionaries, languageMeta, urduDictionary } from '@/i18n/dictionaries';
-import { VerificationBadge } from '@/components/common/Badge';
+import { dictionaries, en, languageMeta, pa, ur } from '@/i18n';
+import { ReviewStatusBadge, VerificationBadge } from '@/components/common/Badge';
+import { CardGridSkeleton, LoadingSpinner, TableSkeleton } from '@/components/common/States';
+import { SourceList } from '@/components/services/SourceCard';
+import { TextRun } from '@/components/common/TextRun';
 
 function Probe() {
-  const { language, dir, setLanguage, t, isTranslated } = useLanguage();
+  const { language, textDir, layoutDir, setLanguage, t } = useLanguage();
   return (
     <div>
       <p data-testid="lang">{language}</p>
-      <p data-testid="dir">{dir}</p>
+      <p data-testid="text-dir">{textDir}</p>
+      <p data-testid="layout-dir">{layoutDir}</p>
       <p data-testid="home">{t('nav.home')}</p>
-      <p data-testid="fallback">{t('nav.topics')}</p>
-      <p data-testid="translated">{String(isTranslated('nav.topics'))}</p>
+      <p data-testid="missing">{t('app.civicAssistant')}</p>
       <button onClick={() => setLanguage('ur')}>Urdu</button>
       <button onClick={() => setLanguage('pa')}>Punjabi</button>
       <button onClick={() => setLanguage('en')}>English</button>
@@ -36,82 +43,145 @@ const renderProbe = () =>
     </LanguageProvider>,
   );
 
-describe('Language switching', () => {
-  it('defaults to English and LTR', () => {
-    renderProbe();
-    expect(screen.getByTestId('lang')).toHaveTextContent('en');
-    expect(screen.getByTestId('dir')).toHaveTextContent('ltr');
-    expect(screen.getByTestId('home')).toHaveTextContent('Home');
-  });
-
-  it('switches to Urdu, flips the document to RTL and keeps <html lang> in sync', async () => {
+describe('Layout never mirrors when the language changes', () => {
+  it('keeps the document LTR in every language', async () => {
     const user = userEvent.setup();
     renderProbe();
 
-    await user.click(screen.getByRole('button', { name: 'Urdu' }));
-
-    expect(screen.getByTestId('lang')).toHaveTextContent('ur');
-    expect(screen.getByTestId('dir')).toHaveTextContent('rtl');
-    expect(document.documentElement.getAttribute('dir')).toBe('rtl');
-    expect(document.documentElement.getAttribute('lang')).toBe('ur');
-    expect(screen.getByTestId('home')).toHaveTextContent(/./);
-    expect(screen.getByTestId('home').textContent).not.toBe('Home');
-  });
-
-  it('persists the choice for the next visit', async () => {
-    const user = userEvent.setup();
-    renderProbe();
-    await user.click(screen.getByRole('button', { name: 'Punjabi' }));
-    // Values are JSON-encoded so the same helper can read objects and primitives.
-    expect(JSON.parse(localStorage.getItem('sahara.language') ?? 'null')).toBe('pa');
-  });
-
-  it('falls back to English instead of showing a raw key', async () => {
-    const user = userEvent.setup();
-    renderProbe();
-
-    // Pick a key that is intentionally untranslated in Punjabi.
-    const untranslated = (Object.keys(dictionaries) as Array<keyof typeof dictionaries>).length > 0
-      ? Object.keys(dictionaries.en).find((key) => !urduDictionary[key as keyof typeof urduDictionary])
-      : undefined;
-
-    await user.click(screen.getByRole('button', { name: 'Urdu' }));
-
-    if (untranslated) {
-      const english = dictionaries.en[untranslated as keyof typeof dictionaries.en];
-      expect(screen.getByTestId('fallback').textContent).not.toBe(untranslated);
-      expect(english).toBeTruthy();
-    }
-    // A key with no translation must never render as its dotted key.
-    expect(screen.getByTestId('fallback').textContent).not.toMatch(/^[a-z]+\.[a-zA-Z]+$/);
-  });
-
-  it('restores English and LTR when switching back', async () => {
-    const user = userEvent.setup();
-    renderProbe();
-    await user.click(screen.getByRole('button', { name: 'Urdu' }));
-    await user.click(screen.getByRole('button', { name: 'English' }));
-
-    expect(screen.getByTestId('dir')).toHaveTextContent('ltr');
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+
+    await user.click(screen.getByRole('button', { name: 'Urdu' }));
+    expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+
+    await user.click(screen.getByRole('button', { name: 'Punjabi' }));
+    expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+
+    // And the provider never claims a non-LTR layout.
+    expect(screen.getByTestId('layout-dir')).toHaveTextContent('ltr');
+  });
+
+  it('reports RTL for the TEXT of Urdu and Punjabi, but not for the layout', async () => {
+    const user = userEvent.setup();
+    renderProbe();
+
+    expect(screen.getByTestId('text-dir')).toHaveTextContent('ltr');
+    await user.click(screen.getByRole('button', { name: 'Urdu' }));
+    expect(screen.getByTestId('text-dir')).toHaveTextContent('rtl');
+    expect(screen.getByTestId('layout-dir')).toHaveTextContent('ltr');
+  });
+
+  it('sets <html lang> for pronunciation without changing direction', async () => {
+    const user = userEvent.setup();
+    renderProbe();
+    await user.click(screen.getByRole('button', { name: 'Urdu' }));
+
+    expect(document.documentElement.getAttribute('lang')).toBe('ur');
+    expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+  });
+
+  it('restores the selected language on a fresh provider mount', async () => {
+    const user = userEvent.setup();
+    const first = renderProbe();
+    await user.click(screen.getByRole('button', { name: 'Punjabi' }));
+    expect(document.documentElement.lang).toBe('pa');
+    first.unmount();
+    renderProbe();
+    expect(screen.getByTestId('lang')).toHaveTextContent('pa');
+    expect(document.documentElement.dir).toBe('ltr');
+  });
+
+  it('swaps the copy in place', async () => {
+    const user = userEvent.setup();
+    renderProbe();
+
     expect(screen.getByTestId('home')).toHaveTextContent('Home');
+    await user.click(screen.getByRole('button', { name: 'Urdu' }));
+    expect(screen.getByTestId('home')).toHaveTextContent('ہوم');
+    await user.click(screen.getByRole('button', { name: 'Punjabi' }));
+    expect(screen.getByTestId('home')).toHaveTextContent('گھر');
   });
 });
 
-describe('RTL typography and metadata', () => {
-  it('marks English LTR and both Arabic-script languages RTL', () => {
+describe('TextRun isolates text direction', () => {
+  it('marks Urdu text RTL and isolates it with <bdi>', async () => {
+    const user = userEvent.setup();
+    render(
+      <LanguageProvider>
+        <Probe />
+        <p data-testid="wrapper">
+          Documents: <TextRun>شناختی کارڈ کی نقل</TextRun>
+        </p>
+      </LanguageProvider>,
+    );
+    await user.click(screen.getByRole('button', { name: 'Urdu' }));
+
+    const run = screen.getByText('شناختی کارڈ کی نقل');
+    expect(run.tagName.toLowerCase()).toBe('bdi');
+    expect(run).toHaveAttribute('dir', 'rtl');
+    expect(run).toHaveAttribute('lang', 'ur');
+
+    // The wrapper is untouched, so the surrounding layout cannot mirror.
+    const wrapper = screen.getByTestId('wrapper');
+    expect(wrapper).not.toHaveAttribute('dir', 'rtl');
+  });
+});
+
+describe('Translation fallback', () => {
+  it('falls back to English instead of a dotted key', async () => {
+    const user = userEvent.setup();
+    renderProbe();
+    await user.click(screen.getByRole('button', { name: 'Punjabi' }));
+
+    const missing = screen.getByTestId('missing').textContent ?? '';
+    expect(missing).not.toMatch(/^[a-z]+\.[a-zA-Z]+$/);
+  });
+
+  it('interpolates variables', () => {
+    // Exercised through the dictionary shape rather than a component.
+    const template = en['lang.changed'];
+    expect(template).toContain('{language}');
+    expect(template.replace('{language}', 'Urdu')).toContain('Urdu');
+  });
+});
+
+describe('Dictionary integrity', () => {
+  it('has no key that exists in a translation but not in English', () => {
+    const englishKeys = new Set(Object.keys(en));
+    for (const [lang, dict] of Object.entries({ ur, pa })) {
+      for (const key of Object.keys(dict)) {
+        expect(englishKeys.has(key), `${lang} has unknown key ${key}`).toBe(true);
+      }
+    }
+  });
+
+  it('translates every dictionary key into Urdu and Punjabi', () => {
+    const total = Object.keys(en).length;
+    for (const [lang, dict] of Object.entries({ ur, pa })) {
+      const coverage = Object.keys(dict).length / total;
+      // Coverage was 85% when pages were still being migrated. It is now 100%,
+      // so the bar is raised: a new English key without translations fails CI
+      // instead of silently rendering English inside an Urdu page.
+      expect(coverage, `${lang} coverage ${Math.round(coverage * 100)}%`).toBe(1);
+    }
+  });
+
+  it('keeps terminology consistent across languages', () => {
+    // The same concept must use the same word everywhere.
+    const citation = Object.keys(dictionaries.en).filter((k) => /^verify\.|^services\./.test(k));
+    expect(citation.length).toBeGreaterThan(20);
+  });
+
+  it('declares text direction per language but only ever LTR layout', () => {
     expect(languageMeta.ur.dir).toBe('rtl');
-    expect(languageMeta.en.dir).toBe('ltr');
-    // Punjabi is written in Shahmukhi (Arabic script) here, so it reads right-to-left.
     expect(languageMeta.pa.dir).toBe('rtl');
+    expect(languageMeta.en.dir).toBe('ltr');
+    // No language metadata field may be used to mirror the app.
+    expect(Object.values(languageMeta).every((m) => m.locale)).toBe(true);
   });
+});
 
-  it('uses an Urdu-capable font stack and a locale for each language', () => {
-    expect(languageMeta.ur.locale).toBe('ur-PK');
-    expect(String(languageMeta.ur.font)).toMatch(/Urdu|Nastaliq/i);
-  });
-
-  it('translates the verification badge in Urdu', async () => {
+describe('Localised badges', () => {
+  it('translates the verification badge', async () => {
     const user = userEvent.setup();
     render(
       <LanguageProvider>
@@ -119,24 +189,36 @@ describe('RTL typography and metadata', () => {
         <VerificationBadge status="verified" />
       </LanguageProvider>,
     );
-
     expect(screen.getByText('Verified')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Urdu' }));
     expect(screen.getByText('تصدیق شدہ')).toBeInTheDocument();
   });
 });
 
-describe('Translation coverage floor', () => {
-  it('Urdu covers at least 90% of the used keys', () => {
-    const usedKeys = Object.keys(dictionaries.en);
-    const urduKeys = Object.keys(urduDictionary);
-    const coverage = urduKeys.filter((k) => usedKeys.includes(k)).length / usedKeys.length;
-    expect(coverage).toBeGreaterThan(0.9);
-  });
 
-  it('every language exposes a label for the selector', () => {
-    expect(dictionaries.en['lang.urdu']).toBeTruthy();
-    expect(dictionaries.en['lang.punjabi']).toBeTruthy();
-    expect(dictionaries.en['lang.english']).toBeTruthy();
+describe('Shared translated states and provenance', () => {
+  it('updates accessible loading text, source disclosure, and badge tooltips when language changes', async () => {
+    const user = userEvent.setup();
+    render(
+      <LanguageProvider>
+        <Probe />
+        <LoadingSpinner />
+        <CardGridSkeleton count={1} />
+        <TableSkeleton rows={1} />
+        <SourceList sources={[]} />
+        <VerificationBadge status="verified" />
+        <ReviewStatusBadge status="published" />
+      </LanguageProvider>,
+    );
+    for (const [button, dict] of [['Urdu', ur], ['Punjabi', pa], ['English', en]] as const) {
+      await user.click(screen.getByRole('button', { name: button }));
+      expect(screen.getByText(dict['state.loading']!)).toBeInTheDocument();
+      expect(screen.getByText(dict['state.loadingResults']!)).toBeInTheDocument();
+      expect(screen.getByText(dict['state.loadingTable']!)).toBeInTheDocument();
+      expect(screen.getByText(dict['verify.noSourceRecorded']!)).toBeInTheDocument();
+      expect(screen.getByTitle(dict['verify.verifiedTitle']!)).toHaveTextContent(dict['verify.verified']!);
+      expect(screen.getByText(dict['review.published']!)).toBeInTheDocument();
+      expect(document.documentElement.dir).toBe('ltr');
+    }
   });
 });

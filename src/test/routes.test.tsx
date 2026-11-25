@@ -29,7 +29,7 @@ const publicRoutes: RouteCase[] = [
   { path: '/emergency', expect: /Emergency/i },
   { path: '/offices', expect: /Office/i },
   { path: '/legal', expect: /Legal/i },
-  { path: '/legal/fir-basics', expect: /FIR|First Information/i },
+  { path: '/legal/what-to-do-if-police-refuses-fir', expect: /FIR|First Information/i },
   { path: '/lawyers', expect: /Lawyer/i },
   { path: '/about', expect: /About/i },
   { path: '/feedback', expect: /Feedback/i },

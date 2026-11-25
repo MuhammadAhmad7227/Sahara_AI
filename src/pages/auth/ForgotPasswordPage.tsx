@@ -4,13 +4,19 @@ import { ArrowLeft, MailCheck } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { BrandLockup } from '@/components/common/BrandMark';
 import { InlineNotice } from '@/components/common/States';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { requestPasswordReset } from '@/services/api/auth';
 import { errorMessage } from '@/services/api/errors';
-import { fieldErrorsFrom, forgotPasswordSchema } from '@/services/validation/schemas';
+import { fieldErrorsFrom, forgotPasswordSchema, isValidationKey } from '@/services/validation/schemas';
 import { cn } from '@/utils/cn';
 
 export default function ForgotPasswordPage() {
+  const { t } = useLanguage();
+
+  /** Field errors carry translation keys; render through t() safely. */
+  const renderError = (message?: string) =>
+    message ? (isValidationKey(message) ? t(message) : message) : null;
   useDocumentTitle('Reset your password', 'Request a password reset link for your Sahara AI account.');
 
   const [email, setEmail] = useState('');
@@ -91,7 +97,7 @@ export default function ForgotPasswordPage() {
                   />
                   {error && (
                     <p id="fp-error" className="mt-1 text-xs font-medium text-red-700" role="alert">
-                      {error}
+                      {renderError(error)}
                     </p>
                   )}
                 </div>

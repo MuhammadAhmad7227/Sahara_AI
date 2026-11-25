@@ -51,6 +51,7 @@ const iconFor: Record<string, LucideIcon> = {
 };
 
 function DesktopDropdown({ group }: { group: (typeof toolGroups)[number] }) {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const menuId = useId();
@@ -91,7 +92,7 @@ function DesktopDropdown({ group }: { group: (typeof toolGroups)[number] }) {
           active ? 'text-brand-900' : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900',
         )}
       >
-        {group.label}
+        {t(group.labelKey)}
         <ChevronDown className={cn('size-3.5 transition-transform', open && 'rotate-180')} aria-hidden="true" />
       </button>
 
@@ -112,7 +113,7 @@ function DesktopDropdown({ group }: { group: (typeof toolGroups)[number] }) {
                   <Icon className="size-4" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-sm font-medium text-ink-900">{item.label}</span>
+                  <span className="block text-sm font-medium text-ink-900">{t(item.labelKey)}</span>
                   {item.description && (
                     <span className="mt-0.5 block text-xs leading-relaxed text-ink-500">{item.description}</span>
                   )}
@@ -127,6 +128,7 @@ function DesktopDropdown({ group }: { group: (typeof toolGroups)[number] }) {
 }
 
 function UserMenu() {
+  const { t } = useLanguage();
   const { user, logout, isAdmin } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -171,13 +173,13 @@ function UserMenu() {
       {open && (
         <div
           role="menu"
-          className="absolute end-0 z-50 mt-1.5 w-60 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-1.5 shadow-overlay animate-slide-up"
+          className="absolute end-0 z-50 mt-1.5 w-60 rounded-xl border border-ink-200 bg-paper p-1.5 shadow-3 animate-slide-up"
         >
           <div className="border-b border-ink-100 px-2 pb-2 pt-1.5">
             <p className="truncate text-sm font-medium text-ink-900">{user.name}</p>
             <p className="truncate text-xs text-ink-500">{user.email}</p>
             <p className="mt-1 inline-flex items-center gap-1 rounded bg-ink-100 px-1.5 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wide text-ink-600">
-              {user.role} · demo session
+              {user.role} · demo
             </p>
           </div>
           <Link
@@ -186,7 +188,7 @@ function UserMenu() {
             onClick={() => setOpen(false)}
             className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-ink-700 hover:bg-ink-100"
           >
-            <LayoutDashboard className="size-4" aria-hidden="true" /> Dashboard
+            <LayoutDashboard className="size-4" aria-hidden="true" /> {t('nav.dashboard')}
           </Link>
           <Link
             to="/profile"
@@ -194,7 +196,7 @@ function UserMenu() {
             onClick={() => setOpen(false)}
             className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-ink-700 hover:bg-ink-100"
           >
-            <UserRound className="size-4" aria-hidden="true" /> Profile & settings
+            <UserRound className="size-4" aria-hidden="true" /> {t('dashboard.profileSettings')}
           </Link>
           {isAdmin && (
             <Link
@@ -203,7 +205,7 @@ function UserMenu() {
               onClick={() => setOpen(false)}
               className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-ink-700 hover:bg-ink-100"
             >
-              <ShieldAlert className="size-4" aria-hidden="true" /> Admin area
+              <ShieldAlert className="size-4" aria-hidden="true" /> {t('nav.admin')}
             </Link>
           )}
           <button
@@ -215,7 +217,7 @@ function UserMenu() {
             }}
             className="mt-0.5 flex w-full items-center gap-2 rounded-lg border-t border-ink-100 px-2 py-2 text-start text-sm text-ink-700 hover:bg-ink-100"
           >
-            Log out
+            {t('nav.logout')}
           </button>
         </div>
       )}
@@ -321,7 +323,7 @@ export function Header() {
               {t('nav.assistant')}
             </NavLink>
             {toolGroups.map((group) => (
-              <DesktopDropdown key={group.label} group={group} />
+              <DesktopDropdown key={group.labelKey} group={group} />
             ))}
             <DesktopDropdown
               group={{
@@ -375,7 +377,7 @@ export function Header() {
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Site navigation"
+            aria-label={t('nav.siteNavigation')}
             className="absolute inset-y-0 end-0 flex w-[min(21rem,88vw)] flex-col border-s border-ink-200 bg-paper shadow-4 animate-slide-up"
           >
             <div className="flex h-16 items-center justify-between border-b border-ink-200/80 px-4">
@@ -392,34 +394,34 @@ export function Header() {
             </div>
 
             <div className="flex-1 overflow-y-auto scrollbar-slim px-3 py-4">
-              <nav aria-label="Mobile main">
-                <MobileSection title="Main">
+              <nav aria-label={t('nav.mainMenu')}>
+                <MobileSection title={t('nav.mainMenu')}>
                   <MobileLink to="/" icon={Landmark} label={t('nav.home')} />
                   <MobileLink to="/services" icon={Landmark} label={t('nav.services')} />
                   <MobileLink to="/assistant" icon={FileText} label={t('nav.assistant')} />
                 </MobileSection>
 
                 {toolGroups.map((group) => (
-                  <MobileSection key={group.label} title={group.label}>
+                  <MobileSection key={group.labelKey} title={t(group.labelKey)}>
                     {group.items.map((item) => (
                       <MobileLink
                         key={item.to}
                         to={item.to}
                         icon={iconFor[item.to] ?? FileText}
-                        label={item.label}
+                        label={t(item.labelKey)}
                       />
                     ))}
                   </MobileSection>
                 ))}
 
-                <MobileSection title="Resources">
+                <MobileSection title={t('nav.resources')}>
                   {resourceLinks.map((item) => (
-                    <MobileLink key={item.to} to={item.to} icon={iconFor[item.to] ?? FileText} label={item.label} />
+                    <MobileLink key={item.to} to={item.to} icon={iconFor[item.to] ?? FileText} label={t(item.labelKey)} />
                   ))}
                 </MobileSection>
 
                 {isAuthenticated && (
-                  <MobileSection title="Account">
+                  <MobileSection title={t('nav.profile')}>
                     <MobileLink to="/dashboard" icon={LayoutDashboard} label="Dashboard" />
                     <MobileLink to="/profile" icon={UserRound} label="Profile & settings" />
                     {user?.role === 'admin' && (

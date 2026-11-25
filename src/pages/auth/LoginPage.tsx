@@ -5,13 +5,15 @@ import { Button } from '@/components/common/Button';
 import { BrandLockup } from '@/components/common/BrandMark';
 import { InlineNotice } from '@/components/common/States';
 import { demoCredentials } from '@/services/api/auth';
-import { loginSchema, fieldErrorsFrom } from '@/services/validation/schemas';
+import { loginSchema, fieldErrorsFrom, isValidationKey } from '@/services/validation/schemas';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { errorMessage } from '@/services/api/errors';
 import { cn } from '@/utils/cn';
 
 export default function LoginPage() {
+  const { t } = useLanguage();
   useDocumentTitle('Log in', 'Sign in to save drafts, track analyses and keep your preferences.');
 
   const { login } = useAuth();
@@ -72,18 +74,15 @@ export default function LoginPage() {
         <div className="panel-float p-6 sm:p-7">
           <p className="mb-1.5 flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-brand-700">
             <span className="h-px w-4 bg-accent-500" aria-hidden="true" />
-            Citizen account
+            {t('auth.citizenAccount')}
           </p>
-          <h1 className="text-[1.35rem] font-semibold tracking-[-0.02em] text-ink-950">Log in to Sahara AI</h1>
-          <p className="mt-1 text-sm text-ink-600">
-            An account saves your drafts, analyses and language preferences. Browsing and the assistant work without
-            one.
-          </p>
+          <h1 className="text-[1.35rem] font-semibold tracking-[-0.02em] text-ink-950">{t('auth.loginTitle')}</h1>
+          <p className="mt-1 text-sm text-ink-600">{t('auth.loginSubtitle')}</p>
 
           <form onSubmit={submit} noValidate className="mt-5 space-y-4">
             <div>
               <label htmlFor="login-email" className="mb-1.5 block text-sm font-medium text-ink-800">
-                Email
+                {t('auth.email')}
               </label>
               <input
                 id="login-email"
@@ -101,7 +100,7 @@ export default function LoginPage() {
               />
               {errors.email && (
                 <p id="login-email-error" className="mt-1 text-xs font-medium text-red-700" role="alert">
-                  {errors.email}
+                  {isValidationKey(errors.email) ? t(errors.email) : errors.email}
                 </p>
               )}
             </div>
@@ -109,10 +108,10 @@ export default function LoginPage() {
             <div>
               <div className="mb-1.5 flex items-center justify-between gap-2">
                 <label htmlFor="login-password" className="block text-sm font-medium text-ink-800">
-                  Password
+                  {t('auth.password')}
                 </label>
                 <Link to="/forgot-password" className="text-xs font-medium text-brand-800 hover:underline">
-                  Forgot password?
+                  {t('auth.forgot')}
                 </Link>
               </div>
               <div className="relative">
@@ -133,7 +132,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   className="absolute inset-y-0 end-0 grid w-10 place-items-center text-ink-500 hover:text-ink-800"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
                   aria-pressed={showPassword}
                 >
                   {showPassword ? <EyeOff className="size-4" aria-hidden="true" /> : <Eye className="size-4" aria-hidden="true" />}
@@ -141,7 +140,7 @@ export default function LoginPage() {
               </div>
               {errors.password && (
                 <p id="login-password-error" className="mt-1 text-xs font-medium text-red-700" role="alert">
-                  {errors.password}
+                  {isValidationKey(errors.password) ? t(errors.password) : errors.password}
                 </p>
               )}
             </div>
@@ -153,7 +152,7 @@ export default function LoginPage() {
                 onChange={(e) => setRemember(e.target.checked)}
                 className="size-4 accent-brand-800"
               />
-              Keep me signed in on this device
+              {t('auth.keepSignedIn')}
             </label>
 
             {formError && (
@@ -163,30 +162,27 @@ export default function LoginPage() {
             )}
 
             <Button type="submit" fullWidth size="lg" loading={submitting} leadingIcon={<LogIn className="size-4" aria-hidden="true" />}>
-              {submitting ? 'Signing in…' : 'Log in'}
+              {submitting ? t('auth.signingIn') : t('auth.login')}
             </Button>
           </form>
 
           <p className="mt-4 text-center text-sm text-ink-600">
-            No account?{' '}
+            {t('auth.noAccount')}{' '}
             <Link to="/register" className="font-medium text-brand-800 hover:underline">
-              Create one
+              {t('auth.createOne')}
             </Link>
           </p>
         </div>
 
         <div className="mt-4">
-          <InlineNotice tone="info" title="Demonstration accounts">
-            <p>
-              Authentication is mocked in this build so the citizen and admin areas can be demonstrated. No password
-              is stored or sent anywhere.
-            </p>
+          <InlineNotice tone="info" title={t('auth.demoAccounts')}>
+            <p>{t('auth.demoBody')}</p>
             <div className="mt-2 flex flex-wrap gap-2">
               <Button variant="outline" size="sm" onClick={() => useDemo('citizen')}>
-                Fill citizen demo
+                {t('auth.fillCitizen')}
               </Button>
               <Button variant="outline" size="sm" onClick={() => useDemo('admin')}>
-                Fill admin demo
+                {t('auth.fillAdmin')}
               </Button>
             </div>
             <p className="mt-2 font-mono text-[0.6875rem] text-ink-600">
@@ -197,7 +193,7 @@ export default function LoginPage() {
 
         <p className="mt-4 flex items-start gap-1.5 text-[0.6875rem] leading-relaxed text-ink-500">
           <ShieldAlert className="mt-px size-3.5 shrink-0" aria-hidden="true" />
-          Sahara AI will never ask for your password, OTP or PIN by message or phone call.
+          {t('auth.neverAsk')}
         </p>
       </div>
       </div>

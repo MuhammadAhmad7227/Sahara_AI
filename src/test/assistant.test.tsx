@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { resetMockFailures, failNextMockRequests } from '@/services/api/client';
 import { askAssistant } from '@/services/api/assistant';
 import AssistantPage from '@/pages/public/AssistantPage';
+import { AssistantMessage, UserMessage } from '@/components/assistant/ChatMessage';
 import { renderWithProviders } from '@/test/testUtils';
 
 beforeEach(() => resetMockFailures());
@@ -83,3 +84,20 @@ describe('Assistant error copy', () => {
 
 // Ensure waitFor defaults do not hide slow states in CI.
 vi.setConfig({ testTimeout: 15_000 });
+
+
+describe('Chat text direction stays local', () => {
+  it('isolates user text and uses the stored answer language independently of the UI', async () => {
+    const answer = await askAssistant({ question: 'domicile documents', language: 'ur' });
+    const { container } = renderWithProviders(
+      <><UserMessage text="Where is Lahore?" /><UserMessage text="لاہور کہاں ہے؟" />
+        <AssistantMessage role="assistant" text={answer.answer} answer={answer} /></>,
+      { route: '/assistant' },
+    );
+    expect(screen.getByText('Where is Lahore?')).toHaveAttribute('dir', 'auto');
+    expect(screen.getByText('لاہور کہاں ہے؟')).toHaveAttribute('dir', 'auto');
+    const answerRuns = container.querySelectorAll('bdi[lang="ur"][dir="rtl"]');
+    expect(answerRuns.length).toBeGreaterThan(0);
+    expect(document.documentElement.dir).toBe('ltr');
+  });
+});

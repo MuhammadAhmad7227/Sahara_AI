@@ -94,10 +94,15 @@ describe('Motion and accessibility', () => {
 
   it('puts a skip link before the header', () => {
     const layout = files.find((f) => f.path === 'components/layout/PublicLayout.tsx')?.code ?? '';
-    const skipIndex = layout.indexOf('Skip to main content');
+    const skipIndex = layout.indexOf('<SkipLink />');
     const headerIndex = layout.indexOf('<Header />');
     expect(skipIndex).toBeGreaterThan(-1);
     expect(skipIndex).toBeLessThan(headerIndex);
+
+    // The label is translated now, so the link must be rendered by a component
+    // that reads the dictionary instead of hard-coded English.
+    expect(layout).toContain('function SkipLink()');
+    expect(layout).toContain("t('skip.toContent')");
   });
 });
 

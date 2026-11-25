@@ -6,12 +6,14 @@ import type { ReactNode } from 'react';
 import { AlertTriangle, Inbox, Loader2, WifiOff } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/common/Button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-export function LoadingSpinner({ className, label = 'Loading' }: { className?: string; label?: string }) {
+export function LoadingSpinner({ className, label }: { className?: string; label?: string }) {
+  const { t } = useLanguage();
   return (
     <span role="status" className={cn('inline-flex items-center gap-2 text-sm text-ink-500', className)}>
       <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-      <span>{label}</span>
+      <span>{label ?? t('state.loading')}</span>
     </span>
   );
 }
@@ -36,13 +38,15 @@ export function Skeleton({ className }: { className?: string }) {
 
 /** Skeleton block used while a list of cards loads. */
 export function CardGridSkeleton({ count = 6, columns = 3 }: { count?: number; columns?: 2 | 3 }) {
+  const { t } = useLanguage();
+  const loadingLabel = t('state.loadingResults');
   return (
     <div
       className={cn('grid gap-4', columns === 3 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2')}
       aria-busy="true"
       aria-live="polite"
     >
-      <span className="sr-only">Loading results…</span>
+      <span className="sr-only">{loadingLabel}</span>
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="rounded-xl border border-brand-900/[0.07] bg-paper p-4 shadow-1">
           <div className="flex items-center justify-between gap-2">
@@ -63,9 +67,11 @@ export function CardGridSkeleton({ count = 6, columns = 3 }: { count?: number; c
 }
 
 export function TableSkeleton({ rows = 6 }: { rows?: number }) {
+  const { t } = useLanguage();
+  const loadingLabel = t('state.loadingTable');
   return (
     <div className="space-y-2 p-4" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Loading table…</span>
+      <span className="sr-only">{loadingLabel}</span>
       {Array.from({ length: rows }).map((_, i) => (
         <div key={i} className="flex items-center gap-4">
           <Skeleton className="h-4 flex-1" />

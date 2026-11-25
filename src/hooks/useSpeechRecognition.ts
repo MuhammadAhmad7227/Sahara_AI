@@ -46,6 +46,17 @@ function getCtor(): SpeechRecognitionCtor | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
+/**
+ * Language handling.
+ *
+ * `language` is the BCP-47 locale to attempt (ur-PK, pa-PK, en-PK). Browsers do
+ * not all ship models for every locale, and there is no API that reports which
+ * locales are supported. So we do not claim Punjabi support up front: we attempt
+ * the locale and, if the engine fires `language-not-supported` (Chrome) or
+ * `not-allowed`/`service-not-allowed`, we surface a precise, honest message and
+ * tell the user to type instead. `unsupportedLanguage` records that outcome so
+ * the UI can stop offering a mic that will not work.
+ */
 export function useSpeechRecognition({
   language,
   onResult,
@@ -55,6 +66,8 @@ export function useSpeechRecognition({
 }) {
   const [listening, setListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Set when the engine reports it has no model for the requested locale. */
+  const [unsupportedLanguage, setUnsupportedLanguage] = useState<string | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const onResultRef = useRef(onResult);
   onResultRef.current = onResult;
@@ -94,8 +107,16 @@ export function useSpeechRecognition({
         'not-allowed': 'Microphone permission was blocked.',
         'service-not-allowed': 'Speech recognition is not available on this connection.',
         'no-speech': 'No speech was detected.',
+        'language-not-supported': 'This browser has no speech model for the selected language.',
         network: 'The speech service could not be reached.',
       };
+
+      // A missing model is a permanent condition for this locale, not a transient
+      // failure, so remember it and stop offering the microphone.
+      if (event.error === 'language-not-supported') {
+        setUnsupportedLanguage(language);
+      }
+
       setError(messages[event.error] ?? 'Speech recognition stopped unexpectedly.');
       setListening(false);
     };
@@ -117,5 +138,14 @@ export function useSpeechRecognition({
     setListening(false);
   }, []);
 
-  return { supported, listening, error, start, stop };
+  return {
+    supported,
+    /** True only when the engine has explicitly rejected this locale. */
+    languageUnsupported: unsupportedLanguage === language,
+    listening,
+    error,
+    start,
+    stop,
+    clearError: () => setError(null),
+  };
 }

@@ -1,7 +1,20 @@
 /**
- * Language + direction provider.
- * Sets <html lang> and <html dir> so that RTL layout, Urdu typography and
- * screen-reader pronunciation follow the selected language everywhere.
+ * Language + text-direction provider.
+ *
+ * DESIGN RULE (the reason this file changed):
+ * --------------------------------------------------------------
+ * Changing language must change TEXT ONLY. It must never mirror the interface.
+ *
+ * So this provider:
+ *   - never touches `document.documentElement.dir` (it stays 'ltr' forever);
+ *   - writes `lang` on <html> only for pronunciation and hyphenation;
+ *   - exposes `textDir` so individual text runs can be right-to-left;
+ *   - sets a data attribute so CSS can apply the correct font per language
+ *     without switching layout direction.
+ *
+ * The result: English, Urdu and Punjabi render in an identical visual structure —
+ * same navbar position, same card order, same button placement — while the words
+ * and the glyph shaping are correct.
  */
 import {
   createContext,
@@ -12,27 +25,37 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { dictionaries, languageMeta, type TranslationKey } from '@/i18n/dictionaries';
+import {
+  dictionaries,
+  languageMeta,
+  supportedLanguages,
+  type TranslationKey,
+} from '@/i18n';
 import type { Language } from '@/types/domain';
 import { storage } from '@/utils/cn';
 
 interface LanguageContextValue {
   language: Language;
-  dir: 'ltr' | 'rtl';
+  /** Direction of TEXT in the current language. Not the layout direction. */
+  textDir: 'ltr' | 'rtl';
+  /** The application layout direction. Always 'ltr', by design. */
+  layoutDir: 'ltr';
   locale: string;
+  speechLocale: string;
   setLanguage: (lang: Language) => void;
   t: (key: TranslationKey, vars?: Record<string, string | number>) => string;
-  /** True when the key had no translation and fell back to English. */
+  /** True when the current language genuinely has this key translated. */
   isTranslated: (key: TranslationKey) => boolean;
+  /** Percentage of English keys translated into the current language. */
+  coverage: number;
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 const STORAGE_KEY = 'sahara.language';
-const SUPPORTED: Language[] = ['en', 'ur', 'pa'];
 
 function initialLanguage(): Language {
   const stored = storage.get<string | null>(STORAGE_KEY, null);
-  if (stored && SUPPORTED.includes(stored as Language)) return stored as Language;
+  if (stored && supportedLanguages.includes(stored as Language)) return stored as Language;
   if (typeof navigator !== 'undefined') {
     const nav = navigator.language.toLowerCase();
     if (nav.startsWith('ur')) return 'ur';
@@ -41,18 +64,33 @@ function initialLanguage(): Language {
   return 'en';
 }
 
+/** Epoch counter used to derive coverage once per dictionary, cheaply. */
+function computeCoverage(lang: Language): number {
+  const total = Object.keys(dictionaries.en).length;
+  const translated = Object.keys(dictionaries[lang] ?? {}).length;
+  return Math.round((translated / total) * 100);
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(initialLanguage);
 
-  const dir = languageMeta[language].dir;
-  const locale = languageMeta[language].locale;
+  const meta = languageMeta[language];
+  const textDir = meta.dir;
 
   useEffect(() => {
     const root = document.documentElement;
+
+    // Language tag drives pronunciation, hyphenation and font-feature settings.
     root.lang = language;
-    root.dir = dir;
+
+    // Direction is intentionally NOT set here. It is written once, below, to
+    // make the intent explicit and to correct any persisted value from an older
+    // build of the app.
+    root.dir = 'ltr';
+    root.dataset.lang = language;
+
     storage.set(STORAGE_KEY, language);
-  }, [language, dir]);
+  }, [language]);
 
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
@@ -60,7 +98,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const t = useCallback(
     (key: TranslationKey, vars?: Record<string, string | number>) => {
-      const table = dictionaries[language] ?? dictionaries.en;
+      const table = dictionaries[language];
       const raw = table[key] ?? dictionaries.en[key] ?? key;
       if (!vars) return raw;
       return Object.entries(vars).reduce(
@@ -77,8 +115,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   );
 
   const value = useMemo<LanguageContextValue>(
-    () => ({ language, dir, locale, setLanguage, t, isTranslated }),
-    [language, dir, locale, setLanguage, t, isTranslated],
+    () => ({
+      language,
+      textDir,
+      layoutDir: 'ltr',
+      locale: meta.locale,
+      speechLocale: meta.speechLocale,
+      setLanguage,
+      t,
+      isTranslated,
+      coverage: computeCoverage(language),
+    }),
+    [language, textDir, meta.locale, meta.speechLocale, setLanguage, t, isTranslated],
   );
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

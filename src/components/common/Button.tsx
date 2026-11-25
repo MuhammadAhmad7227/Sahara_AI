@@ -46,8 +46,8 @@ const sizes: Record<Size, string> = {
   lg: 'h-12 px-6 text-base',
 };
 
-/** Trailing icons drift in the reading direction on hover — a small reward. */
-const iconDrift = '[&>[data-icon=trailing]]:transition-transform [&>[data-icon=trailing]]:duration-200 group-hover/btn:[&>[data-icon=trailing]]:translate-x-0.5 rtl:group-hover/btn:[&>[data-icon=trailing]]:-translate-x-0.5';
+/** Trailing icons drift in the fixed layout direction on hover. */
+const iconDrift = '[&>[data-icon=trailing]]:transition-transform [&>[data-icon=trailing]]:duration-200 group-hover/btn:[&>[data-icon=trailing]]:translate-x-0.5';
 
 export const buttonClasses = ({ variant = 'primary', size = 'md', fullWidth }: ButtonProps) =>
   cn(base, variants[variant], sizes[size], fullWidth && 'w-full');

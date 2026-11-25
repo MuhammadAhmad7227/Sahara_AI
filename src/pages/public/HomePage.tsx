@@ -41,6 +41,7 @@ import { Reveal } from '@/components/common/Reveal';
 import { SaharaOrb } from '@/components/brand/SaharaOrb';
 import { ServiceCard } from '@/components/services/ServiceCard';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getTextDirection } from '@/i18n';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useAsync } from '@/hooks/useAsync';
 import { getPopularServices } from '@/services/api/services';
@@ -137,7 +138,7 @@ const scope = [
 /* -------------------------------------------------------------------------- */
 
 export default function HomePage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   useDocumentTitle(
     'Sahara AI — Civic services for Pakistani citizens',
     'Ask about public services, documents, applications, complaints and public information in English, Urdu or Punjabi. Answers cite the reviewed source and the date it was checked.',
@@ -170,22 +171,20 @@ export default function HomePage() {
                 <span className="grid size-5 place-items-center rounded-full bg-brand-900 text-[0.5rem] text-accent-300">
                   ●
                 </span>
-                Built for citizens of Pakistan
+                {t('home.eyebrow')}
               </p>
 
               <h1
                 id="hero-heading"
                 className="mt-5 text-[2.15rem] font-semibold leading-[1.06] tracking-[-0.03em] text-ink-950 sm:text-[3rem] lg:text-[3.5rem]"
               >
-                Government services,
+                <bdi dir={getTextDirection(language)} lang={language}>{t('home.heroLead')}</bdi>
                 <br />
-                <span className="display-serif italic text-brand-800">explained simply.</span>
+                <span className="display-serif italic text-brand-800"><bdi dir={getTextDirection(language)} lang={language}>{t('home.titleAccent')}</bdi></span>
               </h1>
 
               <p className="mt-5 max-w-[34rem] text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">
-                Ask Sahara about civic services, documents, applications, complaints and public
-                information in English, Urdu or Punjabi. Every answer points to the reviewed record it
-                came from — or tells you plainly that no reliable record exists.
+                {t('home.subtitle')}
               </p>
 
               <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:items-center">
@@ -197,15 +196,15 @@ export default function HomePage() {
                   {t('nav.talkToSahara')}
                 </LinkButton>
                 <LinkButton to="/services" size="lg" variant="outline">
-                  Explore services
+                  {t('home.secondaryCta')}
                 </LinkButton>
               </div>
 
               <dl className="mt-8 grid max-w-lg grid-cols-1 gap-x-6 gap-y-3 border-t border-brand-900/10 pt-5 min-[380px]:grid-cols-3">
                 {[
-                  ['Languages', 'Urdu · Punjabi · English'],
-                  ['Every answer', 'Source + date checked'],
-                  ['Access', 'Free, no account needed'],
+                  [t('home.languages'), t('home.languagesValue')],
+                  [t('home.everyAnswer'), t('home.everyAnswerValue')],
+                  [t('home.access'), t('home.accessValue')],
                 ].map(([dt, dd]) => (
                   <div key={dt}>
                     <dt className="text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">

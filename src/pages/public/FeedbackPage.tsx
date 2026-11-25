@@ -4,12 +4,13 @@ import { Button } from '@/components/common/Button';
 import { SectionCard } from '@/components/common/Card';
 import { PageHeader } from '@/components/common/Feedback';
 import { InlineNotice } from '@/components/common/States';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useAsync } from '@/hooks/useAsync';
 import { listServices } from '@/services/api/services';
 import { mockRequest } from '@/services/api/client';
 import { errorMessage } from '@/services/api/errors';
-import { feedbackSchema, fieldErrorsFrom } from '@/services/validation/schemas';
+import { feedbackSchema, fieldErrorsFrom, isValidationKey } from '@/services/validation/schemas';
 import { cn } from '@/utils/cn';
 import type { FeedbackSubmission } from '@/types/domain';
 
@@ -22,8 +23,13 @@ const categories = [
 ] as const;
 
 export default function FeedbackPage() {
+  const { t } = useLanguage();
   useDocumentTitle('Contact & feedback', 'Report an incorrect service record, a bug, an accessibility problem or a suggestion.');
 
+
+  /** Field errors carry translation keys; render through t() safely. */
+  const renderError = (message?: string) =>
+    message ? (isValidationKey(message) ? t(message) : message) : null;
   const services = useAsync(() => listServices({ pageSize: 48, sort: 'name' }), []);
   const [category, setCategory] = useState<(typeof categories)[number]['value']>('service_correction');
   const [subject, setSubject] = useState('');
@@ -158,7 +164,7 @@ export default function FeedbackPage() {
               />
               {errors.subject && (
                 <p id="fb-subject-error" className="mt-1 text-xs font-medium text-red-700" role="alert">
-                  {errors.subject}
+                  {renderError(errors.subject)}
                 </p>
               )}
             </div>
@@ -183,7 +189,7 @@ export default function FeedbackPage() {
               </p>
               {errors.message && (
                 <p id="fb-message-error" className="mt-1 text-xs font-medium text-red-700" role="alert">
-                  {errors.message}
+                  {renderError(errors.message)}
                 </p>
               )}
             </div>
@@ -206,7 +212,7 @@ export default function FeedbackPage() {
               </p>
               {errors.email && (
                 <p id="fb-email-error" className="mt-1 text-xs font-medium text-red-700" role="alert">
-                  {errors.email}
+                  {renderError(errors.email)}
                 </p>
               )}
             </div>

@@ -32,16 +32,18 @@ export function Footer() {
           </div>
 
           {footerColumns.map((column) => (
-            <nav key={column.title} aria-label={column.title}>
-              <h2 className="mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sand-300/60">{column.title}</h2>
+            <nav key={column.labelKey} aria-label={t(column.labelKey)}>
+              <h2 className="mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sand-300/60">
+                {t(column.labelKey)}
+              </h2>
               <ul className="space-y-1.5">
-                {column.links.map((link) => (
-                  <li key={link.to + link.label}>
+                {column.items.map((link) => (
+                  <li key={link.to + link.labelKey}>
                     <Link
                       to={link.to}
                       className="text-[0.8125rem] text-sand-100/75 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
-                      {link.label}
+                      {t(link.labelKey)}
                     </Link>
                   </li>
                 ))}
@@ -51,20 +53,20 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-5 text-[0.6875rem] text-sand-300/55 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} Sahara AI · Final Year Project, University of Agriculture Faisalabad (Burewala Campus)</p>
+          <p>© {year} Sahara AI · {t('footer.project')}</p>
           <p className="hidden sm:block" aria-hidden="true">
             ·
           </p>
           <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <Link to="/about#privacy" className="transition-colors hover:text-white hover:underline">
-              Privacy & data
+              {t('footer.privacy')}
             </Link>
             <span aria-hidden="true">·</span>
             <Link to="/about#disclaimer" className="transition-colors hover:text-white hover:underline">
-              Disclaimer
+              {t('footer.terms')}
             </Link>
             <span aria-hidden="true">·</span>
-            <span>Frontend development build — demo data</span>
+            <span>{t('footer.demoData')}</span>
           </p>
         </div>
       </div>

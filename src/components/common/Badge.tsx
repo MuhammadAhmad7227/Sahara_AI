@@ -6,6 +6,7 @@
 import type { ReactNode } from 'react';
 import { AlertTriangle, CheckCircle2, Clock, FlaskConical, ShieldQuestion } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import type { TranslationKey } from '@/i18n';
 import { cn } from '@/utils/cn';
 import type { ReviewStatus, VerificationStatus } from '@/types/domain';
 
@@ -48,35 +49,42 @@ export function Badge({ tone = 'neutral', icon, className, children }: BadgeProp
 
 const verificationMeta: Record<
   VerificationStatus,
-  { label: string; tone: Tone; Icon: typeof CheckCircle2; title: string; key: 'verify.verified' | 'verify.pending' | 'verify.outdated' | 'verify.demo' }
+  {
+    label: string;
+    tone: Tone;
+    Icon: typeof CheckCircle2;
+    /** Tooltip key — the visible label is translated separately. */
+    titleKey: TranslationKey;
+    key: 'verify.verified' | 'verify.pending' | 'verify.outdated' | 'verify.demo';
+  }
 > = {
   verified: {
     key: 'verify.verified',
     label: 'Verified',
     tone: 'success',
     Icon: CheckCircle2,
-    title: 'A reviewer has checked this record against an official source.',
+    titleKey: 'verify.verifiedTitle',
   },
   pending_verification: {
     key: 'verify.pending',
     label: 'Pending verification',
     tone: 'warning',
     Icon: Clock,
-    title: 'This record has not yet been checked against an official source.',
+    titleKey: 'verify.pendingTitle',
   },
   outdated: {
     key: 'verify.outdated',
     label: 'Review overdue',
     tone: 'danger',
     Icon: AlertTriangle,
-    title: 'The last check of this record is older than the review interval.',
+    titleKey: 'verify.outdatedTitle',
   },
   demo: {
     key: 'verify.demo',
     label: 'Demo data',
     tone: 'info',
     Icon: FlaskConical,
-    title: 'Demonstration data for interface development — not an official record.',
+    titleKey: 'verify.demoTitle',
   },
 };
 
@@ -93,25 +101,26 @@ export function VerificationBadge({
   const meta = verificationMeta[status];
   return (
     <Badge tone={meta.tone} className={className} icon={showIcon ? <meta.Icon className="size-3" aria-hidden="true" /> : undefined}>
-      <span title={meta.title}>{t(meta.key)}</span>
+      <span title={t(meta.titleKey)}>{t(meta.key)}</span>
     </Badge>
   );
 }
 
-const reviewMeta: Record<ReviewStatus, { label: string; tone: Tone }> = {
-  draft: { label: 'Draft', tone: 'neutral' },
-  pending_review: { label: 'Pending review', tone: 'warning' },
-  approved: { label: 'Approved', tone: 'info' },
-  published: { label: 'Published', tone: 'success' },
-  archived: { label: 'Archived', tone: 'neutral' },
-  rejected: { label: 'Rejected', tone: 'danger' },
+const reviewMeta: Record<ReviewStatus, { labelKey: TranslationKey; tone: Tone }> = {
+  draft: { labelKey: 'review.draft', tone: 'neutral' },
+  pending_review: { labelKey: 'review.pending', tone: 'warning' },
+  approved: { labelKey: 'review.approved', tone: 'info' },
+  published: { labelKey: 'review.published', tone: 'success' },
+  archived: { labelKey: 'review.archived', tone: 'neutral' },
+  rejected: { labelKey: 'review.rejected', tone: 'danger' },
 };
 
 export function ReviewStatusBadge({ status, className }: { status: ReviewStatus; className?: string }) {
+  const { t } = useLanguage();
   const meta = reviewMeta[status];
   return (
     <Badge tone={meta.tone} className={className}>
-      {meta.label}
+      {t(meta.labelKey)}
     </Badge>
   );
 }

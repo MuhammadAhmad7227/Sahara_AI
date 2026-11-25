@@ -1,15 +1,23 @@
 import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { useLanguage } from '@/contexts/LanguageContext';
+
+function SkipLink() {
+  const { t } = useLanguage();
+  return (
+    <a href="#main-content" className="sr-only-focusable">
+      {t('skip.toContent')}
+    </a>
+  );
+}
 
 export function PublicLayout() {
   const location = useLocation();
 
   return (
     <div className="flex min-h-dvh flex-col bg-cream">
-      <a href="#main-content" className="sr-only-focusable">
-        Skip to main content
-      </a>
+      <SkipLink />
       <Header />
       {/*
         A page transition, not an animation: a 260ms fade with a 4px rise. The
