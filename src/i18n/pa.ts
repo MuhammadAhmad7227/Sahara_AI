@@ -376,5 +376,18 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'validation.subjectMax': 'عنوان 120 اکھراں توں ودھ نئیں ہو سکدا۔',
   'validation.messageMin': 'مہربانی کر کے مسئلہ گھٹ توں گھٹ 20 اکھراں وچ دسو۔',
   'validation.messageMax': 'پیغام 2000 اکھراں توں ودھ نئیں ہو سکدا۔',
+  'workflow.title': 'تصدیق دا طریقۂ کار',
+  'workflow.intro':
+    'خدمت دا ریکارڈ صرف اوہدوں بندا اے جدوں کسے سرکاری محکمے دا صفحہ یا دستاویز لبھ کے محفوظ مواد نال موازنہ کیتا جاوے۔ ایہدے بعد چھپائی توں پہلاں اوہ جانچ دے مرحلے توں لنگھدا اے۔',
+  'workflow.auditNote':
+    'شائع شدہ ریکارڈ وچ ہر تبدیلی پچھلی تے نویں قدر نال آڈٹ لاگ وچ درج ہوندی اے۔',
+  'workflow.draft': 'مسودہ',
+  'workflow.draftDesc': 'مواد ایڈمن نے درج کیتا',
+  'workflow.review': 'جانچ باقی',
+  'workflow.reviewDesc': 'جانچن والا سرکاری ماخذ نال موازنہ کردا اے',
+  'workflow.approved': 'منظور شدہ',
+  'workflow.approvedDesc': 'ماخذ دا لنک، جانچ دی تریخ تے جانچن والا درج ہوندا اے',
+  'workflow.published': 'شائع شدہ',
+  'workflow.publishedDesc': 'شہریاں نوں ایہدے ماخذ نال وکھایا جاندا اے',
   'system.goHome': 'گھر والے صفحے تے جاؤ',
 };

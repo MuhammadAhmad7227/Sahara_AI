@@ -377,6 +377,19 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'validation.subjectMax': 'عنوان 120 حروف سے زیادہ نہیں ہو سکتا۔',
   'validation.messageMin': 'براہِ کرم مسئلہ کم از کم 20 حروف میں بیان کریں۔',
   'validation.messageMax': 'پیغام 2000 حروف سے زیادہ نہیں ہو سکتا۔',
+  'workflow.title': 'تصدیق کا طریقۂ کار',
+  'workflow.intro':
+    'سروس کا ریکارڈ صرف اس وقت بنتا ہے جب کسی سرکاری محکمے کا صفحہ یا دستاویز تلاش کر کے محفوظ مواد سے موازنہ کیا جائے۔ اس کے بعد اشاعت سے پہلے وہ جانچ کے مرحلے سے گزرتا ہے۔',
+  'workflow.auditNote':
+    'شائع شدہ ریکارڈ میں ہر تبدیلی پچھلی اور نئی قدر کے ساتھ آڈٹ لاگ میں درج ہوتی ہے۔',
+  'workflow.draft': 'مسودہ',
+  'workflow.draftDesc': 'مواد ایڈمن نے درج کیا',
+  'workflow.review': 'جانچ باقی',
+  'workflow.reviewDesc': 'جانچنے والا سرکاری ماخذ سے موازنہ کرتا ہے',
+  'workflow.approved': 'منظور شدہ',
+  'workflow.approvedDesc': 'ماخذ کا لنک، جانچ کی تاریخ اور جانچنے والا درج ہوتا ہے',
+  'workflow.published': 'شائع شدہ',
+  'workflow.publishedDesc': 'شہریوں کو اس کے ماخذ کے ساتھ دکھایا جاتا ہے',
   'system.goHome': 'ہوم پیج پر جائیں',
 };
 

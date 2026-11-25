@@ -378,6 +378,19 @@ export const en = {
   'validation.subjectMax': 'Subject must be 120 characters or fewer.',
   'validation.messageMin': 'Please describe the issue in at least 20 characters.',
   'validation.messageMax': 'Message must be 2000 characters or fewer.',
+  'workflow.title': 'The verification workflow',
+  'workflow.intro':
+    'A service record is created only after an official department page or document has been located and compared with the stored content. It then moves through review before it is published.',
+  'workflow.auditNote':
+    'Every change to a published record is written to an audit log with the previous and new value.',
+  'workflow.draft': 'Draft',
+  'workflow.draftDesc': 'Content entered by an administrator',
+  'workflow.review': 'Pending review',
+  'workflow.reviewDesc': 'Reviewer compares it with the official source',
+  'workflow.approved': 'Approved',
+  'workflow.approvedDesc': 'Source URL, date checked and reviewer recorded',
+  'workflow.published': 'Published',
+  'workflow.publishedDesc': 'Visible to citizens with its provenance',
   'system.goHome': 'Go to the homepage',
 } as const;
 
