@@ -395,6 +395,40 @@ export const en = {
   'workflow.approvedDesc': 'Source URL, date checked and reviewer recorded',
   'workflow.published': 'Published',
   'workflow.publishedDesc': 'Visible to citizens with its provenance',
+  'emergency.pageTitle': 'Emergency centre',
+  'emergency.pageDesc':
+    'Emergency and public helpline contacts. In a real emergency, call the official emergency service directly — Sahara AI does not dispatch services.',
+  'emergency.heading': 'Emergency centre',
+  'emergency.banner':
+    'If someone is in immediate danger, contact the emergency service directly. Sahara AI does not dispatch police, rescue or ambulance services and cannot register a case for you.',
+  'emergency.eyebrow': 'Verified public contacts',
+  'emergency.title': 'Emergency and helpline numbers',
+  'emergency.description':
+    'Numbers are shown only when a reviewer has recorded them against an official publisher. Unverified entries say so rather than displaying a guessed number.',
+  'emergency.missingTitle': 'Why numbers are missing in this build',
+  'emergency.missingBody':
+    'This is a development build, so no telephone number has been recorded yet. Each card shows its publisher and "Not recorded" for the date checked. When the backend is connected, verified rows replace these placeholders and one-tap calling is enabled.',
+  'emergency.services': 'Emergency services',
+  'emergency.helplines': 'Public helplines',
+  'emergency.loadError': 'Unable to load contacts',
+  'emergency.police': 'Police',
+  'emergency.rescue': 'Rescue',
+  'emergency.medical': 'Medical',
+  'emergency.fire': 'Fire',
+  'emergency.cybercrime': 'Cybercrime',
+  'emergency.other': 'Other',
+  'emergency.numberPending': 'Number pending verification',
+  'emergency.whatToSayTitle': 'What to say when you call',
+  'emergency.whatToSayDesc': 'Short, clear information helps the operator act faster.',
+  'emergency.say1': 'Where exactly you are, with a landmark if helpful.',
+  'emergency.say2': 'What has happened and how many people are affected.',
+  'emergency.say3': 'Whether anyone is injured or in danger.',
+  'emergency.say4': 'Your name and a number you can be reached on.',
+  'emergency.scamTitle': 'If it is a scam, not an emergency',
+  'emergency.scamBody':
+    'Use the scam detector to understand the indicators, contact your bank using the number on your card if money is involved, and report through the official cybercrime channel.',
+  'emergency.checkMessage': 'Check a message',
+  'emergency.neverShare': 'Never share an OTP or PIN',
   'system.goHome': 'Go to the homepage',
 } as const;
 
