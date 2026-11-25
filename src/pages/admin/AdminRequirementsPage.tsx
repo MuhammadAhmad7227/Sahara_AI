@@ -86,7 +86,7 @@ export default function AdminRequirementsPage() {
             id="req-service"
             value={serviceId}
             onChange={(e) => loadService(e.target.value)}
-            className="h-10 flex-1 rounded-lg border border-ink-300 bg-white px-2.5 text-sm"
+            className="h-10 flex-1 rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm"
           >
             <option value="">Select a service…</option>
             {services.data.map((service) => (

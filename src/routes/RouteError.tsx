@@ -16,8 +16,8 @@ export function RouteError() {
       : 'Something went wrong while loading this page. Your data has not been submitted anywhere.';
 
   return (
-    <div className="grid min-h-dvh place-items-center bg-ink-50 px-4">
-      <div className="w-full max-w-md rounded-xl border border-ink-200 bg-white p-6 text-center shadow-card">
+    <div className="grid min-h-dvh place-items-center surface-page px-4">
+      <div className="w-full max-w-md panel-float p-6 text-center">
         <div className="mx-auto mb-3 w-fit">
           <BrandMark className="size-12" />
         </div>

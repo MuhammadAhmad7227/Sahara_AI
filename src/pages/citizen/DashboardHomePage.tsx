@@ -34,23 +34,62 @@ export default function DashboardHomePage() {
 
   return (
     <div className="space-y-5">
-      <section className="rounded-xl border border-brand-200 bg-brand-50/50 p-4 sm:p-5">
-        <h2 className="text-base font-semibold text-ink-900">Welcome back{user ? `, ${user.name.split(' ')[0]}` : ''}.</h2>
-        <p className="mt-1 max-w-2xl text-sm leading-relaxed text-ink-600">
-          Your saved drafts, bookmarked services and tool history are shown here. In this development build they are
-          stored in your browser; a signed-in account will keep them on the server.
-        </p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {quickActions.map((action) => (
-            <LinkButton key={action.to} to={action.to} variant="outline" size="sm" leadingIcon={<action.icon className="size-4" aria-hidden="true" />}>
-              {action.label}
+      {/* Command panel: the one place in the citizen area that carries the brand. */}
+      <section className="relative overflow-hidden rounded-2xl panel-night p-5 sm:p-6">
+        <div className="pointer-events-none absolute inset-0 grid-lines-dark opacity-40" aria-hidden="true" />
+        <div
+          className="pointer-events-none absolute -end-16 -top-20 size-56 rounded-full bg-accent-500/20 blur-[80px]"
+          aria-hidden="true"
+        />
+
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sand-300/70">
+              <span className="h-px w-4 bg-accent-500" aria-hidden="true" />
+              Sahara citizen centre
+            </p>
+            <h2 className="mt-2 text-[1.35rem] font-semibold leading-tight tracking-tight text-white sm:text-[1.6rem]">
+              {user ? `Welcome back, ${user.name.split(' ')[0]}.` : 'Welcome back.'}
+            </h2>
+            <p className="mt-1.5 max-w-xl text-[0.8125rem] leading-relaxed text-brand-100/80">
+              How can Sahara help you today? Your drafts, saved services and recent questions are below.
+            </p>
+          </div>
+          <div className="shrink-0">
+            <LinkButton
+              to="/assistant"
+              variant="secondary"
+              trailingIcon={<ArrowRight className="size-4 dir-arrow" aria-hidden="true" />}
+            >
+              Talk to Sahara
             </LinkButton>
+          </div>
+        </div>
+
+        <div className="relative mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {quickActions.map((action) => (
+            <Link
+              key={action.to}
+              to={action.to}
+              className="group flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-2.5 py-2.5 text-start backdrop-blur-sm transition-colors hover:border-white/20 hover:bg-white/[0.11]"
+            >
+              <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-white/10 text-sand-100">
+                <action.icon className="size-3.5" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 text-[0.75rem] font-medium leading-tight text-sand-50">
+                {action.label}
+              </span>
+            </Link>
           ))}
         </div>
+
+        <p className="relative mt-3 text-[0.625rem] leading-relaxed text-sand-300/45">
+          Development build — drafts, saved services and history are stored in this browser.
+        </p>
       </section>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Link to="/dashboard/drafts" className="rounded-xl border border-ink-200 bg-white p-4 shadow-card hover:border-brand-300">
+        <Link to="/dashboard/drafts" className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card hover:border-brand-300">
           <div className="flex items-center justify-between">
             <p className="text-xs font-medium uppercase tracking-wide text-ink-500">Draft applications</p>
             <FileText className="size-4 text-ink-400" aria-hidden="true" />
@@ -58,7 +97,7 @@ export default function DashboardHomePage() {
           <p className="mt-1 text-2xl font-semibold tabular text-ink-900">{drafts.loading ? '—' : drafts.data?.length ?? 0}</p>
           <p className="text-xs text-ink-500">Prepared drafts stored locally</p>
         </Link>
-        <Link to="/dashboard/saved-services" className="rounded-xl border border-ink-200 bg-white p-4 shadow-card hover:border-brand-300">
+        <Link to="/dashboard/saved-services" className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card hover:border-brand-300">
           <div className="flex items-center justify-between">
             <p className="text-xs font-medium uppercase tracking-wide text-ink-500">Saved services</p>
             <Bookmark className="size-4 text-ink-400" aria-hidden="true" />
@@ -66,7 +105,7 @@ export default function DashboardHomePage() {
           <p className="mt-1 text-2xl font-semibold tabular text-ink-900">{saved.length}</p>
           <p className="text-xs text-ink-500">Bookmarked service records</p>
         </Link>
-        <Link to="/dashboard/history" className="rounded-xl border border-ink-200 bg-white p-4 shadow-card hover:border-brand-300">
+        <Link to="/dashboard/history" className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card hover:border-brand-300">
           <div className="flex items-center justify-between">
             <p className="text-xs font-medium uppercase tracking-wide text-ink-500">Analyses</p>
             <History className="size-4 text-ink-400" aria-hidden="true" />

@@ -128,7 +128,7 @@ export default function AdminDashboardPage() {
           <Link
             key={item.to}
             to={item.to}
-            className="flex items-center gap-2.5 rounded-xl border border-ink-200 bg-white p-3.5 text-sm font-medium text-ink-800 hover:border-brand-300"
+            className="flex items-center gap-2.5 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-3.5 text-sm font-medium text-ink-800 hover:border-brand-300"
           >
             <item.icon className="size-4 text-brand-700" aria-hidden="true" />
             {item.label}

@@ -52,7 +52,7 @@ export default function OfficeFinderPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by office, city or district…"
-            className="h-11 w-full rounded-lg border border-ink-300 bg-white ps-9 pe-3 text-sm focus-visible:border-brand-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
+            className="h-11 w-full rounded-lg border border-brand-900/15 bg-white ps-9 pe-3 text-sm focus-visible:border-brand-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
           />
         </div>
 
@@ -75,7 +75,7 @@ export default function OfficeFinderPage() {
             id="office-district"
             value={district}
             onChange={(e) => setDistrict(e.target.value)}
-            className="h-10 rounded-lg border border-ink-300 bg-white px-2.5 text-sm"
+            className="h-10 rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm"
           >
             <option value="all">All districts</option>
             {availableDistricts.map((d) => (
@@ -113,7 +113,7 @@ export default function OfficeFinderPage() {
           {!loading && !error && data && data.length > 0 && (
             <div className="grid gap-4 sm:grid-cols-2">
               {data.map((office) => (
-                <article key={office.id} className="flex h-full flex-col rounded-xl border border-ink-200 bg-white p-4 shadow-card">
+                <article key={office.id} className="flex h-full flex-col rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card">
                   <div className="flex items-start justify-between gap-2">
                     <Badge tone="brand">{office.category}</Badge>
                     <VerificationBadge status={office.verification} />
@@ -167,13 +167,13 @@ export default function OfficeFinderPage() {
         </div>
 
         <aside className="space-y-4">
-          <div className="overflow-hidden rounded-xl border border-ink-200 bg-white">
+          <div className="overflow-hidden rounded-xl border border-brand-900/[0.07] bg-paper shadow-1">
             <div
               className="relative grid h-48 place-items-center bg-[linear-gradient(45deg,var(--color-ink-100)_25%,transparent_25%,transparent_75%,var(--color-ink-100)_75%),linear-gradient(45deg,var(--color-ink-100)_25%,transparent_25%,transparent_75%,var(--color-ink-100)_75%)] bg-[length:16px_16px] bg-[position:0_0,8px_8px]"
               role="img"
               aria-label="Map placeholder — office locations will appear here once verified addresses are recorded"
             >
-              <div className="rounded-lg border border-ink-300 bg-white/95 px-3 py-2 text-center text-xs text-ink-600 shadow-card">
+              <div className="rounded-lg border border-brand-900/15 bg-white/95 px-3 py-2 text-center text-xs text-ink-600 shadow-card">
                 <MapPin className="mx-auto mb-1 size-4 text-brand-700" aria-hidden="true" />
                 Map placeholder
                 <p className="mt-0.5 text-[0.625rem] text-ink-500">Verified addresses required</p>

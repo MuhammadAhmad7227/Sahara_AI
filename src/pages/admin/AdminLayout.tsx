@@ -5,6 +5,7 @@
  */
 import { useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { BrandMark } from '@/components/common/BrandMark';
 import {
   BookOpenCheck,
   ClipboardList,
@@ -107,27 +108,36 @@ function AdminShell() {
   );
 
   return (
-    <div className="min-h-dvh bg-ink-50">
-      {/* Admin bar */}
-      <div className="sticky top-0 z-30 border-b border-brand-800 bg-brand-950 text-white">
-        <div className="container-page flex h-14 items-center justify-between gap-3">
+    <div className="min-h-dvh surface-page">
+      {/* Admin bar — the same night-green command surface as the hero, so the
+          admin area reads as part of the same product rather than a bolted-on
+          dashboard. */}
+      <div className="relative sticky top-0 z-30 overflow-hidden bg-brand-950 text-white shadow-3">
+        <div className="pointer-events-none absolute inset-0 grid-lines-dark opacity-30" aria-hidden="true" />
+        <div className="container-page relative flex h-14 items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <span className="grid size-7 place-items-center rounded-md bg-brand-800 text-[0.625rem] font-bold" aria-hidden="true">
-              SA
-            </span>
+            <BrandMark className="size-7" />
             <div>
-              <p className="text-sm font-semibold leading-none">Sahara AI — Administration</p>
-              <p className="mt-0.5 text-[0.625rem] text-brand-200">Review workflow · demo data</p>
+              <p className="text-[0.8125rem] font-semibold leading-none">Sahara AI</p>
+              <p className="mt-1 text-[0.5625rem] font-medium uppercase tracking-[0.14em] text-sand-300/60">
+                Administration
+              </p>
             </div>
+            <span className="ms-1 hidden rounded-full border border-white/15 bg-white/[0.07] px-2 py-0.5 text-[0.5625rem] font-semibold uppercase tracking-wider text-sand-200/80 sm:inline">
+              Review workflow
+            </span>
           </div>
           <div className="flex items-center gap-2">
-            <p className="hidden text-xs text-brand-100 sm:block">{user?.name}</p>
-            <NavLink to="/" className="rounded-md px-2 py-1 text-xs text-brand-100 hover:bg-brand-800">
+            <p className="hidden text-xs text-sand-100/70 sm:block">{user?.name}</p>
+            <NavLink
+              to="/"
+              className="rounded-lg border border-white/12 bg-white/[0.06] px-2.5 py-1 text-xs font-medium text-sand-100 transition-colors hover:bg-white/[0.12] hover:text-white"
+            >
               Exit to site
             </NavLink>
             <button
               type="button"
-              className="rounded-md p-1.5 hover:bg-brand-800 lg:hidden"
+              className="rounded-lg p-1.5 transition-colors hover:bg-white/10 lg:hidden"
               onClick={() => setMobileOpen((v) => !v)}
               aria-expanded={mobileOpen}
               aria-controls="admin-mobile-nav"
@@ -141,11 +151,11 @@ function AdminShell() {
 
       <div className="container-page grid gap-6 py-6 lg:grid-cols-[15rem_1fr]">
         <aside className="hidden lg:block">
-          <div className="sticky top-20 rounded-xl border border-ink-200 bg-white p-2">{sidebar}</div>
+          <div className="sticky top-20 rounded-xl border border-brand-900/[0.07] bg-paper p-2 shadow-1 shadow-bevel">{sidebar}</div>
         </aside>
 
         {mobileOpen && (
-          <div id="admin-mobile-nav" className="rounded-xl border border-ink-200 bg-white p-2 lg:hidden">
+          <div id="admin-mobile-nav" className="rounded-xl border border-brand-900/[0.07] bg-paper p-2 shadow-1 lg:hidden">
             {sidebar}
           </div>
         )}

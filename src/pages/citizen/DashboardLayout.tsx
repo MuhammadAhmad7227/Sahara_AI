@@ -33,17 +33,20 @@ function DashboardShell() {
 
   return (
     <div className="container-page py-6 sm:py-8">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ink-200 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-brand-900/[0.07] pb-4">
         <div className="flex items-center gap-3">
           <span
-            className="grid size-11 place-items-center rounded-full bg-brand-900 text-sm font-semibold text-white"
+            className="grid size-11 place-items-center rounded-full bg-gradient-to-b from-brand-800 to-brand-950 text-sm font-semibold text-sand-100 shadow-2 ring-1 ring-brand-950/20"
             aria-hidden="true"
           >
             {user ? initials(user.name) : 'SA'}
           </span>
           <div>
-            <p className="text-xs text-ink-500">Citizen area</p>
-            <h1 className="text-lg font-semibold tracking-tight text-ink-950">{user?.name ?? 'Your dashboard'}</h1>
+            <p className="flex items-center gap-1.5 text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-brand-700">
+              <span className="h-px w-3 bg-accent-500" aria-hidden="true" />
+              Citizen centre
+            </p>
+            <h1 className="mt-0.5 text-lg font-semibold tracking-tight text-ink-950">{user?.name ?? 'Your dashboard'}</h1>
           </div>
         </div>
         <p className="rounded-full border border-ink-200 bg-white px-2.5 py-1 text-[0.6875rem] text-ink-500">
@@ -60,8 +63,10 @@ function DashboardShell() {
                 end={tab.end}
                 className={({ isActive }) =>
                   cn(
-                    'inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                    isActive ? 'bg-brand-900 text-white' : 'text-ink-600 hover:bg-ink-100',
+                    'inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-[background-color,box-shadow,color] duration-200',
+                    isActive
+                      ? 'bg-brand-900 text-white shadow-2 shadow-bevel-dark'
+                      : 'text-ink-600 hover:bg-brand-900/[0.05] hover:text-ink-950',
                   )
                 }
               >

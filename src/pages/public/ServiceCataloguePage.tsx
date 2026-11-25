@@ -87,7 +87,7 @@ export default function ServiceCataloguePage() {
           id="filter-category"
           value={query.category}
           onChange={(e) => update({ category: e.target.value })}
-          className="h-10 w-full rounded-lg border border-ink-300 bg-white px-2.5 text-sm"
+          className="h-10 w-full rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm"
         >
           <option value="all">All categories</option>
           {serviceCategories.map((c) => (
@@ -106,7 +106,7 @@ export default function ServiceCataloguePage() {
           id="filter-department"
           value={query.department}
           onChange={(e) => update({ department: e.target.value })}
-          className="h-10 w-full rounded-lg border border-ink-300 bg-white px-2.5 text-sm"
+          className="h-10 w-full rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm"
         >
           <option value="all">All departments</option>
           {getDepartments().map((d) => (
@@ -144,7 +144,7 @@ export default function ServiceCataloguePage() {
           id="filter-sort"
           value={query.sort}
           onChange={(e) => update({ sort: e.target.value })}
-          className="h-10 w-full rounded-lg border border-ink-300 bg-white px-2.5 text-sm"
+          className="h-10 w-full rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm"
         >
           <option value="relevance">Most relevant</option>
           <option value="name">Name (A–Z)</option>
@@ -171,7 +171,7 @@ export default function ServiceCataloguePage() {
       <div className="mt-6 grid gap-6 lg:grid-cols-[16rem_1fr]">
         {/* Desktop filters */}
         <aside className="hidden lg:block" aria-label="Filters">
-          <div className="sticky top-20 rounded-xl border border-ink-200 bg-white p-4">
+          <div className="sticky top-20 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4">
             <h2 className="mb-3 flex items-center gap-1.5 text-sm font-semibold text-ink-900">
               <SlidersHorizontal className="size-4" aria-hidden="true" /> Filters
             </h2>
@@ -193,7 +193,7 @@ export default function ServiceCataloguePage() {
                 value={searchInput}
                 onChange={(e) => onSearchChange(e.target.value)}
                 placeholder="Search by service, department or keyword…"
-                className="h-11 w-full rounded-lg border border-ink-300 bg-white ps-9 pe-3 text-[0.9375rem] focus-visible:border-brand-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
+                className="h-11 w-full rounded-lg border border-brand-900/15 bg-white ps-9 pe-3 text-[0.9375rem] focus-visible:border-brand-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
               />
             </div>
             <Button
@@ -208,7 +208,7 @@ export default function ServiceCataloguePage() {
           </div>
 
           {showFilters && (
-            <div className="mb-4 rounded-xl border border-ink-200 bg-white p-4 lg:hidden">{filterPanel}</div>
+            <div className="mb-4 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 lg:hidden">{filterPanel}</div>
           )}
 
           {/* Active filter chips */}
@@ -219,7 +219,7 @@ export default function ServiceCataloguePage() {
                   <button
                     type="button"
                     onClick={() => update({ [f.key]: undefined })}
-                    className="inline-flex items-center gap-1 rounded-full border border-ink-300 bg-white px-2.5 py-1 text-xs text-ink-700 hover:border-brand-400"
+                    className="inline-flex items-center gap-1 rounded-full border border-brand-900/15 bg-white px-2.5 py-1 text-xs text-ink-700 hover:border-brand-400"
                   >
                     {f.label}
                     <X className="size-3" aria-hidden="true" />
@@ -289,7 +289,7 @@ export default function ServiceCataloguePage() {
 
           {/* Recently viewed */}
           {recentlyViewed.length > 0 && (
-            <section className="mt-8 rounded-xl border border-ink-200 bg-white p-4" aria-labelledby="recently-viewed">
+            <section className="mt-8 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4" aria-labelledby="recently-viewed">
               <div className="flex items-center justify-between gap-2">
                 <h2 id="recently-viewed" className="text-sm font-semibold text-ink-900">
                   Recently viewed

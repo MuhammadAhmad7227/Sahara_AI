@@ -67,7 +67,7 @@ export default function AdminKnowledgeBasePage() {
         {stages.map((stage, index) => {
           const count = grouped[stage.id]?.length ?? 0;
           return (
-            <div key={stage.id} className="relative rounded-xl border border-ink-200 bg-white p-3.5">
+            <div key={stage.id} className="relative rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-3.5">
               <div className="flex items-center justify-between">
                 <ReviewStatusBadge status={stage.id} />
                 <span className="text-lg font-semibold tabular text-ink-900">{loading ? '—' : count}</span>
@@ -91,7 +91,7 @@ export default function AdminKnowledgeBasePage() {
       {data && (
         <div className="grid gap-3 lg:grid-cols-4">
           {stages.map((stage) => (
-            <section key={stage.id} className="rounded-xl border border-ink-200 bg-white shadow-card" aria-label={`${stage.label} records`}>
+            <section key={stage.id} className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 shadow-bevel" aria-label={`${stage.label} records`}>
               <h2 className="border-b border-ink-100 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-ink-500">
                 {stage.label}
               </h2>

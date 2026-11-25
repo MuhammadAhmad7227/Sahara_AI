@@ -6,15 +6,14 @@ import {
   Languages,
   Mic,
   MicOff,
-  RotateCcw,
-  ShieldAlert,
-  Sparkles,
   Trash2,
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
-import { InlineNotice } from '@/components/common/States';
 import { useToast } from '@/components/common/Feedback';
 import { AssistantMessage, TypingIndicator, UserMessage } from '@/components/assistant/ChatMessage';
+import { SaharaOrb } from '@/components/brand/SaharaOrb';
+import { Drawer } from '@/components/ui/Drawer';
+import { AssistantGuide } from '@/components/assistant/AssistantGuide';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { askAssistant, sendAssistantFeedback, supportedLanguages } from '@/services/api/assistant';
@@ -148,24 +147,24 @@ export default function AssistantPage() {
     setParams({}, { replace: true });
   };
 
+  const [sourcesOpen, setSourcesOpen] = useState(false);
+
   const lastAnswer = useMemo(() => [...turns].reverse().find((turn) => turn.answer)?.answer, [turns]);
 
   return (
-    <div className="container-page py-6 sm:py-8">
-      <div className="grid gap-5 lg:grid-cols-[1fr_18rem] lg:gap-6">
+    <div className="container-page py-5 sm:py-8">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-6">
         {/* Chat column */}
-        <div className="flex min-h-[calc(100dvh-11rem)] flex-col overflow-hidden rounded-xl border border-ink-200 bg-white shadow-card">
+        <div className="flex min-h-[calc(100dvh-12rem)] flex-col overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper shadow-2 shadow-bevel">
           {/* Chat header */}
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink-200 px-4 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-brand-900/[0.07] bg-gradient-to-b from-sand-50/80 to-transparent px-3 py-2.5 sm:px-4 sm:py-3">
             <div className="flex items-center gap-2.5">
-              <span className="grid size-9 place-items-center rounded-lg bg-brand-900 text-white" aria-hidden="true">
-                <Sparkles className="size-4" />
-              </span>
+              <SaharaOrb size={38} state={pending ? 'thinking' : 'idle'} />
               <div>
-                <h1 className="text-sm font-semibold text-ink-900">Sahara AI assistant</h1>
-                <p className="flex items-center gap-1 text-[0.6875rem] text-ink-500">
-                  <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
-                  Demo retrieval · answers only from reviewed records
+                <h1 className="text-sm font-semibold tracking-tight text-ink-950">Sahara AI assistant</h1>
+                <p className="mt-0.5 flex items-center gap-1 text-[0.6875rem] text-ink-500">
+                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse-soft" aria-hidden="true" />
+                  {pending ? 'Checking reviewed records…' : 'Answers only from reviewed records'}
                 </p>
               </div>
             </div>
@@ -184,7 +183,7 @@ export default function AssistantPage() {
                     setAnswerLanguage(next);
                     setLanguage(next);
                   }}
-                  className="h-8 rounded-md border border-ink-300 bg-white ps-7 pe-6 text-xs font-medium text-ink-700"
+                  className="h-8 rounded-md border border-brand-900/15 bg-white ps-7 pe-6 text-xs font-medium text-ink-700"
                 >
                   {supportedLanguages.map((lang) => (
                     <option key={lang.id} value={lang.id}>
@@ -193,6 +192,15 @@ export default function AssistantPage() {
                   ))}
                 </select>
               </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="lg:hidden"
+                onClick={() => setSourcesOpen(true)}
+                leadingIcon={<Info className="size-3.5" aria-hidden="true" />}
+              >
+                <span className="hidden min-[420px]:inline">Sources</span>
+              </Button>
               {turns.length > 0 && (
                 <Button
                   variant="ghost"
@@ -209,17 +217,15 @@ export default function AssistantPage() {
 
           {/* Conversation */}
           <div
-            className="flex-1 space-y-4 overflow-y-auto scrollbar-slim px-3 py-4 sm:px-4"
+            className="flex-1 space-y-4 overflow-y-auto scrollbar-slim bg-cream/40 px-3 py-4 sm:px-5"
             role="log"
             aria-live="polite"
             aria-label="Conversation with Sahara AI"
           >
             {turns.length === 0 && (
               <div className="mx-auto max-w-lg py-6 text-center">
-                <span className="mx-auto grid size-12 place-items-center rounded-xl bg-brand-50 text-brand-800 ring-1 ring-brand-100">
-                  <Sparkles className="size-6" aria-hidden="true" />
-                </span>
-                <h2 className="mt-3 text-base font-semibold text-ink-900">What would you like to know?</h2>
+                <SaharaOrb size={64} state="idle" className="mx-auto" />
+                <h2 className="mt-4 text-lg font-semibold tracking-tight text-ink-950">What would you like to know?</h2>
                 <p className="mx-auto mt-1 max-w-sm text-sm leading-relaxed text-ink-600">
                   Ask about a public service, a document, a complaint or a suspicious message. Sahara AI answers
                   from reviewed records and shows the source — or tells you plainly that it has none.
@@ -234,10 +240,12 @@ export default function AssistantPage() {
                       key={question}
                       type="button"
                       onClick={() => void ask(question)}
-                      className="flex w-full items-center justify-between gap-2 rounded-lg border border-ink-200 bg-white px-3 py-2 text-start text-sm text-ink-700 transition-colors hover:border-brand-300 hover:bg-brand-50/40"
+                      className="group flex w-full items-center justify-between gap-2 rounded-xl border border-brand-900/[0.08] bg-white px-3 py-2.5 text-start text-sm text-ink-700 shadow-1 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-px hover:border-brand-900/15 hover:shadow-2"
                     >
-                      <span>{question}</span>
-                      <ArrowUp className="size-3.5 shrink-0 rotate-45 text-ink-300" aria-hidden="true" />
+                      <span className="min-w-0">{question}</span>
+                      <span className="grid size-6 shrink-0 place-items-center rounded-md bg-brand-50 text-brand-800 transition-colors group-hover:bg-brand-900 group-hover:text-white">
+                        <ArrowUp className="size-3 rotate-45 dir-arrow" aria-hidden="true" />
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -283,13 +291,13 @@ export default function AssistantPage() {
           </div>
 
           {/* Composer */}
-          <div className="border-t border-ink-200 bg-ink-50/60 p-2.5 sm:p-3">
+          <div className="border-t border-brand-900/[0.07] bg-paper p-2.5 sm:p-3">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 void ask(input);
               }}
-              className="rounded-xl border border-ink-300 bg-white p-1.5 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-500/20"
+              className="rounded-xl border border-brand-900/10 bg-white p-1.5 shadow-1 transition-[border-color,box-shadow] focus-within:border-brand-500 focus-within:shadow-2 focus-within:ring-2 focus-within:ring-brand-500/15"
             >
               <label htmlFor="assistant-input" className="sr-only">
                 Ask a question
@@ -381,94 +389,29 @@ export default function AssistantPage() {
           </div>
         </div>
 
-        {/* Side panel */}
-        <aside className="space-y-4">
-          <InlineNotice tone="info" title="How to read an answer">
-            <p>
-              The <strong>AI explanation</strong> explains the record. The{' '}
-              <strong>source information</strong> block shows who published it and when it was last checked.
-              If the two disagree, trust the source.
-            </p>
-          </InlineNotice>
-
-          <div className="rounded-xl border border-ink-200 bg-white p-4">
-            <h2 className="text-sm font-semibold text-ink-900">Answer language</h2>
-            <p className="mt-0.5 text-xs text-ink-500">
-              The interface language and the answer language can differ — ask in Urdu and read the interface in
-              English.
-            </p>
-            <div className="mt-2 grid grid-cols-2 gap-1.5 min-[380px]:grid-cols-3">
-              {supportedLanguages.map((lang) => (
-                <button
-                  key={lang.id}
-                  type="button"
-                  onClick={() => setAnswerLanguage(lang.id)}
-                  aria-pressed={answerLanguage === lang.id}
-                  className={cn(
-                    'rounded-lg border px-2 py-1.5 text-xs font-medium transition-colors',
-                    answerLanguage === lang.id
-                      ? 'border-brand-500 bg-brand-50 text-brand-900'
-                      : 'border-ink-200 text-ink-600 hover:border-ink-300',
-                  )}
-                >
-                  {lang.native}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {lastAnswer && (
-            <div className="rounded-xl border border-ink-200 bg-white p-4">
-              <h2 className="text-sm font-semibold text-ink-900">This answer</h2>
-              <dl className="mt-2 space-y-1.5 text-xs">
-                <div className="flex justify-between gap-2">
-                  <dt className="text-ink-500">Intent</dt>
-                  <dd className="font-medium text-ink-800">{lastAnswer.intent.replace(/_/g, ' ')}</dd>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <dt className="text-ink-500">Records retrieved</dt>
-                  <dd className="font-medium text-ink-800 tabular">{lastAnswer.retrievedRecordCount}</dd>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <dt className="text-ink-500">Sources cited</dt>
-                  <dd className="font-medium text-ink-800 tabular">{lastAnswer.sources.length}</dd>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <dt className="text-ink-500">Engine</dt>
-                  <dd className="font-medium text-ink-800">Demo retrieval</dd>
-                </div>
-              </dl>
-              <p className="mt-2 border-t border-ink-100 pt-2 text-[0.6875rem] leading-relaxed text-ink-500">
-                The language-model call is produced by the backend once the Gemini integration is connected. This
-                build assembles the answer directly from the stored record.
-              </p>
-            </div>
-          )}
-
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-            <h2 className="flex items-center gap-1.5 text-sm font-semibold text-amber-900">
-              <ShieldAlert className="size-4" aria-hidden="true" /> Never share secrets
-            </h2>
-            <p className="mt-1 text-xs leading-relaxed text-amber-900">
-              Do not type your password, OTP, PIN or full CNIC into this assistant. Sahara AI never asks for them,
-              and anything you type here is processed as part of your question.
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-ink-200 bg-white p-4 text-xs leading-relaxed text-ink-600">
-            <p className="flex items-start gap-1.5">
-              <Info className="mt-0.5 size-3.5 shrink-0 text-ink-400" aria-hidden="true" />
-              Conversations are kept in this browser tab only (session storage). Clearing the conversation removes
-              them.
-            </p>
-            {turns.length > 0 && (
-              <Button variant="ghost" size="sm" className="mt-2" onClick={clearConversation} leadingIcon={<RotateCcw className="size-3.5" aria-hidden="true" />}>
-                Start a new conversation
-              </Button>
-            )}
-          </div>
-        </aside>
       </div>
+
+      {/* Guidance rail on desktop (sticky), Drawer on mobile. */}
+      <aside className="hidden lg:block" aria-label="Sources and answer guidance">
+        <div className="sticky top-20">
+          <AssistantGuide lastAnswer={lastAnswer} answerLanguage={answerLanguage} setAnswerLanguage={setAnswerLanguage} onClear={turns.length > 0 ? clearConversation : undefined} />
+        </div>
+      </aside>
+
+      <Drawer
+        open={sourcesOpen}
+        onClose={() => setSourcesOpen(false)}
+        title="Sources and guidance"
+        description="How to read an answer, and what this assistant will not do"
+        size="md"
+      >
+        <AssistantGuide
+          lastAnswer={lastAnswer}
+          answerLanguage={answerLanguage}
+          setAnswerLanguage={setAnswerLanguage}
+          onClear={turns.length > 0 ? clearConversation : undefined}
+        />
+      </Drawer>
     </div>
   );
 }

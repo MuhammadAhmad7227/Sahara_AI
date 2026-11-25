@@ -115,7 +115,7 @@ export default function ScamDetectorPage() {
               rows={6}
               maxLength={2000}
               placeholder={'Example: Dear customer, your account will be blocked within 2 hours. Share the OTP you received to verify your CNIC.'}
-              className="w-full rounded-lg border border-ink-300 bg-white px-3 py-2.5 text-sm leading-relaxed"
+              className="w-full rounded-lg border border-brand-900/15 bg-white px-3 py-2.5 text-sm leading-relaxed"
             />
             <div className="mt-1 flex flex-wrap items-center justify-between gap-2 text-xs text-ink-500">
               <span>
@@ -291,7 +291,7 @@ export default function ScamDetectorPage() {
             </p>
           </InlineNotice>
 
-          <div className="rounded-xl border border-ink-200 bg-white p-4">
+          <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4">
             <h2 className="text-sm font-semibold text-ink-900">Common indicators</h2>
             <ul className="mt-2 space-y-1.5 text-xs text-ink-600">
               <li>· Requests an OTP, PIN or password</li>
@@ -305,7 +305,7 @@ export default function ScamDetectorPage() {
             </ul>
           </div>
 
-          <div className="rounded-xl border border-ink-200 bg-white p-4 text-xs leading-relaxed text-ink-600">
+          <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 text-xs leading-relaxed text-ink-600">
             <h2 className="mb-1 text-sm font-semibold text-ink-900">If you already shared details</h2>
             <p>Contact your bank immediately using the number on your card, then report the incident to the official cybercrime channel.</p>
             <LinkButton to="/emergency" variant="outline" size="sm" className="mt-2">

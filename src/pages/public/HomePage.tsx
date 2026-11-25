@@ -1,21 +1,44 @@
+/**
+ * HomePage — "Premium Civic Command Center".
+ *
+ * Structure (deliberate, not decorative):
+ *   1. Hero            — who this is for, what it does, and a live product panel
+ *   2. Trust strip     — provenance states, stated plainly
+ *   3. How it works    — the six-stage pipeline as a CONNECTED pathway
+ *   4. Service universe— categories arranged around the Sahara mark
+ *   5. Popular records — real records from the mock API
+ *   6. Capabilities    — what the platform does, and what it refuses to do
+ *   7. Coverage        — Punjab-first, honestly scoped
+ *   8. Closing CTA
+ *
+ * Copy rules enforced here: no "AI-powered", no invented statistics, no
+ * testimonial, no government affiliation, no promise of an outcome.
+ */
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
+  ArrowUpRight,
   BadgeCheck,
   BookOpenCheck,
+  Building2,
   FileText,
   Gauge,
+  Landmark,
   Languages,
-  Mic,
+  MapPin,
   MessagesSquare,
+  Mic,
+  Scale,
   ScrollText,
   ShieldAlert,
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
 import { LinkButton } from '@/components/common/Button';
-import { Badge, VerificationBadge } from '@/components/common/Badge';
+import { VerificationBadge } from '@/components/common/Badge';
 import { CardGridSkeleton, ErrorState } from '@/components/common/States';
+import { Reveal } from '@/components/common/Reveal';
+import { SaharaOrb } from '@/components/brand/SaharaOrb';
 import { ServiceCard } from '@/components/services/ServiceCard';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
@@ -24,227 +47,453 @@ import { getPopularServices } from '@/services/api/services';
 import { errorMessage } from '@/services/api/errors';
 import { cn } from '@/utils/cn';
 
-const quickActions = [
-  { to: '/assistant', label: 'Ask AI', description: 'A question in your own words, in your language.', icon: MessagesSquare },
-  { to: '/services', label: 'Find a service', description: 'Browse reviewed public-service records.', icon: BookOpenCheck },
-  { to: '/applications', label: 'Generate application', description: 'Prepare an editable draft for an office.', icon: FileText },
-  { to: '/readiness', label: 'Check documents', description: 'Compare your papers with a checklist.', icon: Gauge },
-  { to: '/scam-detector', label: 'Detect a scam', description: 'Check a suspicious SMS or WhatsApp message.', icon: ShieldAlert },
-  { to: '/complaints', label: 'Draft a complaint', description: 'Write a clear complaint about a service.', icon: ScrollText },
-];
-
-const whyPoints = [
-  { title: 'Grounded in reviewed records', body: 'Answers come from records a reviewer has checked, with the publisher and the date checked shown next to them.', icon: ShieldCheck },
-  { title: 'Plain language, three languages', body: 'Urdu, Punjabi and English, with a right-to-left interface and a voice input where your browser supports it.', icon: Languages },
-  { title: 'Guided tasks, not just answers', body: 'Drafts, checklists and complaint templates help you finish the task after you understand it.', icon: Sparkles },
-  { title: 'Honest about the limits', body: 'When no reviewed record exists, Sahara AI says so instead of inventing a fee, a form or a phone number.', icon: BadgeCheck },
-];
+/* -------------------------------------------------------------------------- */
+/* Content                                                                    */
+/* -------------------------------------------------------------------------- */
 
 const pipeline = [
-  { step: '01', title: 'You ask', body: 'Type or speak your question in Urdu, Punjabi or English.' },
-  { step: '02', title: 'Reviewed records are retrieved', body: 'Sahara AI searches the curated knowledge base, not the open internet.' },
-  { step: '03', title: 'The AI explains', body: 'The model explains only what the retrieved record contains.' },
-  { step: '04', title: 'You see the source and act', body: 'The publisher and the date checked are shown, with a tool to help you complete the task.' },
+  {
+    step: '01',
+    title: 'You ask',
+    body: 'Type or speak in Urdu, Punjabi or English. No account needed to start.',
+    icon: Mic,
+  },
+  {
+    step: '02',
+    title: 'Sahara understands',
+    body: 'The question is read for a service, a document or an intent — not just keywords.',
+    icon: Languages,
+  },
+  {
+    step: '03',
+    title: 'Records are verified',
+    body: 'Only records a reviewer has approved and published are eligible to be retrieved.',
+    icon: ShieldCheck,
+  },
+  {
+    step: '04',
+    title: 'Sources are retrieved',
+    body: 'The matching record is pulled with its publisher, official URL and date checked.',
+    icon: BookOpenCheck,
+  },
+  {
+    step: '05',
+    title: 'The AI explains',
+    body: 'The model explains the record in plain language. It cannot add facts of its own.',
+    icon: Sparkles,
+  },
+  {
+    step: '06',
+    title: 'You act',
+    body: 'Read the checklist, prepare a draft, or open the tool that helps you finish the task.',
+    icon: FileText,
+  },
 ];
+
+const serviceUniverse = [
+  { label: 'Identity', detail: 'Domicile · CNIC', to: '/services?category=identity', icon: BadgeCheck },
+  { label: 'Travel', detail: 'Passport · B-Form', to: '/services?category=travel', icon: MapPin },
+  { label: 'Welfare', detail: 'BISP · Zakat', to: '/welfare', icon: Building2 },
+  { label: 'Utilities', detail: 'Electricity · Gas', to: '/services?category=utilities', icon: Gauge },
+  { label: 'Complaints', detail: 'Draft · Escalate', to: '/complaints', icon: ScrollText },
+  { label: 'Legal', detail: 'FIR · Rights', to: '/legal', icon: Scale },
+];
+
+const capabilities = [
+  {
+    title: 'Answers with a visible source',
+    body: 'Every response shows the publisher, the record title and the date it was last checked — or says that no reviewed record exists.',
+    icon: ShieldCheck,
+    tone: 'green' as const,
+  },
+  {
+    title: 'Voice-first, three languages',
+    body: 'Urdu, Punjabi and English, with a right-to-left interface and browser speech input where it is supported.',
+    icon: Mic,
+    tone: 'gold' as const,
+  },
+  {
+    title: 'Finishes the task, not just the answer',
+    body: 'Document checklists, application drafts and complaint templates that you review and submit yourself.',
+    icon: FileText,
+    tone: 'green' as const,
+  },
+  {
+    title: 'Clear about its limits',
+    body: 'No government database access, no submission, no guaranteed eligibility, no claim that a message is definitely a scam.',
+    icon: ShieldAlert,
+    tone: 'sand' as const,
+  },
+];
+
+const scope = [
+  { label: 'Punjab', detail: '16 service records across 7 departments', status: 'In review' },
+  { label: 'Federal', detail: 'Passport and NADRA guidance', status: 'In review' },
+  { label: 'Sindh · KP · Balochistan', detail: 'Structure ready, records not yet authored', status: 'Planned' },
+];
+
+/* -------------------------------------------------------------------------- */
+/* Page                                                                       */
+/* -------------------------------------------------------------------------- */
 
 export default function HomePage() {
   const { t } = useLanguage();
   useDocumentTitle(
-    'Sahara AI — Civic, legal and public service guidance for Pakistan',
-    'Ask about public services in Urdu, Punjabi or English and get source-referenced answers, application drafts, document readiness checks and scam indicators.',
+    'Sahara AI — Civic services for Pakistani citizens',
+    'Ask about public services, documents, applications, complaints and public information in English, Urdu or Punjabi. Answers cite the reviewed source and the date it was checked.',
   );
 
   const { data: services, loading, error, reload } = useAsync(() => getPopularServices(4), []);
 
   return (
     <>
-      {/* ------------------------------------------------------------------ */}
-      {/* Hero                                                               */}
-      {/* ------------------------------------------------------------------ */}
-      <section className="relative overflow-hidden border-b border-ink-200 bg-white">
+      {/* ================================================================== */}
+      {/* 1 · Hero                                                           */}
+      {/* ================================================================== */}
+      <section className="relative overflow-hidden" aria-labelledby="hero-heading">
+        {/* Warm field + surveyed grid. Both are inert decorations. */}
+        <div className="pointer-events-none absolute inset-0 surface-page" aria-hidden="true" />
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.55]"
-          style={{
-            backgroundImage:
-              'radial-gradient(ellipse 60% 60% at 85% 0%, var(--color-brand-100), transparent 60%), radial-gradient(ellipse 50% 50% at 0% 100%, var(--color-sand-100), transparent 60%)',
-          }}
+          className="pointer-events-none absolute inset-0 grid-lines opacity-[0.55] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_20%,black,transparent_75%)]"
           aria-hidden="true"
         />
-        <div className="container-page relative py-12 sm:py-16 lg:py-20">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
-            <div>
-              <p className="inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-900">
-                <span className="size-1.5 rounded-full bg-brand-600" aria-hidden="true" />
-                {t('home.eyebrow')}
+        <div
+          className="pointer-events-none absolute -end-40 -top-40 size-[34rem] rounded-full bg-brand-200/25 blur-[120px]"
+          aria-hidden="true"
+        />
+
+        <div className="container-page relative pb-16 pt-10 sm:pb-20 sm:pt-14 lg:pb-24 lg:pt-16">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12 xl:gap-16">
+            {/* ---- Copy ---- */}
+            <div className="relative">
+              <p className="inline-flex items-center gap-2 rounded-full border border-brand-900/10 bg-paper/80 py-1 pe-3 ps-1 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-brand-800 shadow-1 backdrop-blur">
+                <span className="grid size-5 place-items-center rounded-full bg-brand-900 text-[0.5rem] text-accent-300">
+                  ●
+                </span>
+                Built for citizens of Pakistan
               </p>
 
-              <h1 className="mt-4 text-[1.75rem] font-semibold leading-[1.18] tracking-tight text-ink-950 sm:text-4xl lg:text-[2.9rem]">
-                Your AI-powered guide to public services, applications, complaints and civic information.
+              <h1
+                id="hero-heading"
+                className="mt-5 text-[2.15rem] font-semibold leading-[1.06] tracking-[-0.03em] text-ink-950 sm:text-[3rem] lg:text-[3.5rem]"
+              >
+                Government services,
+                <br />
+                <span className="display-serif italic text-brand-800">explained simply.</span>
               </h1>
 
-              <p className="mt-4 max-w-xl text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">
-                {t('home.subtitle')}
+              <p className="mt-5 max-w-[34rem] text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">
+                Ask Sahara about civic services, documents, applications, complaints and public
+                information in English, Urdu or Punjabi. Every answer points to the reviewed record it
+                came from — or tells you plainly that no reliable record exists.
               </p>
 
-              <div className="mt-6 flex flex-wrap items-center gap-2.5">
-                <LinkButton to="/assistant" size="lg" trailingIcon={<ArrowRight className="size-4 dir-arrow" aria-hidden="true" />}>
-                  {t('home.primaryCta')}
+              <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+                <LinkButton
+                  to="/assistant"
+                  size="lg"
+                  trailingIcon={<ArrowRight className="size-4 dir-arrow" aria-hidden="true" />}
+                >
+                  {t('nav.talkToSahara')}
                 </LinkButton>
                 <LinkButton to="/services" size="lg" variant="outline">
-                  {t('home.secondaryCta')}
+                  Explore services
                 </LinkButton>
               </div>
 
-              <dl className="mt-8 grid max-w-lg grid-cols-1 gap-4 border-t border-ink-200 pt-5 min-[380px]:grid-cols-3">
-                <div>
-                  <dt className="text-xs text-ink-500">Languages</dt>
-                  <dd className="mt-0.5 text-sm font-medium text-ink-900">Urdu · Punjabi · English</dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-ink-500">Every answer shows</dt>
-                  <dd className="mt-0.5 text-sm font-medium text-ink-900">Source + date checked</dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-ink-500">Access</dt>
-                  <dd className="mt-0.5 text-sm font-medium text-ink-900">Free, no account needed</dd>
-                </div>
+              <dl className="mt-8 grid max-w-lg grid-cols-1 gap-x-6 gap-y-3 border-t border-brand-900/10 pt-5 min-[380px]:grid-cols-3">
+                {[
+                  ['Languages', 'Urdu · Punjabi · English'],
+                  ['Every answer', 'Source + date checked'],
+                  ['Access', 'Free, no account needed'],
+                ].map(([dt, dd]) => (
+                  <div key={dt}>
+                    <dt className="text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">
+                      {dt}
+                    </dt>
+                    <dd className="mt-1 text-[0.8125rem] font-medium leading-snug text-ink-900">{dd}</dd>
+                  </div>
+                ))}
               </dl>
             </div>
 
-            {/* Voice / assistant visual */}
-            <div className="relative">
-              <div className="rounded-2xl border border-ink-200 bg-white p-4 shadow-raised sm:p-5">
-                <div className="flex items-center justify-between gap-2 border-b border-ink-100 pb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="grid size-8 place-items-center rounded-lg bg-brand-900 text-white" aria-hidden="true">
-                      <Sparkles className="size-4" />
-                    </span>
-                    <div>
-                      <p className="text-sm font-medium text-ink-900">Sahara AI assistant</p>
-                      <p className="text-[0.6875rem] text-ink-500">Grounded in reviewed records</p>
+            {/* ---- Product panel: the hero object ---- */}
+            <div className="relative mx-auto w-full max-w-[30rem] lg:max-w-none">
+              {/* Contact shadow grounds the panel on the page. */}
+              <div
+                className="pointer-events-none absolute inset-x-8 -bottom-6 h-16 rounded-[50%] bg-brand-950/20 blur-2xl"
+                aria-hidden="true"
+              />
+
+              <div
+                className="relative panel-night overflow-hidden"
+                style={{ transform: 'perspective(1400px) rotateY(-1.5deg) rotateX(1deg)' }}
+              >
+                <div className="pointer-events-none absolute inset-0 grid-lines-dark opacity-60" aria-hidden="true" />
+                <div
+                  className="pointer-events-none absolute -end-16 -top-16 size-56 rounded-full bg-accent-500/20 blur-3xl"
+                  aria-hidden="true"
+                />
+
+                {/* Panel chrome */}
+                <div className="relative flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
+                  <div className="flex items-center gap-2.5">
+                    <SaharaOrb size={30} />
+                    <div className="leading-none">
+                      <p className="text-[0.8125rem] font-semibold text-white">Sahara AI</p>
+                      <p className="mt-1 text-[0.625rem] uppercase tracking-[0.12em] text-sand-300/70">
+                        Assistant
+                      </p>
                     </div>
                   </div>
-                  <Badge tone="brand">Demo</Badge>
-                </div>
-
-                <div className="space-y-2.5 py-3.5" aria-hidden="true">
-                  <div className="ms-auto max-w-[85%] rounded-xl rounded-ee-sm bg-brand-900 px-3 py-2 text-sm text-white">
-                    Mujhe domicile banwana hai, kya documents chahiye?
-                  </div>
-                  <div className="max-w-[92%] rounded-xl rounded-es-sm bg-ink-100 px-3 py-2.5 text-sm text-ink-800">
-                    <p>
-                      The reviewed record lists a CNIC copy, proof of residence and photographs as
-                      required documents. Fee information is not currently verified.
-                    </p>
-                    <div className="mt-2 flex flex-wrap items-center gap-1.5 border-t border-ink-200 pt-2 text-[0.6875rem]">
-                      <span className="font-semibold uppercase tracking-wider text-ink-500">Source</span>
-                      <span className="rounded bg-white px-1.5 py-0.5 text-ink-700 ring-1 ring-ink-200">
-                        District Administration
-                      </span>
-                      <span className="rounded bg-amber-50 px-1.5 py-0.5 text-amber-800 ring-1 ring-amber-200">
-                        Pending verification
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 rounded-lg border border-ink-200 bg-ink-50 p-1.5">
-                  <Mic className="ms-1 size-4 text-brand-800" aria-hidden="true" />
-                  <span className="flex-1 text-xs text-ink-500">Ask in your language…</span>
-                  <span className="rounded-md bg-brand-900 px-2.5 py-1.5 text-xs font-medium text-white">
-                    {t('action.askAi')}
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-emerald-200">
+                    <span className="size-1.5 rounded-full bg-emerald-300 animate-pulse-soft" />
+                    Grounded
                   </span>
+                </div>
+
+                {/* Conversation */}
+                <div className="relative space-y-3 px-4 py-4">
+                  <div className="flex justify-end">
+                    <p className="max-w-[85%] rounded-2xl rounded-ee-md bg-white/12 px-3.5 py-2 text-[0.8125rem] leading-relaxed text-sand-50 ring-1 ring-white/10 backdrop-blur-sm">
+                      Mera domicile banwanay ke liye kya chahiye?
+                    </p>
+                  </div>
+
+                  <div className="flex gap-2.5">
+                    <SaharaOrb size={24} className="mt-0.5" />
+                    <div className="min-w-0 flex-1">
+                      <div className="rounded-2xl rounded-es-md border border-white/10 bg-white/[0.06] px-3.5 py-2.5 backdrop-blur-sm">
+                        <p className="text-[0.8125rem] leading-relaxed text-sand-50">
+                          The reviewed record lists three documents. The fee is not currently verified,
+                          so Sahara will not quote one.
+                        </p>
+
+                        <ul className="mt-2.5 space-y-1.5 border-t border-white/10 pt-2.5">
+                          {['CNIC copy', 'Proof of residence', 'Two photographs'].map((item) => (
+                            <li
+                              key={item}
+                              className="flex items-center gap-1.5 text-[0.75rem] text-sand-200"
+                            >
+                              <ShieldCheck className="size-3 shrink-0 text-emerald-300" aria-hidden="true" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Provenance — the whole point of the product, made visible. */}
+                      <div className="mt-2 flex flex-wrap items-center gap-1.5 rounded-lg border border-white/10 bg-brand-950/40 px-2.5 py-1.5">
+                        <span className="text-[0.5625rem] font-semibold uppercase tracking-[0.12em] text-sand-300/60">
+                          Source
+                        </span>
+                        <span className="text-[0.6875rem] font-medium text-sand-100">
+                          District Administration (Punjab)
+                        </span>
+                        <span className="ms-auto inline-flex items-center gap-1 rounded bg-amber-400/15 px-1.5 py-0.5 text-[0.5625rem] font-semibold uppercase tracking-wide text-amber-200">
+                          <ShieldAlert className="size-2.5" aria-hidden="true" />
+                          Pending verification
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Composer */}
+                <div className="relative border-t border-white/10 px-3 py-3">
+                  <div className="flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.07] py-1 pe-1 ps-3 backdrop-blur-sm">
+                    <Mic className="size-3.5 shrink-0 text-sand-300/70" aria-hidden="true" />
+                    <span className="flex-1 truncate text-[0.75rem] text-sand-200/60">
+                      Ask in your language…
+                    </span>
+                    <span className="rounded-lg bg-accent-500 px-2.5 py-1.5 text-[0.6875rem] font-semibold text-brand-950">
+                      Ask
+                    </span>
+                  </div>
+                  <p className="mt-2 text-center text-[0.5625rem] leading-relaxed text-sand-300/45">
+                    Demonstration conversation · sample record shown with generic office labels
+                  </p>
                 </div>
               </div>
 
-              <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-[0.6875rem] leading-relaxed text-amber-900">
-                This is a demonstration build. Records show a verification badge and the date they were
-                checked; demonstration records are labelled <strong>Demo data</strong>.
+              {/* Floating corroboration card — level 3 above the hero object. */}
+              <div className="absolute -bottom-5 -start-3 hidden w-44 animate-float-slow panel px-3 py-2.5 sm:block">
+                <div className="flex items-center gap-1.5">
+                  <ShieldCheck className="size-3.5 text-brand-700" aria-hidden="true" />
+                  <p className="text-[0.6875rem] font-semibold text-ink-900">Answer checkable</p>
+                </div>
+                <p className="mt-1 text-[0.625rem] leading-relaxed text-ink-500">
+                  Publisher, record and date are always shown.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Quick actions                                                      */}
-      {/* ------------------------------------------------------------------ */}
-      <section className="container-page py-10 sm:py-12" aria-labelledby="quick-actions">
-        <div className="mb-5 flex items-end justify-between gap-4">
-          <div>
-            <h2 id="quick-actions" className="text-xl font-semibold tracking-tight text-ink-900">
-              {t('home.quickActions')}
-            </h2>
-            <p className="mt-1 text-sm text-ink-600">Six tools, one place. No account required to start.</p>
+      {/* ================================================================== */}
+      {/* 2 · Trust strip                                                    */}
+      {/* ================================================================== */}
+      <section className="border-y border-brand-900/[0.07] bg-paper/70" aria-label="Verification states">
+        <div className="container-page flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-ink-500">
+            Every record carries one of three states
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <VerificationBadge status="verified" />
+            <VerificationBadge status="pending_verification" />
+            <VerificationBadge status="demo" />
           </div>
         </div>
-
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {quickActions.map((action) => (
-            <li key={action.to}>
-              <Link
-                to={action.to}
-                className="group relative flex h-full items-start gap-3 rounded-xl border border-ink-200 bg-white p-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-raised"
-              >
-                <span
-                  className="grid size-9 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-800 ring-1 ring-brand-100 transition-colors group-hover:bg-brand-900 group-hover:text-white"
-                  aria-hidden="true"
-                >
-                  <action.icon className="size-4.5" />
-                </span>
-                <span className="min-w-0">
-                  <span className="flex items-center gap-1 text-sm font-semibold text-ink-900">
-                    {action.label}
-                    <ArrowRight
-                      className="size-3.5 text-ink-300 transition-transform group-hover:translate-x-0.5 group-hover:text-brand-700 dir-arrow"
-                      aria-hidden="true"
-                    />
-                  </span>
-                  <span className="mt-0.5 block text-xs leading-relaxed text-ink-500">{action.description}</span>
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
       </section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* How it works                                                       */}
-      {/* ------------------------------------------------------------------ */}
-      <section className="border-y border-ink-200 bg-white" aria-labelledby="how-it-works">
-        <div className="container-page py-10 sm:py-14">
-          <div className="max-w-2xl">
-            <h2 id="how-it-works" className="text-xl font-semibold tracking-tight text-ink-900 sm:text-2xl">
-              {t('home.howItWorks')}
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-ink-600">
-              Sahara AI is retrieval-augmented: the model explains, and the reviewed knowledge base
-              supplies the facts. That order is what makes the answer checkable.
+      {/* ================================================================== */}
+      {/* 3 · How Sahara works                                               */}
+      {/* ================================================================== */}
+      <section className="relative" aria-labelledby="how-it-works">
+        <div className="container-page py-14 sm:py-20">
+          <Reveal className="max-w-2xl">
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-brand-700">
+              How Sahara works
             </p>
-          </div>
+            <h2
+              id="how-it-works"
+              className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-ink-950 sm:text-[2rem]"
+            >
+              Knowledge provides the facts.
+              <br />
+              <span className="display-serif italic text-brand-800">The AI explains them.</span>
+            </h2>
+            <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-600">
+              Retrieval happens before generation. That order is what makes an answer checkable — and
+              what stops the model from inventing a fee or a form number.
+            </p>
+          </Reveal>
 
-          <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {pipeline.map((item) => (
-              <li key={item.step} className="relative rounded-xl border border-ink-200 bg-ink-50/60 p-4">
-                <span className="text-xs font-semibold tabular text-brand-700">{item.step}</span>
-                <h3 className="mt-1.5 text-sm font-semibold text-ink-900">{item.title}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-ink-600">{item.body}</p>
-              </li>
+          {/* Connected pathway: a rule runs through all six stages. */}
+          <ol className="mt-10 grid gap-x-5 gap-y-8 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
+            {pipeline.map((item, index) => (
+              <Reveal as="li" key={item.step} delay={index * 60} className="relative">
+                <div className="flex items-center gap-3">
+                  <span className="relative grid size-10 shrink-0 place-items-center rounded-xl border border-brand-900/10 bg-paper text-brand-800 shadow-1">
+                    <item.icon className="size-[1.05rem]" aria-hidden="true" />
+                    <span className="absolute -top-1.5 -end-1.5 rounded-full bg-brand-900 px-1.5 py-px text-[0.5625rem] font-bold tabular text-accent-300 ring-2 ring-cream">
+                      {item.step}
+                    </span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="h-px flex-1 bg-gradient-to-r from-brand-900/15 to-transparent"
+                  />
+                </div>
+                <h3 className="mt-3 text-[0.9375rem] font-semibold text-ink-950">{item.title}</h3>
+                <p className="mt-1 text-[0.8125rem] leading-relaxed text-ink-600">{item.body}</p>
+              </Reveal>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Popular services                                                   */}
-      {/* ------------------------------------------------------------------ */}
-      <section className="container-page py-10 sm:py-12" aria-labelledby="popular-services">
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+      {/* ================================================================== */}
+      {/* 4 · Service universe                                               */}
+      {/* ================================================================== */}
+      <section
+        className="relative overflow-hidden border-y border-brand-900/[0.07] bg-white"
+        aria-labelledby="service-universe"
+      >
+        <div className="pointer-events-none absolute inset-0 grain" aria-hidden="true" />
+        <div className="container-page relative py-14 sm:py-20">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-16">
+            <Reveal>
+              <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-brand-700">
+                Service universe
+              </p>
+              <h2
+                id="service-universe"
+                className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-ink-950 sm:text-[2rem]"
+              >
+                One place for the errands
+                <br />
+                <span className="display-serif italic text-brand-800">that take three offices.</span>
+              </h2>
+              <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-600">
+                Identity papers, utility complaints, welfare schemes and legal basics — organised by what
+                you are trying to do, not by which department owns it.
+              </p>
+              <LinkButton to="/services" variant="outline" className="mt-6" trailingIcon={<ArrowRight className="size-4 dir-arrow" aria-hidden="true" />}>
+                Browse all 16 records
+              </LinkButton>
+            </Reveal>
+
+            {/* Orbital map on lg+, clean grid below. */}
+            <Reveal delay={120}>
+              <div className="relative mx-auto hidden aspect-square w-full max-w-[26rem] lg:block">
+                {/* Orbit rings */}
+                <span className="absolute inset-[9%] rounded-full border border-dashed border-brand-900/15" aria-hidden="true" />
+                <span className="absolute inset-[22%] rounded-full border border-brand-900/10" aria-hidden="true" />
+
+                {/* Centre */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <SaharaOrb size={112} />
+                </div>
+
+                {serviceUniverse.map((item, index) => {
+                  const angle = (index / serviceUniverse.length) * Math.PI * 2 - Math.PI / 2;
+                  const radius = 41; // % of container
+                  const x = 50 + Math.cos(angle) * radius;
+                  const y = 50 + Math.sin(angle) * radius;
+                  return (
+                    <Link
+                      key={item.label}
+                      to={item.to}
+                      style={{ left: `${x}%`, top: `${y}%` }}
+                      className="group absolute -translate-x-1/2 -translate-y-1/2 rounded-xl border border-brand-900/10 bg-paper px-3 py-2 text-center shadow-2 shadow-bevel transition-[transform,box-shadow] duration-300 hover:scale-[1.04] hover:shadow-3 focus-visible:scale-[1.04]"
+                    >
+                      <item.icon className="mx-auto size-3.5 text-brand-700" aria-hidden="true" />
+                      <span className="mt-1 block text-[0.75rem] font-semibold leading-none text-ink-900">
+                        {item.label}
+                      </span>
+                      <span className="mt-0.5 block whitespace-nowrap text-[0.625rem] text-ink-500">
+                        {item.detail}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Mobile: 2-col grid, no orbits. */}
+              <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:hidden">
+                {serviceUniverse.map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      to={item.to}
+                      className="flex h-full flex-col rounded-xl border border-brand-900/10 bg-paper p-3 shadow-1 shadow-bevel transition-shadow hover:shadow-2"
+                    >
+                      <item.icon className="size-4 text-brand-700" aria-hidden="true" />
+                      <span className="mt-2 text-[0.8125rem] font-semibold text-ink-950">{item.label}</span>
+                      <span className="mt-0.5 text-[0.6875rem] leading-snug text-ink-500">{item.detail}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================== */}
+      {/* 5 · Popular records                                                */}
+      {/* ================================================================== */}
+      <section className="container-page py-14 sm:py-20" aria-labelledby="popular-services">
+        <Reveal className="mb-6 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 id="popular-services" className="text-xl font-semibold tracking-tight text-ink-900">
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-brand-700">
+              Most requested
+            </p>
+            <h2 id="popular-services" className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-ink-950">
               {t('home.popularServices')}
             </h2>
-            <p className="mt-1 text-sm text-ink-600">
+            <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-ink-600">
               Each record lists documents, steps and its source — or says plainly that a detail is not yet
               verified.
             </p>
@@ -252,7 +501,7 @@ export default function HomePage() {
           <LinkButton to="/services" variant="ghost" size="sm" trailingIcon={<ArrowRight className="size-4 dir-arrow" aria-hidden="true" />}>
             All services
           </LinkButton>
-        </div>
+        </Reveal>
 
         {loading && <CardGridSkeleton count={4} />}
         {!loading && error && (
@@ -265,107 +514,192 @@ export default function HomePage() {
             ))}
           </div>
         )}
+
+        {/* Secondary tools — deliberately quieter than the records above. */}
+        <Reveal className="mt-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { to: '/applications', label: 'Generate an application', icon: FileText },
+            { to: '/readiness', label: 'Check my documents', icon: Gauge },
+            { to: '/scam-detector', label: 'Check a suspicious message', icon: ShieldAlert },
+            { to: '/complaints', label: 'Draft a complaint', icon: MessagesSquare },
+          ].map((tool) => (
+            <Link
+              key={tool.to}
+              to={tool.to}
+              className="group flex items-center gap-2.5 rounded-xl border border-brand-900/[0.07] bg-paper/70 px-3 py-2.5 shadow-1 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-brand-900/15 hover:shadow-2"
+            >
+              <span className="grid size-8 place-items-center rounded-lg bg-sand-100 text-brand-800 ring-1 ring-brand-900/[0.06]">
+                <tool.icon className="size-4" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1 text-[0.8125rem] font-medium text-ink-800">{tool.label}</span>
+              <ArrowUpRight
+                className="size-3.5 shrink-0 text-ink-400 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:text-brand-700"
+                aria-hidden="true"
+              />
+            </Link>
+          ))}
+        </Reveal>
       </section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Why Sahara AI                                                      */}
-      {/* ------------------------------------------------------------------ */}
-      <section className="border-y border-ink-200 bg-white" aria-labelledby="why-sahara">
-        <div className="container-page py-10 sm:py-14">
-          <h2 id="why-sahara" className="text-xl font-semibold tracking-tight text-ink-900 sm:text-2xl">
-            {t('home.whyTitle')}
-          </h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {whyPoints.map((point) => (
-              <div key={point.title} className="flex items-start gap-3 rounded-xl border border-ink-200 p-4">
-                <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-sand-100 text-sand-800" aria-hidden="true">
-                  <point.icon className="size-4.5" />
-                </span>
-                <div>
-                  <h3 className="text-sm font-semibold text-ink-900">{point.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-ink-600">{point.body}</p>
+      {/* ================================================================== */}
+      {/* 6 · Capabilities                                                   */}
+      {/* ================================================================== */}
+      <section className="border-y border-brand-900/[0.07] bg-white" aria-labelledby="capabilities">
+        <div className="container-page py-14 sm:py-20">
+          <Reveal className="max-w-2xl">
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-brand-700">
+              Capabilities and limits
+            </p>
+            <h2 id="capabilities" className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-ink-950 sm:text-[2rem]">
+              {t('home.whyTitle')}
+            </h2>
+          </Reveal>
+
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            {capabilities.map((item, index) => (
+              <Reveal key={item.title} delay={index * 70}>
+                <div className="group flex h-full items-start gap-3.5 rounded-xl border border-brand-900/[0.07] bg-cream/50 p-4 shadow-1 shadow-bevel transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-2">
+                  <span
+                    className={cn(
+                      'grid size-10 shrink-0 place-items-center rounded-xl ring-1 ring-inset',
+                      item.tone === 'green' && 'bg-brand-900 text-accent-300 ring-brand-950/40',
+                      item.tone === 'gold' && 'bg-accent-500/15 text-accent-700 ring-accent-500/25',
+                      item.tone === 'sand' && 'bg-sand-200/60 text-sand-800 ring-sand-300',
+                    )}
+                  >
+                    <item.icon className="size-[1.05rem]" aria-hidden="true" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-[0.9375rem] font-semibold text-ink-950">{item.title}</h3>
+                    <p className="mt-1 text-[0.8125rem] leading-relaxed text-ink-600">{item.body}</p>
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
+
+          {/* The "never" statement gets its own weight — it is not fine print. */}
+          <Reveal className="mt-6 overflow-hidden rounded-2xl border border-amber-900/15 bg-amber-50/60">
+            <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:gap-5 sm:p-5">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-amber-500/15 text-amber-800 ring-1 ring-amber-600/20">
+                <ShieldAlert className="size-[1.05rem]" aria-hidden="true" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[0.8125rem] font-semibold text-amber-950">
+                  Sahara AI is an independent assistant, not a government service.
+                </p>
+                <p className="mt-1 text-[0.8125rem] leading-relaxed text-amber-900/85">
+                  It does not access government databases, submit applications or complaints, confirm
+                  welfare eligibility, or declare a document or message genuine or fake.
+                </p>
+              </div>
+              <Link
+                to="/about#disclaimer"
+                className="shrink-0 text-[0.8125rem] font-semibold text-amber-900 underline underline-offset-4 hover:text-amber-950"
+              >
+                Read the disclaimer
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Trust / safety                                                     */}
-      {/* ------------------------------------------------------------------ */}
-      <section className="container-page py-10 sm:py-14" aria-labelledby="trust">
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:gap-10">
-          <div>
-            <h2 id="trust" className="text-xl font-semibold tracking-tight text-ink-900 sm:text-2xl">
-              {t('home.trustTitle')}
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-ink-600">
-              Sahara AI is a civic assistant, not a government service. Being clear about that is part of the
-              design, not a footnote.
+      {/* ================================================================== */}
+      {/* 7 · Coverage                                                       */}
+      {/* ================================================================== */}
+      <section className="container-page py-14 sm:py-20" aria-labelledby="coverage">
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14">
+          <Reveal>
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-brand-700">
+              Coverage
             </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <VerificationBadge status="verified" />
-              <VerificationBadge status="pending_verification" />
-              <VerificationBadge status="demo" />
-            </div>
-          </div>
+            <h2 id="coverage" className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-ink-950 sm:text-[2rem]">
+              Punjab first.
+              <br />
+              <span className="display-serif italic text-brand-800">Built to extend.</span>
+            </h2>
+            <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-600">
+              The knowledge base is authored province by province, because the procedure, the fee and the
+              office differ between them. Publishing a Punjab record and a Sindh record as if they were the
+              same would be exactly the kind of error this project exists to prevent.
+            </p>
+          </Reveal>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4">
-              <h3 className="flex items-center gap-1.5 text-sm font-semibold text-emerald-900">
-                <ShieldCheck className="size-4" aria-hidden="true" /> What it does
-              </h3>
-              <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-emerald-900/90">
-                <li>· Explains reviewed public information with its source and date checked.</li>
-                <li>· Prepares editable drafts that you review and submit yourself.</li>
-                <li>· Compares your documents against a stored checklist.</li>
-                <li>· Explains why a message looks suspicious.</li>
-              </ul>
-            </div>
-            <div className="rounded-xl border border-amber-200 bg-amber-50/60 p-4">
-              <h3 className="flex items-center gap-1.5 text-sm font-semibold text-amber-900">
-                <ShieldAlert className="size-4" aria-hidden="true" /> What it never does
-              </h3>
-              <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-amber-900/90">
-                <li>· Access government databases or private records.</li>
-                <li>· Submit an application, complaint or FIR for you.</li>
-                <li>· Tell you that a document or message is definitively genuine or fake.</li>
-                <li>· Confirm welfare eligibility or guarantee an outcome.</li>
-              </ul>
-            </div>
-          </div>
+          <Reveal delay={100}>
+            <ul className="divide-y divide-brand-900/[0.07] overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper shadow-2 shadow-bevel">
+              {scope.map((row) => (
+                <li key={row.label} className="flex items-center gap-3 px-4 py-3.5">
+                  <Landmark className="size-4 shrink-0 text-brand-700" aria-hidden="true" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[0.875rem] font-semibold text-ink-950">{row.label}</p>
+                    <p className="mt-0.5 text-[0.75rem] text-ink-500">{row.detail}</p>
+                  </div>
+                  <span
+                    className={cn(
+                      'shrink-0 rounded-full px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wide ring-1 ring-inset',
+                      row.status === 'In review'
+                        ? 'bg-amber-50 text-amber-800 ring-amber-200'
+                        : 'bg-ink-100 text-ink-600 ring-ink-200',
+                    )}
+                  >
+                    {row.status}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </div>
       </section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Closing CTA                                                        */}
-      {/* ------------------------------------------------------------------ */}
-      <section className="container-page pb-14">
-        <div className={cn('overflow-hidden rounded-2xl bg-brand-900 px-6 py-8 text-white sm:px-10 sm:py-10')}>
-          <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
+      {/* ================================================================== */}
+      {/* 8 · Closing CTA                                                    */}
+      {/* ================================================================== */}
+      <section className="container-page pb-14 sm:pb-20">
+        <Reveal className="relative overflow-hidden rounded-3xl panel-night px-6 py-10 sm:px-10 sm:py-12">
+          <div className="pointer-events-none absolute inset-0 grid-lines-dark opacity-50" aria-hidden="true" />
+          <div
+            className="pointer-events-none absolute -end-24 -top-24 size-72 rounded-full bg-accent-500/20 blur-[90px]"
+            aria-hidden="true"
+          />
+
+          <div className="relative flex flex-col gap-7 sm:flex-row sm:items-center sm:justify-between">
             <div className="max-w-xl">
-              <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">Start with a question.</h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-brand-100">
-                Ask in Urdu, Punjabi or English. You will get an explanation grounded in a reviewed record
-                — or a clear statement that no reliable record exists.
+              <div className="flex items-center gap-3">
+                <SaharaOrb size={44} state="idle" />
+                <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-sand-300/70">
+                  Start with a question
+                </span>
+              </div>
+              <h2 className="mt-4 text-[1.6rem] font-semibold leading-tight tracking-[-0.02em] text-white sm:text-[2rem]">
+                Ask in your own words.
+                <br />
+                <span className="display-serif italic text-sand-200">In your own language.</span>
+              </h2>
+              <p className="mt-3 text-[0.875rem] leading-relaxed text-brand-100/85">
+                You will get an explanation grounded in a reviewed record — or a clear statement that no
+                reliable record exists yet.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <LinkButton to="/assistant" variant="secondary" size="lg">
-                {t('home.primaryCta')}
-              </LinkButton>
+
+            <div className="flex shrink-0 flex-col gap-2 sm:items-end">
               <LinkButton
-                to="/about"
+                to="/assistant"
                 size="lg"
-                variant="ghost"
-                className="text-brand-100 hover:bg-brand-800 hover:text-white"
+                variant="secondary"
+                className="w-full sm:w-auto"
+                trailingIcon={<ArrowRight className="size-4 dir-arrow" aria-hidden="true" />}
               >
-                How it works
+                {t('nav.talkToSahara')}
               </LinkButton>
+              <Link
+                to="/about"
+                className="text-center text-[0.8125rem] font-medium text-sand-200/80 underline underline-offset-4 hover:text-white sm:text-end"
+              >
+                How Sahara works
+              </Link>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

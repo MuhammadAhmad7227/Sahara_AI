@@ -137,7 +137,7 @@ export default function WelfarePage() {
                   id="welfare-income"
                   value={incomeBand}
                   onChange={(e) => setIncomeBand(e.target.value as IncomeBand)}
-                  className="h-11 w-full rounded-lg border border-ink-300 bg-white px-3 text-sm"
+                  className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-3 text-sm"
                 >
                   {incomeBands.map((band) => (
                     <option key={band.value} value={band.value}>
@@ -154,7 +154,7 @@ export default function WelfarePage() {
             </form>
           </SectionCard>
 
-          <div className="mt-4 rounded-xl border border-ink-200 bg-white p-4 text-xs leading-relaxed text-ink-600">
+          <div className="mt-4 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 text-xs leading-relaxed text-ink-600">
             <p className="flex items-start gap-1.5">
               <Info className="mt-0.5 size-3.5 shrink-0 text-ink-400" aria-hidden="true" />
               Your answers stay in this browser tab and are not saved to an account.
@@ -190,7 +190,7 @@ export default function WelfarePage() {
 
               <ul className="space-y-3">
                 {matches.map((match) => (
-                  <li key={match.scheme.id} className="rounded-xl border border-ink-200 bg-white p-4 shadow-card">
+                  <li key={match.scheme.id} className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card">
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <div>
                         <h2 className="text-base font-semibold text-ink-900">{match.scheme.name}</h2>

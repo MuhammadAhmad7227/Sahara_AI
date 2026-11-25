@@ -69,7 +69,7 @@ export default function AboutPage() {
         </h2>
         <ol className="mt-3 grid gap-3 sm:grid-cols-2">
           {pipeline.map((step, index) => (
-            <li key={step.title} className="rounded-xl border border-ink-200 bg-white p-4 shadow-card">
+            <li key={step.title} className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card">
               <div className="flex items-center gap-2">
                 <span className="grid size-8 place-items-center rounded-lg bg-brand-50 text-brand-800" aria-hidden="true">
                   <step.icon className="size-4" />
@@ -89,7 +89,7 @@ export default function AboutPage() {
         </h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {guardrails.map((item) => (
-            <div key={item.title} className="rounded-xl border border-ink-200 bg-white p-4">
+            <div key={item.title} className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4">
               <item.icon className="size-4 text-brand-700" aria-hidden="true" />
               <h3 className="mt-1.5 text-sm font-semibold text-ink-900">{item.title}</h3>
               <p className="mt-1 text-xs leading-relaxed text-ink-600">{item.body}</p>
@@ -162,7 +162,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-xl border border-ink-200 bg-white p-5" aria-labelledby="team">
+      <section className="mt-8 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-5" aria-labelledby="team">
         <h2 id="team" className="text-lg font-semibold text-ink-900">
           Project team
         </h2>

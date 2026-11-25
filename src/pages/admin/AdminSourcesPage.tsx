@@ -116,7 +116,7 @@ export default function AdminSourcesPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by source, publisher or service…"
-            className="h-10 w-full rounded-lg border border-ink-300 bg-white ps-9 pe-3 text-sm"
+            className="h-10 w-full rounded-lg border border-brand-900/15 bg-white ps-9 pe-3 text-sm"
           />
         </div>
         <div>
@@ -127,7 +127,7 @@ export default function AdminSourcesPage() {
             id="source-status"
             value={status}
             onChange={(e) => setStatus(e.target.value as typeof status)}
-            className="h-10 w-full rounded-lg border border-ink-300 bg-white px-2.5 text-sm sm:w-48"
+            className="h-10 w-full rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm sm:w-48"
           >
             <option value="all">All statuses</option>
             {statusOptions.map((s) => (
@@ -139,7 +139,7 @@ export default function AdminSourcesPage() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-ink-200 bg-white shadow-card">
+      <div className="overflow-hidden rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 shadow-bevel">
         <div className="border-b border-ink-100 px-3 py-2 text-xs text-ink-500" aria-live="polite">
           {loading ? 'Loading…' : `${rows.length} source(s)`}
         </div>

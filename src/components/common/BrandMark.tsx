@@ -2,45 +2,99 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/utils/cn';
 
 /**
- * Sahara AI mark: a stylised shield/leaf ("sahara" = support) containing a
- * guiding spark. Drawn as inline SVG so it scales crisply and can be recoloured.
+ * Sahara AI mark.
+ *
+ * A deep-green civic seal containing a gold-lit core and a horizon line — the
+ * "sahara" is the desert floor, the gold is the light that carries information.
+ * Drawn as inline SVG with explicit fills so it stays crisp at 20px and 200px,
+ * and carries no external asset request.
+ *
+ * It deliberately does NOT resemble a government emblem: no crescent, no star,
+ * no laurel. Sahara AI is an independent civic assistant.
  */
 export function BrandMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 40 40" className={cn('size-9', className)} role="img" aria-label="Sahara AI logo">
-      <rect width="40" height="40" rx="9" fill="currentColor" className="text-brand-900" />
-      <path
-        d="M20 7.5c4.6 2.9 7.6 7.7 7.6 13 0 6.7-3 11.1-7.6 12.9-4.6-1.8-7.6-6.2-7.6-12.9 0-5.3 3-10.1 7.6-13Z"
-        fill="#ffffff"
-        fillOpacity="0.13"
-        stroke="#8fd3c5"
-        strokeWidth="1.6"
-      />
-      <path d="M20 12v14" stroke="#8fd3c5" strokeWidth="1.5" strokeLinecap="round" />
-      <path
-        d="M16.4 18.2c1.7 0 3-.7 3.6-1.8M23.6 18.2c-1.7 0-3-.7-3.6-1.8"
-        stroke="#e8b86d"
-        strokeWidth="1.5"
-        strokeLinecap="round"
+    <svg
+      viewBox="0 0 48 48"
+      className={cn('size-9', className)}
+      role="img"
+      aria-label="Sahara AI"
+    >
+      <defs>
+        <linearGradient id="sahara-seal" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0b4535" />
+          <stop offset="60%" stopColor="#063b2e" />
+          <stop offset="100%" stopColor="#032018" />
+        </linearGradient>
+        <radialGradient id="sahara-core" cx="36%" cy="30%" r="76%">
+          <stop offset="0%" stopColor="#fdf7e3" />
+          <stop offset="42%" stopColor="#e8d8b5" />
+          <stop offset="100%" stopColor="#c9a227" />
+        </radialGradient>
+      </defs>
+
+      {/* Seal */}
+      <rect width="48" height="48" rx="13" fill="url(#sahara-seal)" />
+      <rect
+        x="0.75"
+        y="0.75"
+        width="46.5"
+        height="46.5"
+        rx="12.25"
         fill="none"
+        stroke="rgb(255 255 255 / 0.14)"
+        strokeWidth="1.5"
       />
-      <circle cx="20" cy="29.5" r="1.8" fill="#e8b86d" />
+
+      {/* Hairline orbit */}
+      <circle cx="24" cy="23" r="15" fill="none" stroke="rgb(227 199 102 / 0.45)" strokeWidth="1" />
+      <circle
+        cx="24"
+        cy="23"
+        r="15"
+        fill="none"
+        stroke="rgb(255 255 255 / 0.55)"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeDasharray="5 89"
+        transform="rotate(-38 24 23)"
+      />
+
+      {/* Core */}
+      <circle cx="24" cy="23" r="8" fill="url(#sahara-core)" />
+      <ellipse cx="21.2" cy="20" rx="2.4" ry="1.7" fill="rgb(255 255 255 / 0.72)" />
+
+      {/* Horizon: the desert line, and the light above it */}
+      <path d="M13 34.5h22" stroke="rgb(232 216 181 / 0.55)" strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M18 38.5h12" stroke="rgb(201 162 39 / 0.6)" strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   );
 }
 
-export function BrandLockup({ compact }: { compact?: boolean }) {
+export function BrandLockup({ compact, onDark }: { compact?: boolean; onDark?: boolean }) {
   return (
     <Link
       to="/"
-      className="group inline-flex items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500"
+      className="group inline-flex items-center gap-2.5 rounded-lg transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400"
       aria-label="Sahara AI — home"
     >
-      <BrandMark />
+      <BrandMark className="size-9 transition-transform duration-300 group-hover:-translate-y-px" />
       {!compact && (
         <span className="flex flex-col leading-none">
-          <span className="text-[0.9375rem] font-semibold tracking-tight text-ink-900">Sahara AI</span>
-          <span className="mt-0.5 text-[0.625rem] font-medium uppercase tracking-wider text-ink-500">
+          <span
+            className={cn(
+              'text-[0.9375rem] font-semibold tracking-tight',
+              onDark ? 'text-white' : 'text-ink-950',
+            )}
+          >
+            Sahara AI
+          </span>
+          <span
+            className={cn(
+              'mt-1 text-[0.625rem] font-medium uppercase tracking-[0.14em]',
+              onDark ? 'text-sand-300/80' : 'text-ink-500',
+            )}
+          >
             Civic assistant
           </span>
         </span>

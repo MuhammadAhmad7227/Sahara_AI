@@ -4,7 +4,40 @@ import { cn } from '@/utils/cn';
 
 export function Card({ className, children, ...rest }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('rounded-xl border border-ink-200 bg-white shadow-card', className)} {...rest}>
+    <div
+      className={cn(
+        // Level-1 surface: paper, hairline border, top bevel of light.
+        'rounded-xl border border-ink-900/[0.07] bg-paper shadow-1 shadow-bevel',
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * InteractiveCard — a Card that behaves like a target.
+ *
+ * Lifts 3px on hover with a deeper shadow. The `-translate-y` is disabled under
+ * prefers-reduced-motion by the global rule, leaving a clean static card.
+ */
+export function InteractiveCard({
+  className,
+  children,
+  ...rest
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        'rounded-xl border border-ink-900/[0.07] bg-paper shadow-1 shadow-bevel',
+        'transition-[transform,box-shadow,border-color] duration-250 ease-out-soft',
+        'hover:-translate-y-[3px] hover:border-brand-900/15 hover:shadow-3',
+        className,
+      )}
+      {...rest}
+    >
       {children}
     </div>
   );
@@ -31,7 +64,10 @@ export function SectionCard({
 }: SectionCardProps) {
   return (
     <section
-      className={cn('rounded-xl border border-ink-200 bg-white shadow-card', className)}
+      className={cn(
+        'rounded-xl border border-ink-900/[0.07] bg-paper shadow-1 shadow-bevel',
+        className,
+      )}
       {...rest}
     >
       {(title || action) && (

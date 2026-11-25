@@ -51,7 +51,7 @@ export default function AdminLawyersPage() {
         </p>
       </InlineNotice>
 
-      <div className="overflow-hidden rounded-xl border border-ink-200 bg-white shadow-card">
+      <div className="overflow-hidden rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 shadow-bevel">
         <div className="border-b border-ink-100 px-3 py-2 text-xs text-ink-500">
           {loading ? 'Loading…' : `${data?.length ?? 0} listing(s)`}
         </div>

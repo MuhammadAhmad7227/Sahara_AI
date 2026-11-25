@@ -155,10 +155,10 @@ export default function ApplicationGeneratorPage() {
     }
     win.document.write(`<!doctype html><html><head><title>${draft.templateName} — Draft</title>
       <style>
-        body{font-family:Georgia,serif;line-height:1.7;padding:48px;max-width:720px;margin:0 auto;color:#1b2221}
-        .band{border-bottom:2px dashed #c8852f;background:#fdfaf4;padding:8px 0;font:600 11px/1.4 system-ui;letter-spacing:.08em;text-transform:uppercase;color:#7f532d;margin-bottom:24px}
+        body{font-family:Georgia,serif;line-height:1.7;padding:48px;max-width:720px;margin:0 auto;color:#14201c}
+        .band{border-bottom:2px dashed #c9a227;background:#fcfbf7;padding:8px 0;font:600 11px/1.4 system-ui;letter-spacing:.08em;text-transform:uppercase;color:#6e5330;margin-bottom:24px}
         pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px}
-        .foot{margin-top:24px;border-top:1px solid #ccc;padding-top:8px;font:400 11px/1.6 system-ui;color:#6e7a79}
+        .foot{margin-top:24px;border-top:1px solid #ccc;padding-top:8px;font:400 11px/1.6 system-ui;color:#66736d}
       </style></head><body>
       <div class="band">Draft — not an official government form · Prepared with Sahara AI · ${formatDate(new Date().toISOString())}</div>
       <pre>${editedBody.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[c] ?? c)}</pre>
@@ -471,7 +471,7 @@ export default function ApplicationGeneratorPage() {
                 value={editedBody}
                 onChange={(e) => setEditedBody(e.target.value)}
                 rows={16}
-                className="w-full rounded-lg border border-ink-300 bg-white px-3 py-2.5 font-sans text-sm leading-relaxed"
+                className="w-full rounded-lg border border-brand-900/15 bg-white px-3 py-2.5 font-sans text-sm leading-relaxed"
               />
               <p className="mt-1 text-xs text-ink-500">
                 {editedBody.length} characters. The DRAFT label is part of the document and should not be removed.
@@ -570,7 +570,7 @@ export default function ApplicationGeneratorPage() {
 
         {/* Sidebar */}
         <aside className="space-y-4">
-          <div className="rounded-xl border border-ink-200 bg-white p-4">
+          <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4">
             <h2 className="text-sm font-semibold text-ink-900">Draft rules</h2>
             <ul className="mt-2 space-y-2 text-xs leading-relaxed text-ink-600">
               <li className="flex gap-1.5">

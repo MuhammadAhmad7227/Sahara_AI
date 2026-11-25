@@ -115,7 +115,7 @@ export default function AdminServicesPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search service, department or jurisdiction…"
-            className="h-10 w-full rounded-lg border border-ink-300 bg-white ps-9 pe-3 text-sm"
+            className="h-10 w-full rounded-lg border border-brand-900/15 bg-white ps-9 pe-3 text-sm"
           />
         </div>
         <div className="flex items-center gap-1.5">
@@ -127,7 +127,7 @@ export default function AdminServicesPage() {
             id="admin-status-filter"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
-            className="h-10 rounded-lg border border-ink-300 bg-white px-2.5 text-sm"
+            className="h-10 rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm"
           >
             <option value="all">All statuses</option>
             <option value="draft">Draft</option>
@@ -140,7 +140,7 @@ export default function AdminServicesPage() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-ink-200 bg-white shadow-card">
+      <div className="overflow-hidden rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 shadow-bevel">
         <div className="flex items-center justify-between gap-2 border-b border-ink-100 px-3 py-2">
           <p className="text-xs text-ink-500" aria-live="polite">
             {loading ? 'Loading…' : `${rows.length} record(s)`}
@@ -188,7 +188,7 @@ export default function AdminServicesPage() {
                   value={service.status}
                   disabled={busyId === service.id}
                   onChange={(e) => void transition(service, e.target.value as ReviewStatus)}
-                  className="h-8 rounded-md border border-ink-300 bg-white px-1.5 text-xs"
+                  className="h-8 rounded-md border border-brand-900/15 bg-white px-1.5 text-xs"
                 >
                   <option value="draft">Draft</option>
                   <option value="pending_review">Pending review</option>
