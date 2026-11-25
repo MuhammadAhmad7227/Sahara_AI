@@ -41,6 +41,7 @@ import { Reveal } from '@/components/common/Reveal';
 import { SaharaOrb } from '@/components/brand/SaharaOrb';
 import { ServiceCard } from '@/components/services/ServiceCard';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getTextDirection } from '@/i18n';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useAsync } from '@/hooks/useAsync';
 import { getPopularServices } from '@/services/api/services';
@@ -137,7 +138,7 @@ const scope = [
 /* -------------------------------------------------------------------------- */
 
 export default function HomePage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   useDocumentTitle(
     'Sahara AI — Civic services for Pakistani citizens',
     'Ask about public services, documents, applications, complaints and public information in English, Urdu or Punjabi. Answers cite the reviewed source and the date it was checked.',
@@ -177,9 +178,9 @@ export default function HomePage() {
                 id="hero-heading"
                 className="mt-5 text-[2.15rem] font-semibold leading-[1.06] tracking-[-0.03em] text-ink-950 sm:text-[3rem] lg:text-[3.5rem]"
               >
-                {t('home.heroLead')}
+                <bdi dir={getTextDirection(language)} lang={language}>{t('home.heroLead')}</bdi>
                 <br />
-                <span className="display-serif italic text-brand-800">{t('home.titleAccent')}</span>
+                <span className="display-serif italic text-brand-800"><bdi dir={getTextDirection(language)} lang={language}>{t('home.titleAccent')}</bdi></span>
               </h1>
 
               <p className="mt-5 max-w-[34rem] text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">

@@ -147,6 +147,11 @@ export const en = {
   'assistant.tryThese': 'Try one of these',
   'assistant.noRecordInline':
     'No reviewed record matched this question, so no factual answer was produced.',
+  'assistant.checkingRecords': 'Checking reviewed records…',
+  'assistant.reviewedRecordsOnly': 'Answers only from reviewed records',
+  'assistant.conversationLabel': 'Conversation with Sahara AI',
+  'assistant.preparingAnswer': 'Sahara AI is preparing an answer',
+  'assistant.searchingKnowledge': 'Searching the knowledge base…',
   'assistant.placeholder': 'Ask about a public service, document, complaint or suspicious message…',
   'assistant.send': 'Send question',
   'assistant.notSupported': 'The AI assistant is not available right now.',

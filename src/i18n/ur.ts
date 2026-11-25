@@ -113,9 +113,9 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   // ---- Home --------------------------------------------------------------
   'home.eyebrow': 'پاکستان کے شہریوں کے لیے',
   'home.title': 'سرکاری سروسز، آسان زبان میں۔',
-  'home.heroLead': 'سرکاری سروسز،',
+  'home.heroLead': 'سرکاری خدمات،',
   'home.languagesValue': 'اردو · پنجابی · انگریزی',
-  'home.titleAccent': 'آسان زبان میں۔',
+  'home.titleAccent': 'آسان الفاظ میں۔',
   'home.subtitle':
     'صحرا سے سرکاری سروسز، دستاویزات، درخواستوں، شکایات اور عوامی معلومات کے بارے میں اردو، پنجابی یا انگریزی میں پوچھیں۔ ہر جواب اُس محفوظ شدہ ریکارڈ کا حوالہ دیتا ہے جس سے وہ لیا گیا ہے۔',
   'home.primaryCta': 'صحرا سے بات کریں',
@@ -152,6 +152,11 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'assistant.tryThese': 'ان میں سے کچھ پوچھیں',
   'assistant.noRecordInline':
     'اس سوال سے کوئی جانچا گیا ریکارڈ نہیں ملا، اس لیے کوئی حقیقی جواب نہیں دیا گیا۔',
+  'assistant.checkingRecords': 'جانچے گئے ریکارڈ تلاش کیے جا رہے ہیں…',
+  'assistant.reviewedRecordsOnly': 'جوابات صرف جانچے گئے ریکارڈ سے',
+  'assistant.conversationLabel': 'سہارا اے آئی سے گفتگو',
+  'assistant.preparingAnswer': 'سہارا اے آئی جواب تیار کر رہا ہے',
+  'assistant.searchingKnowledge': 'علمی ذخیرہ تلاش کیا جا رہا ہے…',
   'assistant.placeholder': 'کسی سروس، دستاویز، شکایت یا مشکوک پیغام کے بارے میں پوچھیں…',
   'assistant.send': 'سوال بھیجیں',
   'assistant.notSupported': 'معاون ابھی دستیاب نہیں ہے۔',

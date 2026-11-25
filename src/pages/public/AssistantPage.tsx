@@ -42,7 +42,7 @@ const suggestedQuestions = [
 const SESSION_KEY = 'sahara.assistant.thread';
 
 export default function AssistantPage() {
-  const { language, setLanguage, t, speechLocale } = useLanguage();
+  const { language, setLanguage, t, speechLocale, textDir } = useLanguage();
   const { toast } = useToast();
   const [params, setParams] = useSearchParams();
   const [answerLanguage, setAnswerLanguage] = useState<Language>(language);
@@ -179,7 +179,7 @@ export default function AssistantPage() {
                 <h1 className="text-sm font-semibold tracking-tight text-ink-950">Sahara AI assistant</h1>
                 <p className="mt-0.5 flex items-center gap-1 text-[0.6875rem] text-ink-500">
                   <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse-soft" aria-hidden="true" />
-                  {pending ? 'Checking reviewed records…' : 'Answers only from reviewed records'}
+                  {pending ? t('assistant.checkingRecords') : t('assistant.reviewedRecordsOnly')}
                 </p>
               </div>
             </div>
@@ -214,7 +214,7 @@ export default function AssistantPage() {
                 onClick={() => setSourcesOpen(true)}
                 leadingIcon={<Info className="size-3.5" aria-hidden="true" />}
               >
-                <span className="hidden min-[420px]:inline">Sources</span>
+                <span className="hidden min-[420px]:inline">{t('assistant.sources')}</span>
               </Button>
               {turns.length > 0 && (
                 <Button
@@ -222,9 +222,9 @@ export default function AssistantPage() {
                   size="sm"
                   onClick={clearConversation}
                   leadingIcon={<Trash2 className="size-3.5" aria-hidden="true" />}
-                  aria-label="Clear conversation"
+                  aria-label={t('assistant.clearConversation')}
                 >
-                  <span className="hidden sm:inline">Clear</span>
+                  <span className="hidden sm:inline">{t('assistant.clear')}</span>
                 </Button>
               )}
             </div>
@@ -235,7 +235,7 @@ export default function AssistantPage() {
             className="flex-1 space-y-4 overflow-y-auto scrollbar-slim bg-cream/40 px-3 py-4 sm:px-5"
             role="log"
             aria-live="polite"
-            aria-label="Conversation with Sahara AI"
+            aria-label={t('assistant.conversationLabel')}
           >
             {turns.length === 0 && (
               <div className="mx-auto max-w-lg py-6 text-center">
@@ -319,12 +319,13 @@ export default function AssistantPage() {
               className="rounded-xl border border-brand-900/10 bg-white p-1.5 shadow-1 transition-[border-color,box-shadow] focus-within:border-brand-500 focus-within:shadow-2 focus-within:ring-2 focus-within:ring-brand-500/15"
             >
               <label htmlFor="assistant-input" className="sr-only">
-                Ask a question
+                {t('assistant.send')}
               </label>
               <textarea
                 id="assistant-input"
                 ref={inputRef}
                 value={input}
+                dir={input.trim() ? 'auto' : textDir}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
@@ -424,7 +425,7 @@ export default function AssistantPage() {
       </div>
 
       {/* Guidance rail on desktop (sticky), Drawer on mobile. */}
-      <aside className="hidden lg:block" aria-label="Sources and answer guidance">
+      <aside className="hidden lg:block" aria-label={t('assistant.sourcesPanel')}>
         <div className="sticky top-20">
           <AssistantGuide lastAnswer={lastAnswer} answerLanguage={answerLanguage} setAnswerLanguage={setAnswerLanguage} onClear={turns.length > 0 ? clearConversation : undefined} />
         </div>

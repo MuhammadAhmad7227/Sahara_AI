@@ -109,6 +109,29 @@ describe('Home page renders the same structure in every language', () => {
     }
   });
 
+  it('isolates each hero line in its language without directing the hero layout', () => {
+    const expected = {
+      en: ['Government services,', 'explained simply.', 'ltr'],
+      ur: ['سرکاری خدمات،', 'آسان الفاظ میں۔', 'rtl'],
+      pa: ['سرکاری خدمتاں،', 'سوکھی زبان وچ۔', 'rtl'],
+    } as const;
+    for (const language of supportedLanguages) {
+      const { container, unmount } = renderChrome(language);
+      const heading = container.querySelector('#hero-heading');
+      const lines = heading?.querySelectorAll('bdi');
+      expect(lines).toHaveLength(2);
+      expect(lines?.[0]).toHaveTextContent(expected[language][0]);
+      expect(lines?.[1]).toHaveTextContent(expected[language][1]);
+      for (const line of Array.from(lines ?? [])) {
+        expect(line).toHaveAttribute('dir', expected[language][2]);
+        expect(line).toHaveAttribute('lang', language);
+      }
+      expect(heading).not.toHaveAttribute('dir');
+      expect(heading?.closest('section')).not.toHaveAttribute('dir');
+      unmount();
+    }
+  });
+
   it('never emits a right-to-left container direction', () => {
     for (const language of supportedLanguages) {
       window.localStorage.clear();

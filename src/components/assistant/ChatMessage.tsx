@@ -20,6 +20,7 @@ import {
 import { Badge } from '@/components/common/Badge';
 import { ListenButton } from '@/components/ai/ListenButton';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getTextDirection } from '@/i18n';
 import { copyText } from '@/utils/cn';
 import { formatDate } from '@/utils/cn';
 import type { AssistantAnswer, Language } from '@/types/domain';
@@ -33,7 +34,7 @@ interface ChatMessageProps {
 }
 
 /** Minimal inline formatter: **bold**, newlines, and • bullets — no HTML injection. */
-function FormattedText({ text }: { text: string }) {
+function FormattedText({ text, language }: { text: string; language: Language }) {
   const blocks = text.split('\n');
   return (
     <div className="space-y-1.5 text-sm leading-relaxed">
@@ -41,7 +42,7 @@ function FormattedText({ text }: { text: string }) {
         if (!line.trim()) return <div key={i} className="h-1" aria-hidden="true" />;
         const parts = line.split(/(\*\*[^*]+\*\*)/g);
         return (
-          <p key={i}>
+          <p key={i}><bdi dir={getTextDirection(language)} lang={language}>
             {parts.map((part, j) =>
               part.startsWith('**') && part.endsWith('**') ? (
                 <strong key={j} className="font-semibold text-ink-900">
@@ -51,7 +52,7 @@ function FormattedText({ text }: { text: string }) {
                 <span key={j}>{part}</span>
               ),
             )}
-          </p>
+          </bdi></p>
         );
       })}
     </div>
@@ -62,7 +63,7 @@ export function UserMessage({ text }: { text: string }) {
   return (
     <div className="flex justify-end gap-2.5">
       <div className="max-w-[85%] rounded-2xl rounded-ee-md bg-brand-900 px-3.5 py-2.5 text-sm leading-relaxed text-white">
-        {text}
+        <bdi dir="auto">{text}</bdi>
       </div>
       <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-ink-200 text-ink-600" aria-hidden="true">
         <User className="size-3.5" />
@@ -72,7 +73,7 @@ export function UserMessage({ text }: { text: string }) {
 }
 
 export function AssistantMessage({ text, answer, onFeedback, feedbackGiven }: ChatMessageProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -97,7 +98,7 @@ export function AssistantMessage({ text, answer, onFeedback, feedbackGiven }: Ch
           </p>
 
           <div className="text-ink-700">
-            <FormattedText text={text} />
+            <FormattedText text={text} language={answer?.language ?? language} />
           </div>
 
           {answer?.noReliableRecord && (
@@ -155,7 +156,7 @@ export function AssistantMessage({ text, answer, onFeedback, feedbackGiven }: Ch
 
           {answer?.disclaimer && (
             <p className="mt-2.5 border-t border-ink-100 pt-2 text-[0.6875rem] leading-relaxed text-ink-500">
-              {answer.disclaimer}
+              <bdi dir={getTextDirection(answer.language)} lang={answer.language}>{answer.disclaimer}</bdi>
             </p>
           )}
         </div>
@@ -165,7 +166,7 @@ export function AssistantMessage({ text, answer, onFeedback, feedbackGiven }: Ch
         <div className="flex flex-wrap items-center gap-1">
           <ListenButton
             text={text}
-            language={(answer?.language as Language | undefined) ?? 'en'}
+            language={answer?.language ?? language}
           />
           <span className="mx-0.5 h-3 w-px bg-ink-200" aria-hidden="true" />
           <button
@@ -211,14 +212,15 @@ export function AssistantMessage({ text, answer, onFeedback, feedbackGiven }: Ch
 }
 
 export function TypingIndicator() {
+  const { t } = useLanguage();
   return (
-    <div className="flex gap-2.5" role="status" aria-label="Sahara AI is preparing an answer">
+    <div className="flex gap-2.5" role="status" aria-label={t('assistant.preparingAnswer')}>
       <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg bg-brand-900 text-white" aria-hidden="true">
         <BookOpen className="size-3.5" />
       </span>
       <div className="rounded-2xl rounded-es-md border border-ink-200 bg-white px-3.5 py-3 shadow-card">
         <p className="mb-1.5 text-[0.625rem] font-semibold uppercase tracking-wider text-ink-400">
-          Retrieving reviewed records
+          {t('assistant.checkingRecords')}
         </p>
         <div className="flex items-center gap-1">
           {[0, 150, 300].map((delay) => (
@@ -228,7 +230,7 @@ export function TypingIndicator() {
               style={{ animationDelay: `${delay}ms` }}
             />
           ))}
-          <span className="ms-1.5 text-xs text-ink-500">Searching the knowledge base…</span>
+          <span className="ms-1.5 text-xs text-ink-500">{t('assistant.searchingKnowledge')}</span>
         </div>
       </div>
     </div>

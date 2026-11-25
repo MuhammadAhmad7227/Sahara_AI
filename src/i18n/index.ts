@@ -75,6 +75,11 @@ export const languageMeta: Record<
   },
 };
 
+/** Direction of a language's written text, never the application layout. */
+export function getTextDirection(language: Language): 'ltr' | 'rtl' {
+  return languageMeta[language].dir;
+}
+
 export const supportedLanguages: Language[] = ['en', 'ur', 'pa'];
 
 /**

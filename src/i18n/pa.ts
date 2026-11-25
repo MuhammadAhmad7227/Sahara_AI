@@ -151,6 +151,11 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'assistant.tryThese': 'اینا وچوں کجھ پچھو',
   'assistant.noRecordInline':
     'ایس سوال نال کوئی جانچیا گیا ریکارڈ نئیں لبیا، ایس لئی کوئی اصلی جواب نئیں دتا گیا۔',
+  'assistant.checkingRecords': 'جانچے گئے ریکارڈ لبھے جا رہے نیں…',
+  'assistant.reviewedRecordsOnly': 'جواب صرف جانچے گئے ریکارڈ توں',
+  'assistant.conversationLabel': 'سہارا اے آئی نال گل بات',
+  'assistant.preparingAnswer': 'سہارا اے آئی جواب تیار کر رہیا اے',
+  'assistant.searchingKnowledge': 'علمی ذخیرہ لبھیا جا رہیا اے…',
   'assistant.placeholder': 'کسے خدمت، دستاویز، شکایت یا مشکوک پیغام بارے پچھو…',
   'assistant.send': 'سوال بھیجو',
   'assistant.notSupported': 'مددگار ہالے دستیاب نئیں۔',

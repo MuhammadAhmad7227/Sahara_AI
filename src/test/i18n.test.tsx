@@ -79,6 +79,17 @@ describe('Layout never mirrors when the language changes', () => {
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
   });
 
+  it('restores the selected language on a fresh provider mount', async () => {
+    const user = userEvent.setup();
+    const first = renderProbe();
+    await user.click(screen.getByRole('button', { name: 'Punjabi' }));
+    expect(document.documentElement.lang).toBe('pa');
+    first.unmount();
+    renderProbe();
+    expect(screen.getByTestId('lang')).toHaveTextContent('pa');
+    expect(document.documentElement.dir).toBe('ltr');
+  });
+
   it('swaps the copy in place', async () => {
     const user = userEvent.setup();
     renderProbe();
