@@ -51,7 +51,7 @@ export default function LegalPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search topics, e.g. FIR, land record, wages…"
-            className="h-11 w-full rounded-lg border border-ink-300 bg-white ps-9 pe-3 text-sm"
+            className="h-11 w-full rounded-lg border border-brand-900/15 bg-white ps-9 pe-3 text-sm"
           />
         </div>
 
@@ -63,7 +63,7 @@ export default function LegalPage() {
             className={
               category === 'all'
                 ? 'rounded-full border border-brand-700 bg-brand-900 px-3 py-1.5 text-xs font-medium text-white'
-                : 'rounded-full border border-ink-300 bg-white px-3 py-1.5 text-xs font-medium text-ink-700'
+                : 'rounded-full border border-brand-900/15 bg-white px-3 py-1.5 text-xs font-medium text-ink-700'
             }
           >
             All topics
@@ -77,7 +77,7 @@ export default function LegalPage() {
               className={
                 category === c.id
                   ? 'rounded-full border border-brand-700 bg-brand-900 px-3 py-1.5 text-xs font-medium text-white'
-                  : 'rounded-full border border-ink-300 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 hover:border-brand-400'
+                  : 'rounded-full border border-brand-900/15 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 hover:border-brand-400'
               }
             >
               {c.label}
@@ -99,7 +99,7 @@ export default function LegalPage() {
         {!loading && !error && data && data.length > 0 && (
           <ul className="grid gap-4 sm:grid-cols-2">
             {data.map((article) => (
-              <li key={article.id} className="flex h-full flex-col rounded-xl border border-ink-200 bg-white p-4 shadow-card transition-colors hover:border-brand-300">
+              <li key={article.id} className="flex h-full flex-col rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card transition-colors hover:border-brand-300">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <Badge tone="brand">{legalCategories.find((c) => c.id === article.category)?.label ?? article.category}</Badge>
                   <VerificationBadge status={article.verification} />

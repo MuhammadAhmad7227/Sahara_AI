@@ -54,7 +54,7 @@ export default function LawyerDirectoryPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by specialty or name…"
-            className="h-11 w-full rounded-lg border border-ink-300 bg-white ps-9 pe-3 text-sm"
+            className="h-11 w-full rounded-lg border border-brand-900/15 bg-white ps-9 pe-3 text-sm"
           />
         </div>
         <div>
@@ -65,7 +65,7 @@ export default function LawyerDirectoryPage() {
             id="lawyer-city"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            className="h-11 w-full rounded-lg border border-ink-300 bg-white px-2.5 text-sm sm:w-40"
+            className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm sm:w-40"
           >
             <option value="all">All cities</option>
             {lawyerCities.map((c) => (
@@ -83,7 +83,7 @@ export default function LawyerDirectoryPage() {
             id="lawyer-spec"
             value={specialization}
             onChange={(e) => setSpecialization(e.target.value)}
-            className="h-11 w-full rounded-lg border border-ink-300 bg-white px-2.5 text-sm sm:w-48"
+            className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm sm:w-48"
           >
             <option value="all">All specializations</option>
             {lawyerSpecializations.map((s) => (
@@ -108,7 +108,7 @@ export default function LawyerDirectoryPage() {
         {!loading && !error && data && data.length > 0 && (
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {data.map((lawyer) => (
-              <li key={lawyer.id} className="flex h-full flex-col rounded-xl border border-ink-200 bg-white p-4 shadow-card">
+              <li key={lawyer.id} className="flex h-full flex-col rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card">
                 <div className="flex items-start justify-between gap-2">
                   <Badge tone={lawyer.verificationStatus === 'verified' ? 'success' : 'neutral'}>
                     {lawyer.verificationStatus === 'verified' ? 'Verified listing' : 'Illustrative listing'}
@@ -140,7 +140,7 @@ export default function LawyerDirectoryPage() {
         )}
       </div>
 
-      <div className="mt-6 rounded-xl border border-ink-200 bg-white p-4 text-xs leading-relaxed text-ink-600">
+      <div className="mt-6 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 text-xs leading-relaxed text-ink-600">
         <h2 className="mb-1 text-sm font-semibold text-ink-900">Hiring a lawyer</h2>
         <p>
           Ask about the fee structure in writing, confirm the lawyer is enrolled with the relevant bar, and keep

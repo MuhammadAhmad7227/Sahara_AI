@@ -75,7 +75,7 @@ export default function LegalArticlePage() {
         </InlineNotice>
       </div>
 
-      <div className="mt-6 space-y-3 rounded-xl border border-ink-200 bg-white p-5 text-[0.9375rem] leading-relaxed text-ink-700 shadow-card">
+      <div className="mt-6 space-y-3 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-5 text-[0.9375rem] leading-relaxed text-ink-700 shadow-card">
         {article.body.map((paragraph, index) => (
           <p key={index}>{paragraph}</p>
         ))}

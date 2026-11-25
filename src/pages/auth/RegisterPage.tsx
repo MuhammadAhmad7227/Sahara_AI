@@ -82,7 +82,7 @@ export default function RegisterPage() {
           <BrandLockup />
         </div>
 
-        <div className="rounded-xl border border-ink-200 bg-white p-6 shadow-card">
+        <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-6 shadow-card">
           <h1 className="text-xl font-semibold tracking-tight text-ink-950">Create your account</h1>
           <p className="mt-1 text-sm text-ink-600">
             We collect only your name, email and language preference. No CNIC number is requested.

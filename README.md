@@ -196,9 +196,88 @@ means adding keys to `src/i18n/dictionaries.ts`; no page changes are needed.
 
 ---
 
+
+## Design system
+
+The interface follows one concept: **Premium Civic Command Center**. It is
+deliberately not a generic AI/SaaS look — no purple gradients, no glowing blobs,
+no glass-everything.
+
+### Colour
+
+Deep green carries authority and the Pakistani civic context, sand keeps it human
+rather than institutional, and gold is reserved for moments that deserve
+attention. Every value lives in `@theme` in `src/styles/index.css`; components
+reference steps (`brand-900`, `ink-600`), never raw hex.
+
+| Role | Token | Value |
+| --- | --- | --- |
+| Primary deep green | `brand-900` | `#063B2E` |
+| Night surface | `brand-950` | `#032018` |
+| Warm off-white | `sand-100` / `cream` | `#F7F4EC` |
+| Paper | `paper` | `#FCFBF7` |
+| Sand | `sand-300` | `#E8D8B5` |
+| Gold accent | `accent-500` | `#C9A227` |
+| Dark text | `ink-900` | `#14201C` |
+| Muted text | `ink-500` | `#66736D` |
+
+The original scale *step names* were preserved when the values changed, which is
+why a palette rewrite upgraded ~70 surfaces across 40 files without touching a
+single prop or handler.
+
+### Depth
+
+Four levels, each a layered green-tinted ambient + directional pair plus a
+hairline top bevel (`shadow-bevel`). This is what makes a surface read as *lit*
+rather than as a blurred rectangle.
+
+| Level | Token | Used for |
+| --- | --- | --- |
+| 0 | — | page background (`surface-page`, `grid-lines`) |
+| 1 | `shadow-1` | cards, inputs, static panels |
+| 2 | `shadow-2` | hovered cards, record headers, buttons |
+| 3 | `shadow-3` | floating panels, modals, sticky rails |
+| 4 | `shadow-4` | hero object, drawers, admin bar, footer |
+
+`shadow-4` is allowlisted in `design-system.test.ts` — anything else using it
+fails the build, which is how elevation creep is prevented.
+
+### Motion
+
+150–250 ms for UI state, ~600 ms for scroll reveals, 7–26 s for ambient orb
+motion. Everything collapses to instant under `prefers-reduced-motion`, and
+`[data-reveal]` elements render at full opacity when `IntersectionObserver` is
+unavailable rather than getting stuck invisible.
+
+### The Sahara Orb
+
+`src/components/brand/SaharaOrb.tsx` is the signature mark: a deep-green civic
+seal, a sand-lit gold core, two counter-rotating hairlines and fixed dust
+particles. Pure CSS/SVG — no canvas, no animation loop, no 3D library, so it
+costs nothing on a low-end Android device.
+
+States: `idle` (slow breathe), `listening` (expanding rings), `thinking`
+(pulse), `responding`, `error` (red core). Each state also changes the
+screen-reader label.
+
+### New primitives
+
+| Component | Purpose |
+| --- | --- |
+| `SaharaOrb` / `OrbDot` | signature mark, state-aware |
+| `Reveal` | scroll entrance for groups, not paragraphs |
+| `VoiceButton` / `Waveform` | mic control with a real state machine, incl. `unsupported` |
+| `UploadZone` | drag/drop with the service layer's own validators |
+| `ProgressBar` / `StepIndicator` | accessible progress (`aria-valuenow`, `aria-current="step"`) |
+| `Drawer` | focus-trapped side panel, opens from the logical end edge (RTL-safe) |
+| `Tooltip` | CSS-only, `aria-describedby` wired |
+| `InteractiveCard` / `panel` / `panel-night` | the depth utilities |
+
+---
+
 ## Testing
 
-`npm test` runs 103 tests in 8 suites:
+`npm test` runs 117 tests in 9 suites:
 
 | Suite                     | What it locks down                                                             |
 | ------------------------- | ------------------------------------------------------------------------------ |
@@ -210,6 +289,7 @@ means adding keys to `src/i18n/dictionaries.ts`; no page changes are needed.
 | `admin.test.tsx`          | guest → login, citizen → forbidden, admin → table, source filtering             |
 | `i18n.test.tsx`           | language switch, RTL flip, persistence, English fallback, Urdu coverage floor    |
 | `layout-audit.test.ts`    | 320 px rules (no wide fixed widths, scrollable tables, mobile-first grids) + the honesty statements |
+| `design-system.test.ts`   | no raw hex, no purple/pink gradients, four-level shadows, reduced-motion, no oversized headings |
 
 `routes.test.tsx` exists because a static host answers `200` for every path: an
 HTTP check cannot tell a rendered page from a blank one, so the suite drives the

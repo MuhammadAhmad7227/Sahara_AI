@@ -129,45 +129,50 @@ export default function ServiceDetailPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem] lg:gap-8">
         <div className="min-w-0 space-y-5">
           {/* Overview */}
-          <header className="rounded-xl border border-ink-200 bg-white p-5 shadow-card">
-            <div className="flex flex-wrap items-center gap-2">
+          <header className="relative overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper p-5 shadow-2 shadow-bevel sm:p-6">
+            {/* Green header wash: this is a record, so it gets record weight. */}
+            <div
+              className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-brand-50/90 to-transparent"
+              aria-hidden="true"
+            />
+            <div className="relative flex flex-wrap items-center gap-2">
               <Badge tone="brand">{service.category.replace('_', ' ')}</Badge>
               <VerificationBadge status={service.verification} />
               {service.status === 'pending_review' && <Badge tone="warning">Awaiting reviewer</Badge>}
             </div>
 
-            <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink-950 sm:text-[1.75rem]">
+            <h1 className="relative mt-3 text-[1.6rem] font-semibold leading-tight tracking-[-0.025em] text-ink-950 sm:text-[2rem]">
               {service.name}
             </h1>
             {service.nameUr && (
-              <p className="mt-1 font-urdu text-lg leading-loose text-ink-700" lang="ur" dir="rtl">
+              <p className="relative mt-1 font-urdu text-lg leading-loose text-ink-600" lang="ur" dir="rtl">
                 {service.nameUr}
               </p>
             )}
 
-            <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-700">{service.description}</p>
+            <p className="relative mt-3 max-w-2xl text-[0.9375rem] leading-relaxed text-ink-700">{service.description}</p>
 
-            <dl className="mt-4 grid gap-3 border-t border-ink-100 pt-4 text-sm sm:grid-cols-3">
+            <dl className="relative mt-5 grid gap-3 rounded-xl border border-brand-900/[0.06] bg-cream/70 p-3.5 text-sm sm:grid-cols-3">
               <div>
-                <dt className="flex items-center gap-1 text-xs text-ink-500">
+                <dt className="flex items-center gap-1 text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">
                   <Building2 className="size-3.5" aria-hidden="true" /> Department
                 </dt>
-                <dd className="mt-0.5 font-medium text-ink-900">{service.department}</dd>
+                <dd className="mt-1 text-[0.8125rem] font-medium leading-snug text-ink-900">{service.department}</dd>
               </div>
               <div>
-                <dt className="flex items-center gap-1 text-xs text-ink-500">
+                <dt className="flex items-center gap-1 text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">
                   <MapPin className="size-3.5" aria-hidden="true" /> Jurisdiction
                 </dt>
-                <dd className="mt-0.5 font-medium text-ink-900">
+                <dd className="mt-1 text-[0.8125rem] font-medium leading-snug text-ink-900">
                   {service.jurisdiction}
                   {service.district ? ` · ${service.district}` : ''}
                 </dd>
               </div>
               <div>
-                <dt className="flex items-center gap-1 text-xs text-ink-500">
+                <dt className="flex items-center gap-1 text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">
                   <Clock3 className="size-3.5" aria-hidden="true" /> Last checked
                 </dt>
-                <dd className="mt-0.5 font-medium text-ink-900">
+                <dd className="mt-1 text-[0.8125rem] font-medium leading-snug text-ink-900 tabular">
                   {service.lastVerifiedAt ? formatDate(service.lastVerifiedAt) : 'Not recorded'}
                 </dd>
               </div>
@@ -182,7 +187,7 @@ export default function ServiceDetailPage() {
           )}
 
           {/* Requirements */}
-          <section aria-labelledby="requirements" className="rounded-xl border border-ink-200 bg-white p-5 shadow-card">
+          <section aria-labelledby="requirements" className="relative overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper p-5 shadow-2 shadow-bevel">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 id="requirements" className="text-base font-semibold text-ink-900">
                 Required documents
@@ -220,7 +225,7 @@ export default function ServiceDetailPage() {
           </section>
 
           {/* Procedure */}
-          <section aria-labelledby="procedure" className="rounded-xl border border-ink-200 bg-white p-5 shadow-card">
+          <section aria-labelledby="procedure" className="relative overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper p-5 shadow-2 shadow-bevel">
             <h2 id="procedure" className="text-base font-semibold text-ink-900">
               Procedure
             </h2>
@@ -235,7 +240,7 @@ export default function ServiceDetailPage() {
           </section>
 
           {/* Fee */}
-          <section aria-labelledby="fee" className="rounded-xl border border-ink-200 bg-white p-5 shadow-card">
+          <section aria-labelledby="fee" className="relative overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper p-5 shadow-2 shadow-bevel">
             <h2 id="fee" className="mb-2 text-base font-semibold text-ink-900">
               Fee
             </h2>
@@ -249,7 +254,7 @@ export default function ServiceDetailPage() {
           </section>
 
           {/* Sources */}
-          <section aria-labelledby="sources" className="rounded-xl border border-ink-200 bg-white p-5 shadow-card">
+          <section aria-labelledby="sources" className="relative overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper p-5 shadow-2 shadow-bevel">
             <h2 id="sources" className="text-base font-semibold text-ink-900">
               Official source
             </h2>
@@ -278,7 +283,7 @@ export default function ServiceDetailPage() {
 
         {/* Sidebar actions */}
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
-          <div className="rounded-xl border border-ink-200 bg-white p-4 shadow-card">
+          <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card">
             <h2 className="text-sm font-semibold text-ink-900">What would you like to do?</h2>
             <div className="mt-3 space-y-2">
               <LinkButton
@@ -334,7 +339,7 @@ export default function ServiceDetailPage() {
           </div>
 
           {primarySource && (
-            <div className="rounded-xl border border-ink-200 bg-white p-4">
+            <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4">
               <h2 className="text-sm font-semibold text-ink-900">Provenance</h2>
               <dl className="mt-2 space-y-2 text-xs">
                 <div>

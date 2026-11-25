@@ -34,9 +34,14 @@ export function PageHeader({ title, description, eyebrow, actions, children, cla
   return (
     <header className={cn('flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between', className)}>
       <div className="min-w-0 max-w-2xl">
-        {eyebrow && <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-brand-700">{eyebrow}</p>}
-        <h1 className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-[1.75rem]">{title}</h1>
-        {description && <p className="mt-1.5 text-sm leading-relaxed text-ink-600 sm:text-[0.9375rem]">{description}</p>}
+        {eyebrow && (
+          <p className="mb-1.5 flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-brand-700">
+            <span className="h-px w-5 bg-accent-500" aria-hidden="true" />
+            {eyebrow}
+          </p>
+        )}
+        <h1 className="text-[1.6rem] font-semibold tracking-[-0.025em] text-ink-950 sm:text-[1.9rem]">{title}</h1>
+        {description && <p className="mt-2 text-sm leading-relaxed text-ink-600 sm:text-[0.9375rem]">{description}</p>}
         {children}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2 shrink-0">{actions}</div>}
@@ -101,7 +106,7 @@ export function Stat({
   tone?: 'default' | 'warning' | 'success';
 }) {
   return (
-    <div className="rounded-xl border border-ink-200 bg-white px-4 py-3.5 shadow-card">
+    <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 px-4 py-3.5 shadow-card">
       <p className="text-xs font-medium uppercase tracking-wide text-ink-500">{label}</p>
       <p
         className={cn(
@@ -230,7 +235,7 @@ export function Accordion({
   const base = useId();
 
   return (
-    <div className="divide-y divide-ink-200 rounded-xl border border-ink-200 bg-white">
+    <div className="divide-y divide-ink-200 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1">
       {items.map((item) => {
         const expanded = open === item.id;
         const panelId = `${base}-${item.id}-panel`;

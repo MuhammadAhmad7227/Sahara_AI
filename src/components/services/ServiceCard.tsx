@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
-import { Building2, MapPin, Tag } from 'lucide-react';
+import { ArrowRight, Building2, MapPin, Tag } from 'lucide-react';
 import { VerificationBadge } from '@/components/common/Badge';
 import { formatDate } from '@/utils/cn';
 import type { Service } from '@/types/domain';
 
 export function ServiceCard({ service }: { service: Service }) {
   return (
-    <article className="group flex h-full flex-col rounded-xl border border-ink-200 bg-white p-4 shadow-card transition-colors hover:border-brand-300">
+    <article className="group relative flex h-full flex-col rounded-xl border border-ink-900/[0.07] bg-paper p-4 shadow-1 shadow-bevel transition-[transform,box-shadow,border-color] duration-300 ease-out-soft hover:-translate-y-[3px] hover:border-brand-900/15 hover:shadow-3 focus-within:-translate-y-[3px] focus-within:shadow-3">
       <div className="mb-2 flex items-start justify-between gap-2">
-        <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-800">
-          <Tag className="size-3.5" aria-hidden="true" />
+        <span className="inline-flex items-center gap-1.5 rounded-md bg-brand-50/80 px-1.5 py-0.5 text-[0.6875rem] font-medium uppercase tracking-wide text-brand-800 ring-1 ring-brand-100">
+          <Tag className="size-3" aria-hidden="true" />
           {service.category.replace('_', ' ')}
         </span>
         <VerificationBadge status={service.verification} />
@@ -46,7 +46,10 @@ export function ServiceCard({ service }: { service: Service }) {
         <span className="text-ink-500">
           {service.lastVerifiedAt ? `Checked ${formatDate(service.lastVerifiedAt)}` : 'No check recorded'}
         </span>
-        <span className="font-medium text-brand-800 group-hover:underline">View details</span>
+        <span className="inline-flex items-center gap-1 font-medium text-brand-800 group-hover:underline">
+          View details
+          <ArrowRight className="size-3 dir-arrow transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
+        </span>
       </div>
     </article>
   );

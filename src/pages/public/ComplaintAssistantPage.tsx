@@ -99,7 +99,7 @@ export default function ComplaintAssistantPage() {
     if (!win) return;
     win.document.write(`<!doctype html><html><head><title>Complaint — draft</title>
       <style>body{font-family:Georgia,serif;line-height:1.7;padding:48px;max-width:720px;margin:0 auto}
-      .band{background:#fdfaf4;border-bottom:2px dashed #c8852f;padding:8px 0;font:600 11px system-ui;letter-spacing:.08em;text-transform:uppercase;color:#7f532d;margin-bottom:20px}
+      .band{background:#fcfbf7;border-bottom:2px dashed #c9a227;padding:8px 0;font:600 11px system-ui;letter-spacing:.08em;text-transform:uppercase;color:#6e5330;margin-bottom:20px}
       pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px}</style></head><body>
       <div class="band">Draft — not an official complaint registration · Sahara AI</div>
       <pre>${draft.body.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[c] ?? c)}</pre>
@@ -285,7 +285,7 @@ export default function ComplaintAssistantPage() {
             </LinkButton>
           </InlineNotice>
 
-          <div className="rounded-xl border border-ink-200 bg-white p-4 text-xs leading-relaxed text-ink-600">
+          <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 text-xs leading-relaxed text-ink-600">
             Complaints prepared here are drafts. Keep the acknowledgement or complaint number you receive from the
             office — Sahara AI cannot track it for you.
           </div>

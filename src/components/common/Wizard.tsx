@@ -47,9 +47,9 @@ export function WizardProgress({
               >
                 <span
                   className={cn(
-                    'grid size-6 shrink-0 place-items-center rounded-full text-[0.6875rem] font-semibold ring-1',
-                    done && 'bg-brand-900 text-white ring-brand-900',
-                    active && 'bg-brand-50 text-brand-900 ring-brand-600',
+                    'grid size-6 shrink-0 place-items-center rounded-full text-[0.6875rem] font-semibold ring-1 transition-[background-color,box-shadow] duration-200',
+                    done && 'bg-brand-900 text-white shadow-1 ring-brand-900',
+                    active && 'bg-accent-500 text-brand-950 shadow-2 ring-accent-300',
                     !done && !active && 'bg-white text-ink-400 ring-ink-300',
                   )}
                   aria-hidden="true"
@@ -67,7 +67,10 @@ export function WizardProgress({
               </button>
               {index < steps.length - 1 && (
                 <span
-                  className={cn('h-px w-3 shrink-0 sm:w-4', done ? 'bg-brand-700' : 'bg-ink-200')}
+                  className={cn(
+                    'h-px w-3 shrink-0 transition-colors duration-300 sm:w-4',
+                    done ? 'bg-brand-600' : 'bg-ink-200',
+                  )}
                   aria-hidden="true"
                 />
               )}
@@ -79,7 +82,7 @@ export function WizardProgress({
       <div className="sm:hidden">
         <div className="h-1.5 overflow-hidden rounded-full bg-ink-200" role="presentation">
           <div
-            className="h-full rounded-full bg-brand-700 transition-all"
+            className="h-full rounded-full bg-gradient-to-r from-brand-800 to-accent-500 transition-all duration-500 ease-out-soft"
             style={{ width: `${((current + 1) / steps.length) * 100}%` }}
           />
         </div>

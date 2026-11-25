@@ -17,7 +17,21 @@ export function LoadingSpinner({ className, label = 'Loading' }: { className?: s
 }
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn('animate-pulse rounded-md bg-ink-200/70', className)} aria-hidden="true" />;
+  return (
+    <div
+      className={cn('relative overflow-hidden rounded-md bg-ink-200/60', className)}
+      aria-hidden="true"
+    >
+      <span
+        className="absolute inset-0 animate-shimmer"
+        style={{
+          backgroundImage:
+            'linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 0.65) 45%, transparent 90%)',
+          backgroundSize: '180% 100%',
+        }}
+      />
+    </div>
+  );
 }
 
 /** Skeleton block used while a list of cards loads. */
@@ -30,7 +44,7 @@ export function CardGridSkeleton({ count = 6, columns = 3 }: { count?: number; c
     >
       <span className="sr-only">Loading results…</span>
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="rounded-xl border border-ink-200 bg-white p-4 shadow-card">
+        <div key={i} className="rounded-xl border border-brand-900/[0.07] bg-paper p-4 shadow-1">
           <div className="flex items-center justify-between gap-2">
             <Skeleton className="h-4 w-24" />
             <Skeleton className="h-5 w-20 rounded-full" />

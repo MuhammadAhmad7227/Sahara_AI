@@ -117,7 +117,7 @@ function ProfileContent() {
                 id="profile-district"
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
-                className="h-11 w-full rounded-lg border border-ink-300 bg-white px-3 text-sm"
+                className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-3 text-sm"
               >
                 <option value="">Not set</option>
                 {punjabDistricts.map((d) => (

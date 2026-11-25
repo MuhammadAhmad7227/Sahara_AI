@@ -32,7 +32,7 @@ export function LanguageSelector({
         id={selectId}
         value={value}
         onChange={(e) => onChange(e.target.value as Language)}
-        className="h-11 w-full rounded-lg border border-ink-300 bg-white px-3 text-[0.9375rem] text-ink-900 focus-visible:border-brand-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
+        className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-3 text-[0.9375rem] text-ink-900 focus-visible:border-brand-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
       >
         {options.map((lang) => (
           <option key={lang} value={lang}>
@@ -88,7 +88,7 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
         <div
           role="menu"
           aria-label={t('lang.interface')}
-          className="absolute end-0 z-50 mt-1.5 w-56 rounded-xl border border-ink-200 bg-white p-1.5 shadow-overlay animate-slide-up"
+          className="absolute end-0 z-50 mt-1.5 w-56 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-1.5 shadow-overlay animate-slide-up"
         >
           <p className="px-2 pb-1 pt-1.5 text-[0.6875rem] font-semibold uppercase tracking-wider text-ink-400">
             {t('lang.interface')}

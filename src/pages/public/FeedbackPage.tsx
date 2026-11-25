@@ -111,7 +111,7 @@ export default function FeedbackPage() {
                 id="fb-category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value as typeof category)}
-                className="h-11 w-full rounded-lg border border-ink-300 bg-white px-3 text-sm"
+                className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-3 text-sm"
               >
                 {categories.map((c) => (
                   <option key={c.value} value={c.value}>
@@ -130,7 +130,7 @@ export default function FeedbackPage() {
                   id="fb-service"
                   value={relatedServiceId}
                   onChange={(e) => setRelatedServiceId(e.target.value)}
-                  className="h-11 w-full rounded-lg border border-ink-300 bg-white px-3 text-sm"
+                  className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-3 text-sm"
                 >
                   <option value="">Not specific / another service</option>
                   {services.data?.items.map((service) => (

@@ -25,7 +25,7 @@ function ContactCard({ contact }: { contact: EmergencyContact }) {
   const hasNumber = Boolean(contact.number);
 
   return (
-    <article className="flex h-full flex-col rounded-xl border border-ink-200 bg-white p-4 shadow-card">
+    <article className="flex h-full flex-col rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 shadow-card">
       <div className="flex items-start justify-between gap-2">
         <span className={`rounded-md px-2 py-0.5 text-[0.6875rem] font-semibold uppercase tracking-wide ${meta.tone}`}>
           {meta.label}

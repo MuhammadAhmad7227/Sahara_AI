@@ -267,7 +267,7 @@ export default function DocumentAnalyzerPage() {
             </p>
           </InlineNotice>
 
-          <div className="rounded-xl border border-ink-200 bg-white p-4">
+          <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4">
             <h2 className="flex items-center gap-1.5 text-sm font-semibold text-ink-900">
               <CheckCircle2 className="size-4 text-emerald-600" aria-hidden="true" /> What the analyzer does
             </h2>
@@ -278,7 +278,7 @@ export default function DocumentAnalyzerPage() {
             </ul>
           </div>
 
-          <div className="rounded-xl border border-ink-200 bg-white p-4">
+          <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4">
             <h2 className="flex items-center gap-1.5 text-sm font-semibold text-ink-900">
               <Info className="size-4 text-ink-400" aria-hidden="true" /> What it does not do
             </h2>

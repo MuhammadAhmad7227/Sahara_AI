@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { AlertTriangle, CheckCircle2, ClipboardList, Download, Info, Printer, RotateCcw } from 'lucide-react';
 import { Button, LinkButton } from '@/components/common/Button';
 import { SectionCard } from '@/components/common/Card';
+import { ProgressBar } from '@/components/ui/Progress';
 import { PageHeader } from '@/components/common/Feedback';
 import { InlineNotice, Skeleton } from '@/components/common/States';
 import { ReadinessControl } from '@/components/services/RequirementItem';
@@ -75,11 +76,11 @@ export default function ReadinessPage() {
       )
       .join('');
     win.document.write(`<!doctype html><html><head><title>Readiness report</title>
-      <style>body{font-family:system-ui;padding:40px;max-width:700px;margin:auto;color:#1b2221}
-      table{width:100%;border-collapse:collapse;margin:16px 0}td,th{border:1px solid #dde1e1;padding:8px;text-align:left;font-size:13px}
-      h1{font-size:20px}.note{font-size:12px;color:#6e7a79;line-height:1.6;border-top:1px solid #dde1e1;padding-top:10px;margin-top:20px}</style>
+      <style>body{font-family:system-ui;padding:40px;max-width:700px;margin:auto;color:#14201c}
+      table{width:100%;border-collapse:collapse;margin:16px 0}td,th{border:1px solid #e1e5df;padding:8px;text-align:left;font-size:13px}
+      h1{font-size:20px}.note{font-size:12px;color:#66736d;line-height:1.6;border-top:1px solid #e1e5df;padding-top:10px;margin-top:20px}</style>
       </head><body><h1>Document readiness — ${report.serviceName}</h1>
-      <p style="font-size:12px;color:#6e7a79">Generated ${formatDateTime(report.generatedAt)} · demonstration build</p>
+      <p style="font-size:12px;color:#66736d">Generated ${formatDateTime(report.generatedAt)} · demonstration build</p>
       <table><thead><tr><th>Requirement</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
       <p><strong>${report.summary.complete} of ${report.summary.total} items complete.</strong></p>
       <p>${report.statement}</p>
@@ -115,7 +116,7 @@ export default function ReadinessPage() {
                   id="readiness-service"
                   value={slug}
                   onChange={(e) => setParams(e.target.value ? { service: e.target.value } : {}, { replace: true })}
-                  className="h-11 w-full rounded-lg border border-ink-300 bg-white px-3 text-sm"
+                  className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-3 text-sm"
                 >
                   <option value="">Select a service…</option>
                   {services.data.items.map((service) => (
@@ -182,22 +183,30 @@ export default function ReadinessPage() {
           {/* Report */}
           {report && (
             <SectionCard title="3. Readiness summary" description="A description of the checklist, not a decision by any office.">
-              <div className="grid gap-3 sm:grid-cols-4">
-                <div className="rounded-lg border border-ink-200 bg-ink-50 px-3 py-2.5">
-                  <p className="text-xs text-ink-500">Total items</p>
-                  <p className="text-xl font-semibold tabular text-ink-900">{report.summary.total}</p>
+              <ProgressBar
+                value={report.summary.complete}
+                max={report.summary.total}
+                label={`${report.summary.complete} of ${report.summary.total} items marked complete`}
+                tone={report.summary.mandatoryMissing === 0 ? 'success' : 'warning'}
+                showValue
+              />
+
+              <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+                <div className="rounded-xl border border-brand-900/[0.07] bg-ink-50 px-3 py-2.5 shadow-1">
+                  <p className="text-[0.6875rem] font-medium uppercase tracking-wider text-ink-500">Total</p>
+                  <p className="mt-0.5 text-2xl font-semibold tabular tracking-tight text-ink-900">{report.summary.total}</p>
                 </div>
-                <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2.5">
-                  <p className="text-xs text-emerald-800">Complete</p>
-                  <p className="text-xl font-semibold tabular text-emerald-900">{report.summary.complete}</p>
+                <div className="rounded-xl border border-emerald-900/10 bg-emerald-50 px-3 py-2.5 shadow-1">
+                  <p className="text-[0.6875rem] font-medium uppercase tracking-wider text-emerald-800">Complete</p>
+                  <p className="mt-0.5 text-2xl font-semibold tabular tracking-tight text-emerald-900">{report.summary.complete}</p>
                 </div>
-                <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2.5">
-                  <p className="text-xs text-red-800">Missing</p>
-                  <p className="text-xl font-semibold tabular text-red-900">{report.summary.missing}</p>
+                <div className="rounded-xl border border-red-900/10 bg-red-50 px-3 py-2.5 shadow-1">
+                  <p className="text-[0.6875rem] font-medium uppercase tracking-wider text-red-800">Missing</p>
+                  <p className="mt-0.5 text-2xl font-semibold tabular tracking-tight text-red-900">{report.summary.missing}</p>
                 </div>
-                <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5">
-                  <p className="text-xs text-amber-800">Needs review</p>
-                  <p className="text-xl font-semibold tabular text-amber-900">{report.summary.needsReview}</p>
+                <div className="rounded-xl border border-amber-900/10 bg-amber-50 px-3 py-2.5 shadow-1">
+                  <p className="text-[0.6875rem] font-medium uppercase tracking-wider text-amber-800">Needs review</p>
+                  <p className="mt-0.5 text-2xl font-semibold tabular tracking-tight text-amber-900">{report.summary.needsReview}</p>
                 </div>
               </div>
 
@@ -270,7 +279,7 @@ export default function ReadinessPage() {
             </p>
           </InlineNotice>
 
-          <div className="rounded-xl border border-ink-200 bg-white p-4">
+          <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4">
             <h2 className="flex items-center gap-1.5 text-sm font-semibold text-ink-900">
               <Info className="size-4 text-ink-400" aria-hidden="true" /> Status meanings
             </h2>
@@ -290,7 +299,7 @@ export default function ReadinessPage() {
             </dl>
           </div>
 
-          <div className="rounded-xl border border-ink-200 bg-white p-4 text-xs leading-relaxed text-ink-600">
+          <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-4 text-xs leading-relaxed text-ink-600">
             Nothing you mark here is uploaded. Answers stay in this browser tab and are cleared when you leave the
             page.
           </div>

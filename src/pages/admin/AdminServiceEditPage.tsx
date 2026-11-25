@@ -122,7 +122,7 @@ export default function AdminServiceEditPage() {
             <label htmlFor="ed-jurisdiction" className="mb-1.5 block text-sm font-medium text-ink-800">
               Jurisdiction
             </label>
-            <select id="ed-jurisdiction" value={field('jurisdiction')} onChange={(e) => set('jurisdiction', e.target.value)} className="h-11 w-full rounded-lg border border-ink-300 bg-white px-3 text-sm">
+            <select id="ed-jurisdiction" value={field('jurisdiction')} onChange={(e) => set('jurisdiction', e.target.value)} className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-3 text-sm">
               {['Punjab', 'Federal', 'Sindh', 'Khyber Pakhtunkhwa', 'Balochistan'].map((j) => (
                 <option key={j} value={j}>
                   {j}
@@ -134,7 +134,7 @@ export default function AdminServiceEditPage() {
             <label htmlFor="ed-category" className="mb-1.5 block text-sm font-medium text-ink-800">
               Category
             </label>
-            <select id="ed-category" value={field('category')} onChange={(e) => set('category', e.target.value)} className="h-11 w-full rounded-lg border border-ink-300 bg-white px-3 text-sm">
+            <select id="ed-category" value={field('category')} onChange={(e) => set('category', e.target.value)} className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-3 text-sm">
               {serviceCategories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.label}
@@ -146,7 +146,7 @@ export default function AdminServiceEditPage() {
             <label htmlFor="ed-status" className="mb-1.5 block text-sm font-medium text-ink-800">
               Status
             </label>
-            <select id="ed-status" value={field('status')} onChange={(e) => set('status', e.target.value)} className="h-11 w-full rounded-lg border border-ink-300 bg-white px-3 text-sm">
+            <select id="ed-status" value={field('status')} onChange={(e) => set('status', e.target.value)} className="h-11 w-full rounded-lg border border-brand-900/15 bg-white px-3 text-sm">
               {['draft', 'pending_review', 'approved', 'published', 'archived', 'rejected'].map((s) => (
                 <option key={s} value={s}>
                   {s.replace('_', ' ')}

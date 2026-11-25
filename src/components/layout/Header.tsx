@@ -10,6 +10,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   AlertTriangle,
+  ArrowRight,
   BriefcaseBusiness,
   Building2,
   ChevronDown,
@@ -97,7 +98,7 @@ function DesktopDropdown({ group }: { group: (typeof toolGroups)[number] }) {
       {open && (
         <div
           id={menuId}
-          className="absolute start-0 z-50 mt-1.5 w-80 rounded-xl border border-ink-200 bg-white p-1.5 shadow-overlay animate-slide-up"
+          className="absolute start-0 z-50 mt-1.5 w-80 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-1.5 shadow-overlay animate-slide-up"
         >
           {group.items.map((item) => {
             const Icon = iconFor[item.to] ?? FileText;
@@ -170,7 +171,7 @@ function UserMenu() {
       {open && (
         <div
           role="menu"
-          className="absolute end-0 z-50 mt-1.5 w-60 rounded-xl border border-ink-200 bg-white p-1.5 shadow-overlay animate-slide-up"
+          className="absolute end-0 z-50 mt-1.5 w-60 rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-1.5 shadow-overlay animate-slide-up"
         >
           <div className="border-b border-ink-100 px-2 pb-2 pt-1.5">
             <p className="truncate text-sm font-medium text-ink-900">{user.name}</p>
@@ -227,12 +228,22 @@ export function Header() {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // The header gains a shadow once the page moves — it should feel attached to
+  // the document, not pasted on top of it.
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setDrawerOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -250,18 +261,49 @@ export function Header() {
   }, [drawerOpen]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/95 backdrop-blur-sm">
+    <header
+      className={cn(
+        'sticky top-0 z-40 border-b transition-[background-color,box-shadow,border-color] duration-300',
+        scrolled
+          ? 'border-ink-900/[0.07] bg-paper/85 shadow-2 backdrop-blur-xl'
+          : 'border-transparent bg-cream/60 backdrop-blur-sm',
+      )}
+    >
       <div className="container-page flex h-16 items-center justify-between gap-3">
         <div className="flex items-center gap-1 lg:gap-4">
           <BrandLockup />
 
           <nav aria-label="Main" className="hidden items-center gap-0.5 lg:flex">
             <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                cn(
+                  'relative inline-flex h-9 items-center rounded-lg px-2.5 text-sm font-medium transition-colors',
+                  isActive
+                    ? 'text-ink-950'
+                    : 'text-ink-600 hover:bg-ink-900/[0.04] hover:text-ink-950',
+                )
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  {t('nav.home')}
+                  {isActive && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-2.5 -bottom-[1.35rem] h-0.5 rounded-full bg-accent-500"
+                    />
+                  )}
+                </>
+              )}
+            </NavLink>
+            <NavLink
               to="/services"
               className={({ isActive }) =>
                 cn(
-                  'inline-flex h-9 items-center rounded-lg px-2.5 text-sm font-medium transition-colors',
-                  isActive ? 'text-brand-900' : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900',
+                  'relative inline-flex h-9 items-center rounded-lg px-2.5 text-sm font-medium transition-colors',
+                  isActive ? 'text-ink-950' : 'text-ink-600 hover:bg-ink-900/[0.04] hover:text-ink-950',
                 )
               }
             >
@@ -271,8 +313,8 @@ export function Header() {
               to="/assistant"
               className={({ isActive }) =>
                 cn(
-                  'inline-flex h-9 items-center rounded-lg px-2.5 text-sm font-medium transition-colors',
-                  isActive ? 'text-brand-900' : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900',
+                  'relative inline-flex h-9 items-center rounded-lg px-2.5 text-sm font-medium transition-colors',
+                  isActive ? 'text-ink-950' : 'text-ink-600 hover:bg-ink-900/[0.04] hover:text-ink-950',
                 )
               }
             >
@@ -300,18 +342,19 @@ export function Header() {
             <UserMenu />
           ) : (
             <div className="hidden items-center gap-1.5 sm:flex">
-              <LinkButton to="/login" variant="ghost" size="sm">
+              <LinkButton to="/login" variant="ghost" size="sm" className="hidden md:inline-flex">
                 {t('nav.login')}
               </LinkButton>
-              <LinkButton to="/register" variant="primary" size="sm">
-                {t('nav.register')}
+              <LinkButton
+                to="/assistant"
+                variant="primary"
+                size="sm"
+                trailingIcon={<ArrowRight className="size-3.5 dir-arrow" aria-hidden="true" />}
+              >
+                {t('nav.talkToSahara')}
               </LinkButton>
             </div>
           )}
-
-          <LinkButton to="/assistant" variant="subtle" size="sm" className="hidden md:inline-flex">
-            {t('nav.assistant')}
-          </LinkButton>
 
           <button
             type="button"
@@ -333,9 +376,9 @@ export function Header() {
             role="dialog"
             aria-modal="true"
             aria-label="Site navigation"
-            className="absolute inset-y-0 end-0 flex w-[min(21rem,88vw)] flex-col bg-white shadow-overlay animate-slide-up"
+            className="absolute inset-y-0 end-0 flex w-[min(21rem,88vw)] flex-col border-s border-ink-200 bg-paper shadow-4 animate-slide-up"
           >
-            <div className="flex h-16 items-center justify-between border-b border-ink-200 px-4">
+            <div className="flex h-16 items-center justify-between border-b border-ink-200/80 px-4">
               <BrandLockup />
               <button
                 ref={closeRef}

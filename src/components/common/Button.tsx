@@ -20,15 +20,24 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const base =
-  'inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap transition-colors duration-150 rounded-lg select-none disabled:pointer-events-none disabled:opacity-55';
+  'group/btn relative inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap rounded-lg select-none ' +
+  'transition-[background-color,box-shadow,transform,border-color,color] duration-200 ease-out-soft ' +
+  'disabled:pointer-events-none disabled:opacity-55 disabled:shadow-none';
 
+/*
+ * Depth rule: a button's shadow communicates how far it sits above the page.
+ * Primary sits highest (you can press it), ghost sits flat (it is a label).
+ */
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand-900 text-white hover:bg-brand-800 active:bg-brand-950 shadow-sm',
-  secondary: 'bg-sand-100 text-ink-900 border border-sand-300 hover:bg-sand-200',
-  outline: 'border border-ink-300 bg-white text-ink-800 hover:border-brand-400 hover:text-brand-800',
-  ghost: 'text-ink-700 hover:bg-ink-100',
-  danger: 'bg-red-700 text-white hover:bg-red-800',
-  subtle: 'bg-brand-50 text-brand-900 hover:bg-brand-100',
+  primary:
+    'bg-brand-900 text-white shadow-2 shadow-bevel-dark hover:bg-brand-800 hover:-translate-y-px hover:shadow-3 active:translate-y-0 active:shadow-1',
+  secondary:
+    'border border-sand-300 bg-sand-100 text-ink-900 shadow-1 hover:-translate-y-px hover:border-sand-400 hover:bg-sand-200 hover:shadow-2 active:translate-y-0',
+  outline:
+    'border border-brand-900/15 bg-white text-ink-800 shadow-1 hover:-translate-y-px hover:border-brand-400 hover:text-brand-900 hover:shadow-2 active:translate-y-0',
+  ghost: 'text-ink-700 hover:bg-ink-100/80 hover:text-ink-950 active:bg-ink-200/70',
+  danger: 'bg-red-700 text-white shadow-2 hover:bg-red-800 hover:shadow-3 active:shadow-1',
+  subtle: 'bg-brand-50 text-brand-900 shadow-1 hover:bg-brand-100 hover:shadow-2',
 };
 
 const sizes: Record<Size, string> = {
@@ -36,6 +45,9 @@ const sizes: Record<Size, string> = {
   md: 'h-11 px-4 text-[0.9375rem]',
   lg: 'h-12 px-6 text-base',
 };
+
+/** Trailing icons drift in the reading direction on hover — a small reward. */
+const iconDrift = '[&>[data-icon=trailing]]:transition-transform [&>[data-icon=trailing]]:duration-200 group-hover/btn:[&>[data-icon=trailing]]:translate-x-0.5 rtl:group-hover/btn:[&>[data-icon=trailing]]:-translate-x-0.5';
 
 export const buttonClasses = ({ variant = 'primary', size = 'md', fullWidth }: ButtonProps) =>
   cn(base, variants[variant], sizes[size], fullWidth && 'w-full');
@@ -48,14 +60,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     <button
       ref={ref}
       type={type}
-      className={cn(buttonClasses({ variant, size, fullWidth }), className)}
+      className={cn(buttonClasses({ variant, size, fullWidth }), iconDrift, className)}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       {...rest}
     >
       {loading ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : leadingIcon}
       {children}
-      {!loading && trailingIcon}
+      {!loading && trailingIcon && <span data-icon="trailing" className="inline-flex">{trailingIcon}</span>}
     </button>
   );
 });
@@ -74,10 +86,10 @@ interface LinkButtonProps {
 /** Same visual language as Button, but a real link (correct semantics for navigation). */
 export function LinkButton({ to, variant = 'primary', size = 'md', leadingIcon, trailingIcon, fullWidth, className, children }: LinkButtonProps) {
   return (
-    <Link to={to} className={cn(buttonClasses({ variant, size, fullWidth }), className)}>
+    <Link to={to} className={cn(buttonClasses({ variant, size, fullWidth }), iconDrift, className)}>
       {leadingIcon}
       {children}
-      {trailingIcon}
+      {trailingIcon && <span data-icon="trailing" className="inline-flex">{trailingIcon}</span>}
     </Link>
   );
 }

@@ -92,20 +92,20 @@ export default function AdminUsersPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or email…"
-            className="h-10 w-full rounded-lg border border-ink-300 bg-white ps-9 pe-3 text-sm"
+            className="h-10 w-full rounded-lg border border-brand-900/15 bg-white ps-9 pe-3 text-sm"
           />
         </div>
         <label htmlFor="user-role" className="sr-only">
           Filter by role
         </label>
-        <select id="user-role" value={role} onChange={(e) => setRole(e.target.value as typeof role)} className="h-10 rounded-lg border border-ink-300 bg-white px-2.5 text-sm sm:w-40">
+        <select id="user-role" value={role} onChange={(e) => setRole(e.target.value as typeof role)} className="h-10 rounded-lg border border-brand-900/15 bg-white px-2.5 text-sm sm:w-40">
           <option value="all">All roles</option>
           <option value="citizen">Citizens</option>
           <option value="admin">Administrators</option>
         </select>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-ink-200 bg-white shadow-card">
+      <div className="overflow-hidden rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 shadow-bevel">
         <div className="border-b border-ink-100 px-3 py-2 text-xs text-ink-500" aria-live="polite">
           {loading ? 'Loading…' : `${rows.length} user(s)`}
         </div>

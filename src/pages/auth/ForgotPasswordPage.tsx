@@ -46,7 +46,7 @@ export default function ForgotPasswordPage() {
           <BrandLockup />
         </div>
 
-        <div className="rounded-xl border border-ink-200 bg-white p-6 shadow-card">
+        <div className="rounded-xl border border-brand-900/[0.07] bg-paper shadow-1 p-6 shadow-card">
           {sent ? (
             <div className="text-center">
               <span className="mx-auto grid size-11 place-items-center rounded-full bg-emerald-50 text-emerald-700" aria-hidden="true">

@@ -56,14 +56,25 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="container-page grid min-h-[calc(100dvh-9rem)] place-items-center py-8">
+    <div className="relative min-h-[calc(100dvh-9rem)] overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 surface-page" aria-hidden="true" />
+      <div
+        className="pointer-events-none absolute inset-0 grid-lines opacity-50 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_35%,black,transparent_72%)]"
+        aria-hidden="true"
+      />
+
+      <div className="container-page relative grid place-items-center py-8 sm:py-12">
       <div className="w-full max-w-md">
         <div className="mb-5 flex justify-center">
           <BrandLockup />
         </div>
 
-        <div className="rounded-xl border border-ink-200 bg-white p-6 shadow-card">
-          <h1 className="text-xl font-semibold tracking-tight text-ink-950">Log in to Sahara AI</h1>
+        <div className="panel-float p-6 sm:p-7">
+          <p className="mb-1.5 flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-brand-700">
+            <span className="h-px w-4 bg-accent-500" aria-hidden="true" />
+            Citizen account
+          </p>
+          <h1 className="text-[1.35rem] font-semibold tracking-[-0.02em] text-ink-950">Log in to Sahara AI</h1>
           <p className="mt-1 text-sm text-ink-600">
             An account saves your drafts, analyses and language preferences. Browsing and the assistant work without
             one.
@@ -188,6 +199,7 @@ export default function LoginPage() {
           <ShieldAlert className="mt-px size-3.5 shrink-0" aria-hidden="true" />
           Sahara AI will never ask for your password, OTP or PIN by message or phone call.
         </p>
+      </div>
       </div>
     </div>
   );
