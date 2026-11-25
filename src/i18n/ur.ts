@@ -58,6 +58,8 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'action.clear': 'صاف کریں',
   'action.reset': 'دوبارہ ترتیب دیں',
   'action.openRecord': 'ریکارڈ کھولیں',
+  'action.tryAgain': 'دوبارہ کوشش کریں',
+  'action.dismiss': 'بند کریں',
   'action.copy': 'نقل کریں',
   'action.copied': 'نقل ہو گیا',
   'action.download': 'ڈاؤن لوڈ',
@@ -88,7 +90,6 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'action.regenerate': 'دوبارہ بنائیں',
   'action.helpful': 'مددگار',
   'action.notHelpful': 'مددگار نہیں',
-  'action.dismiss': 'ختم کریں',
 
   // ---- Language ----------------------------------------------------------
   'lang.label': 'زبان',
@@ -139,6 +140,9 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'home.serviceUniverse': 'سروسز کا دائرہ',
 
   // ---- Assistant ---------------------------------------------------------
+  'assistant.pageTitle': 'صحرا سے پوچھیں',
+  'assistant.pageDesc':
+    'اردو، پنجابی یا انگریزی میں کوئی سرکاری سوال پوچھیں اور جانچے گئے سرکاری ریکارڈ کی بنیاد پر جواب حاصل کریں، ماخذ اور جانچ کی تاریخ کے ساتھ۔',
   'assistant.title': 'صحرا AI معاون',
   'assistant.subtitle': 'جواب صرف جانچے گئے ریکارڈز سے',
   'assistant.checking': 'جانچے گئے ریکارڈز دیکھے جا رہے ہیں…',

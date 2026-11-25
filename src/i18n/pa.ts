@@ -58,6 +58,8 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'action.clear': 'صاف کرو',
   'action.reset': 'مڑ ترتیب دیو',
   'action.openRecord': 'ریکارڈ کھولو',
+  'action.tryAgain': 'فیر کوشش کرو',
+  'action.dismiss': 'بند کرو',
   'action.copy': 'کاپی کرو',
   'action.copied': 'کاپی ہو گیا',
   'action.download': 'ڈاؤن لوڈ',
@@ -88,7 +90,6 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'action.regenerate': 'فیر بناؤ',
   'action.helpful': 'مددگار',
   'action.notHelpful': 'مددگار نئیں',
-  'action.dismiss': 'ہٹاؤ',
 
   // ---- Language ----------------------------------------------------------
   'lang.label': 'زبان',
@@ -138,6 +139,9 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'home.serviceUniverse': 'خدمتاں دا دائرہ',
 
   // ---- Assistant ---------------------------------------------------------
+  'assistant.pageTitle': 'صحرا نوں پچھو',
+  'assistant.pageDesc':
+    'اردو، پنجابی یا انگریزی وچ کوئی سرکاری سوال پچھو تے جانچے گئے سرکاری ریکارڈ دی بنیاد تے جواب لؤ، ماخذ تے جانچ دی تریخ نال۔',
   'assistant.title': 'صحرا AI مددگار',
   'assistant.subtitle': 'جواب صرف جانچے گئے ریکارڈاں توں',
   'assistant.checking': 'جانچے گئے ریکارڈ ویکھے جا رہے نیں…',

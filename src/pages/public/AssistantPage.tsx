@@ -69,10 +69,7 @@ export default function AssistantPage() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const lastQuestionRef = useRef<string>('');
 
-  useDocumentTitle(
-    'Ask Sahara AI',
-    'Ask a civic question in Urdu, Punjabi or English and get an answer grounded in reviewed public records, with the source and the date it was checked.',
-  );
+  useDocumentTitle(t('assistant.pageTitle'), t('assistant.pageDesc'));
 
   // Restore the conversation for this browser session only.
   useEffect(() => {
@@ -289,14 +286,18 @@ export default function AssistantPage() {
 
             {error && (
               <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900" role="alert">
-                <p className="font-medium">The assistant could not answer.</p>
+                <p className="font-medium">{t('assistant.failed')}</p>
                 <p className="mt-0.5 text-xs leading-relaxed">{error}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  <Button size="sm" variant="outline" onClick={() => lastQuestionRef.current && void ask(lastQuestionRef.current)}>
-                    Try again
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => lastQuestionRef.current && void ask(lastQuestionRef.current)}
+                  >
+                    {t('action.tryAgain')}
                   </Button>
                   <Button size="sm" variant="ghost" onClick={() => setError(null)}>
-                    Dismiss
+                    {t('action.dismiss')}
                   </Button>
                 </div>
                 <p className="mt-2 text-[0.6875rem] text-red-800/80">
@@ -432,7 +433,7 @@ export default function AssistantPage() {
       <Drawer
         open={sourcesOpen}
         onClose={() => setSourcesOpen(false)}
-        title="Sources and guidance"
+        title={t('assistant.sourcesPanel')}
         description="How to read an answer, and what this assistant will not do"
         size="md"
       >

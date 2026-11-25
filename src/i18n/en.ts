@@ -52,6 +52,8 @@ export const en = {
   'action.clear': 'Clear',
   'action.reset': 'Reset',
   'action.openRecord': 'Open record',
+  'action.tryAgain': 'Try again',
+  'action.dismiss': 'Dismiss',
   'action.copy': 'Copy',
   'action.copied': 'Copied',
   'action.download': 'Download',
@@ -82,7 +84,6 @@ export const en = {
   'action.regenerate': 'Regenerate',
   'action.helpful': 'Helpful',
   'action.notHelpful': 'Not helpful',
-  'action.dismiss': 'Dismiss',
 
   // ---- Language ----------------------------------------------------------
   'lang.label': 'Language',
@@ -134,6 +135,9 @@ export const en = {
   'home.serviceUniverse': 'Service universe',
 
   // ---- Assistant ---------------------------------------------------------
+  'assistant.pageTitle': 'Ask Sahara AI',
+  'assistant.pageDesc':
+    'Ask a civic question in Urdu, Punjabi or English and get an answer grounded in reviewed public records, with the source and the date it was checked.',
   'assistant.title': 'Sahara AI assistant',
   'assistant.subtitle': 'Answers only from reviewed records',
   'assistant.checking': 'Checking reviewed records…',
