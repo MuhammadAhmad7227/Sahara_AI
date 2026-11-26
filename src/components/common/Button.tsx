@@ -20,7 +20,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const base =
-  'group/btn relative inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap rounded-md select-none ' +
+  'group/btn relative inline-flex items-center justify-center gap-2 font-medium text-center whitespace-normal rounded-lg select-none ' +
   'transition-[background-color,box-shadow,transform,border-color,color] duration-200 ease-out-soft ' +
   'disabled:pointer-events-none disabled:opacity-55 disabled:shadow-none';
 
@@ -41,9 +41,9 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: 'h-9 px-3 text-sm',
-  md: 'h-11 px-4 text-[0.9375rem]',
-  lg: 'h-12 px-6 text-base',
+  sm: 'min-h-9 px-3 py-1.5 text-sm',
+  md: 'min-h-11 px-4 py-2 text-[0.9375rem]',
+  lg: 'min-h-12 px-6 py-2.5 text-base',
 };
 
 /** Trailing icons drift in the fixed layout direction on hover. */
