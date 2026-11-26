@@ -7,7 +7,7 @@
  * 404 page for a declared route, no blank screen.
  */
 import { describe, expect, it, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { router } from '@/routes/router';
 import { login } from '@/services/api/auth';
@@ -83,9 +83,10 @@ beforeEach(() => {
 
 async function expectRouteRenders(path: string, pattern: RegExp) {
   await renderRoute(path);
-  const found = await screen.findAllByText(pattern, undefined, { timeout: 8000 });
+  const main = await screen.findByRole('main', undefined, { timeout: 8000 });
+  const found = await within(main).findAllByText(pattern, undefined, { timeout: 8000 });
   expect(found.length).toBeGreaterThan(0);
-  expect(document.body.textContent).not.toMatch(/Unexpected Application Error/i);
+  expect(document.body.textContent).not.toMatch(/Unexpected (?:Application )?Error/i);
 }
 
 describe('Public routes render', () => {
@@ -142,5 +143,18 @@ describe('Guards applied to the real route table', () => {
   it('sends a guest from /settings to the login page', async () => {
     await renderRoute('/settings');
     expect(await screen.findByRole('heading', { name: /Log in to Sahara AI/i }, { timeout: 8000 })).toBeInTheDocument();
+  });
+});
+
+
+describe('Recovery from invalid saved session', () => {
+  it('renders the public home page rather than crashing when a saved session is incomplete', async () => {
+    localStorage.setItem('sahara.demo.session', JSON.stringify({
+      token: 'old-demo-token', expiresAt: '2099-01-01T00:00:00Z', user: { role: 'citizen' },
+    }));
+    await renderRoute('/');
+    await screen.findByRole('heading', { name: /Government services/i });
+    await waitFor(() => expect(screen.queryByText('Unexpected error')).not.toBeInTheDocument());
+    expect(screen.getByRole('link', { name: /log in/i })).toBeInTheDocument();
   });
 });
