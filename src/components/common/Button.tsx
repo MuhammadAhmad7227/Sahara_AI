@@ -20,7 +20,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const base =
-  'group/btn relative inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap rounded-lg select-none ' +
+  'group/btn relative inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap rounded-md select-none ' +
   'transition-[background-color,box-shadow,transform,border-color,color] duration-200 ease-out-soft ' +
   'disabled:pointer-events-none disabled:opacity-55 disabled:shadow-none';
 
@@ -30,11 +30,11 @@ const base =
  */
 const variants: Record<Variant, string> = {
   primary:
-    'bg-brand-900 text-white shadow-2 shadow-bevel-dark hover:bg-brand-800 hover:-translate-y-px hover:shadow-3 active:translate-y-0 active:shadow-1',
+    'bg-brand-900 text-white shadow-2 shadow-bevel-dark hover:bg-brand-800 hover:shadow-3 active:shadow-1',
   secondary:
-    'border border-sand-300 bg-sand-100 text-ink-900 shadow-1 hover:-translate-y-px hover:border-sand-400 hover:bg-sand-200 hover:shadow-2 active:translate-y-0',
+    'border border-sand-300 bg-sand-100 text-ink-900 shadow-1 hover:border-sand-400 hover:bg-sand-200 hover:shadow-2',
   outline:
-    'border border-brand-900/15 bg-white text-ink-800 shadow-1 hover:-translate-y-px hover:border-brand-400 hover:text-brand-900 hover:shadow-2 active:translate-y-0',
+    'border border-brand-900/15 bg-white text-ink-800 shadow-1 hover:border-brand-400 hover:text-brand-900 hover:shadow-2',
   ghost: 'text-ink-700 hover:bg-ink-100/80 hover:text-ink-950 active:bg-ink-200/70',
   danger: 'bg-red-700 text-white shadow-2 hover:bg-red-800 hover:shadow-3 active:shadow-1',
   subtle: 'bg-brand-50 text-brand-900 shadow-1 hover:bg-brand-100 hover:shadow-2',
