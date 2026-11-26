@@ -34,8 +34,8 @@ export function AssistantGuide({
     <div className="space-y-3">
       <InlineNotice tone="info" title="How to read an answer">
         <p>
-          The <strong>AI explanation</strong> explains the record. The <strong>source information</strong> block
-          shows who published it and when it was last checked. If the two disagree, trust the source.
+          Answers are assembled from demonstration records, which are not yet verified. The source information
+          block shows any recorded publisher and date. Confirm important details with the official office.
         </p>
       </InlineNotice>
 
@@ -45,8 +45,7 @@ export function AssistantGuide({
           Answer language
         </h2>
         <p className="mt-1 text-xs leading-relaxed text-ink-500">
-          The interface language and the answer language can differ — ask in Urdu and read the interface in
-          English.
+          Choosing an answer language also changes the interface language. Some content may still appear in English.
         </p>
         <div className="mt-2.5 grid grid-cols-2 gap-1.5 min-[380px]:grid-cols-3">
           {languages.map((lang) => (

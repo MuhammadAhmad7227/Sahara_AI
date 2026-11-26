@@ -50,10 +50,9 @@ describe('Assistant page', () => {
 
     // The answer and its provenance arrive after the mock latency.
     expect(await screen.findByText(/Source information used/i, {}, { timeout: 4000 })).toBeInTheDocument();
-    // The "AI explanation" label appears both in the answer and in the side panel.
-    expect(screen.getAllByText(/AI explanation/i).length).toBeGreaterThan(0);
-    // The grounding rule is stated next to the answer, not just in the footer.
-    expect(screen.getAllByText(/reviewed public sources|does not use unreviewed/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Sahara explanation/i)).toBeInTheDocument();
+    // A demo record must never be mistaken for a reviewed official source.
+    expect(screen.getByText(/unverified demonstration record, not official advice/i)).toBeInTheDocument();
   });
 
   it('renders an error state with a retry action and keeps other tools available', async () => {

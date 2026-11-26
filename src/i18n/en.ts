@@ -118,11 +118,11 @@ export const en = {
   'home.secondaryCta': 'Explore services',
   'home.languages': 'Languages',
   'home.everyAnswer': 'Every answer',
-  'home.everyAnswerValue': 'Source and date checked',
+  'home.everyAnswerValue': 'Status and available sources',
   'home.access': 'Access',
   'home.accessValue': 'Free, no account needed',
   'home.howItWorks': 'How Sahara works',
-  'home.popularServices': 'Most requested services',
+  'home.popularServices': 'Example services',
   'home.quickActions': 'Quick actions',
   'home.whyTitle': 'What Sahara does, and what it refuses to do',
   'home.trustTitle': 'Trust is shown, not claimed',
@@ -130,7 +130,7 @@ export const en = {
   'home.demoAnswer': 'This example lists three documents. The fee is not verified, so it is not quoted.',
   'home.demoCnic': 'CNIC copy',
   'home.demoResidence': 'Proof of residence',
-  'home.demoPhotos': 'Two photographs',
+  'home.demoPhotos': 'Passport-size photographs',
   'home.demoAsk': 'Ask in your language…',
   'home.demoPrompt': 'Ask',
   'home.verificationStates': 'Every record carries a verification status',
@@ -152,19 +152,16 @@ export const en = {
 
   // ---- Assistant ---------------------------------------------------------
   'assistant.pageTitle': 'Ask Sahara AI',
-  'assistant.pageDesc':
-    'Ask a civic question in Urdu, Punjabi or English and get an answer grounded in reviewed public records, with the source and the date it was checked.',
+  'assistant.pageDesc': 'Ask a question in English, Urdu or Punjabi. Answers use unverified demonstration records, not a live government database.',
   'assistant.title': 'Sahara AI assistant',
   'assistant.subtitle': 'Answers only from reviewed records',
   'assistant.checking': 'Checking reviewed records…',
   'assistant.greeting': 'What would you like to know?',
-  'assistant.intro':
-    'Ask about a public service, a document, a complaint or a suspicious message. Sahara answers from reviewed records and shows the source — or says plainly that it has none.',
+  'assistant.intro': 'Ask about a public service or document. This demonstration uses unverified sample records. Confirm important details with the official office.',
   'assistant.tryThese': 'Try one of these',
-  'assistant.noRecordInline':
-    'No reviewed record matched this question, so no factual answer was produced.',
-  'assistant.checkingRecords': 'Checking reviewed records…',
-  'assistant.reviewedRecordsOnly': 'Answers only from reviewed records',
+  'assistant.noRecordInline': 'No matching demonstration record was found.',
+  'assistant.checkingRecords': 'Searching demonstration records…',
+  'assistant.reviewedRecordsOnly': 'Demonstration records · not verified',
   'assistant.conversationLabel': 'Conversation with Sahara AI',
   'assistant.preparingAnswer': 'Sahara AI is preparing an answer',
   'assistant.searchingKnowledge': 'Searching the knowledge base…',
@@ -229,12 +226,10 @@ export const en = {
 
   // ---- Services ----------------------------------------------------------
   'services.pageTitle': 'Public service catalogue',
-  'services.pageDesc':
-    'Browse reviewed public-service records for Punjab and federal services: documents, steps, fees where verified, and the source each record comes from.',
+  'services.pageDesc': 'Explore demonstration records for Punjab and federal services. These records are not yet verified.',
   'services.eyebrow': 'Service catalogue',
   'services.heading': 'Public services, in plain language',
-  'services.headingDesc':
-    'Search reviewed records for Punjab and federal services. Every record lists its required documents and steps, and shows its source and the date it was last checked — or says that a detail is not yet verified.',
+  'services.headingDesc': 'Search sample records for services, documents and procedures. These examples are not verified; confirm details with the official office.',
   'services.filters': 'Filters',
   'services.loadError': 'Unable to load services',
   'services.aboutTitle': 'About this catalogue',
@@ -257,8 +252,7 @@ export const en = {
   'service.related': 'Related services',
   'service.whatToDo': 'What would you like to do?',
   'services.title': 'Services',
-  'services.subtitle':
-    'Reviewed public-service records with documents, procedure and source. Where a detail is unverified, the record says so.',
+  'services.subtitle': 'Demonstration records with example documents, procedures and source information.',
   'services.search': 'Search services',
   'services.searchPlaceholder': 'Search by service, department or document…',
   'services.category': 'Category',

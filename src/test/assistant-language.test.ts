@@ -68,6 +68,16 @@ describe('Assistant answers in the requested language', () => {
     expect(ur.sources[0].publisher).toBe(en.sources[0].publisher);
   });
 
+  it('discloses that matched demo records are unverified in every language', async () => {
+    const [en, ur, pa] = await Promise.all([ask('en'), ask('ur'), ask('pa')]);
+    expect(en.answer).toMatch(/demonstration record.*not verified/i);
+    expect(en.disclaimer).toMatch(/unverified demonstration record/i);
+    expect(ur.answer).toContain('تصدیق شدہ نہیں');
+    expect(ur.disclaimer).toContain('غیر تصدیق شدہ');
+    expect(pa.answer).toContain('تصدیق شدہ نئیں');
+    expect(pa.disclaimer).toContain('غیر تصدیق شدہ');
+  });
+
   it('never invents a record when none matches', async () => {
     const answer = await askAssistant({
       question: 'zzzz qqqq unanswerable nonsense xxxx',

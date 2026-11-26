@@ -123,11 +123,11 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'home.secondaryCta': 'سروسز دیکھیں',
   'home.languages': 'زبانیں',
   'home.everyAnswer': 'ہر جواب میں',
-  'home.everyAnswerValue': 'ماخذ اور جانچ کی تاریخ',
+  'home.everyAnswerValue': 'حیثیت اور دستیاب ماخذ',
   'home.access': 'رسائی',
   'home.accessValue': 'مفت، اکاؤنٹ کی ضرورت نہیں',
   'home.howItWorks': 'صحرا کیسے کام کرتا ہے',
-  'home.popularServices': 'سب سے زیادہ مانگی جانے والی سروسز',
+  'home.popularServices': 'خدمات کی مثالیں',
   'home.quickActions': 'فوری کام',
   'home.whyTitle': 'صحرا کیا کرتا ہے، اور کیا نہیں کرتا',
   'home.trustTitle': 'اعتماد دعوے سے نہیں، ثبوت سے بنتا ہے',
@@ -135,7 +135,7 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'home.demoAnswer': 'اس مثال میں تین دستاویزات درج ہیں۔ فیس کی تصدیق نہیں ہوئی، اس لیے رقم نہیں بتائی گئی۔',
   'home.demoCnic': 'شناختی کارڈ کی نقل',
   'home.demoResidence': 'رہائش کا ثبوت',
-  'home.demoPhotos': 'دو تصاویر',
+  'home.demoPhotos': 'پاسپورٹ سائز تصاویر',
   'home.demoAsk': 'اپنی زبان میں پوچھیں…',
   'home.demoPrompt': 'پوچھیں',
   'home.verificationStates': 'ہر ریکارڈ پر تصدیق کی حیثیت درج ہے',
@@ -157,19 +157,16 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
 
   // ---- Assistant ---------------------------------------------------------
   'assistant.pageTitle': 'صحرا سے پوچھیں',
-  'assistant.pageDesc':
-    'اردو، پنجابی یا انگریزی میں کوئی سرکاری سوال پوچھیں اور جانچے گئے سرکاری ریکارڈ کی بنیاد پر جواب حاصل کریں، ماخذ اور جانچ کی تاریخ کے ساتھ۔',
+  'assistant.pageDesc': 'اردو، پنجابی یا انگریزی میں سوال پوچھیں۔ جوابات غیر تصدیق شدہ نمونہ ریکارڈ استعمال کرتے ہیں، سرکاری ڈیٹا بیس نہیں۔',
   'assistant.title': 'صحرا AI معاون',
   'assistant.subtitle': 'جواب صرف جانچے گئے ریکارڈز سے',
   'assistant.checking': 'جانچے گئے ریکارڈز دیکھے جا رہے ہیں…',
   'assistant.greeting': 'آپ کیا جاننا چاہیں گے؟',
-  'assistant.intro':
-    'کسی سرکاری سروس، دستاویز، شکایت یا مشکوک پیغام کے بارے میں پوچھیں۔ صحرا جانچے گئے ریکارڈز سے جواب دیتا ہے اور ماخذ دکھاتا ہے — یا صاف کہتا ہے کہ اس کے پاس کوئی نہیں۔',
+  'assistant.intro': 'سرکاری خدمت یا دستاویز کے بارے میں پوچھیں۔ یہ مظاہرہ غیر تصدیق شدہ نمونہ ریکارڈ استعمال کرتا ہے۔ اہم تفصیلات سرکاری دفتر سے تصدیق کریں۔',
   'assistant.tryThese': 'ان میں سے کچھ پوچھیں',
-  'assistant.noRecordInline':
-    'اس سوال سے کوئی جانچا گیا ریکارڈ نہیں ملا، اس لیے کوئی حقیقی جواب نہیں دیا گیا۔',
-  'assistant.checkingRecords': 'جانچے گئے ریکارڈ تلاش کیے جا رہے ہیں…',
-  'assistant.reviewedRecordsOnly': 'جوابات صرف جانچے گئے ریکارڈ سے',
+  'assistant.noRecordInline': 'کوئی متعلقہ نمونہ ریکارڈ نہیں ملا۔',
+  'assistant.checkingRecords': 'نمونہ ریکارڈ تلاش کیے جا رہے ہیں…',
+  'assistant.reviewedRecordsOnly': 'نمونہ ریکارڈ · غیر تصدیق شدہ',
   'assistant.conversationLabel': 'سہارا اے آئی سے گفتگو',
   'assistant.preparingAnswer': 'سہارا اے آئی جواب تیار کر رہا ہے',
   'assistant.searchingKnowledge': 'علمی ذخیرہ تلاش کیا جا رہا ہے…',
@@ -232,12 +229,10 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
 
   // ---- Services ----------------------------------------------------------
   'services.pageTitle': 'سرکاری سروسز کی فہرست',
-  'services.pageDesc':
-    'پنجاب اور وفاقی سروسز کے جانچے گئے ریکارڈ دیکھیں: دستاویزات، مراحل، تصدیق شدہ فیس اور ہر ریکارڈ کا ماخذ۔',
+  'services.pageDesc': 'پنجاب اور وفاقی خدمات کے نمونہ ریکارڈ دیکھیں۔ ان کی ابھی تصدیق نہیں ہوئی۔',
   'services.eyebrow': 'سروس کیٹلاگ',
   'services.heading': 'سرکاری سروسز، آسان زبان میں',
-  'services.headingDesc':
-    'پنجاب اور وفاقی سروسز کے جانچے گئے ریکارڈ تلاش کریں۔ ہر ریکارڈ مطلوبہ دستاویزات اور مراحل بتاتا ہے، اپنا ماخذ اور آخری جانچ کی تاریخ دکھاتا ہے — یا صاف لکھتا ہے کہ کوئی تفصیل ابھی تصدیق شدہ نہیں۔',
+  'services.headingDesc': 'خدمات، دستاویزات اور طریقہ کار کے نمونہ ریکارڈ تلاش کریں۔ یہ مثالیں تصدیق شدہ نہیں؛ تفصیلات سرکاری دفتر سے معلوم کریں۔',
   'services.filters': 'فلٹرز',
   'services.loadError': 'سروسز لوڈ نہیں ہو سکیں',
   'services.aboutTitle': 'اس کیٹلاگ کے بارے میں',
@@ -259,8 +254,7 @@ export const ur: Partial<Record<keyof Dictionary, string>> = {
   'service.related': 'متعلقہ سروسز',
   'service.whatToDo': 'آپ کیا کرنا چاہیں گے؟',
   'services.title': 'سروسز',
-  'services.subtitle':
-    'جانچے گئے سرکاری سروسز کے ریکارڈ، دستاویزات، طریقۂ کار اور ماخذ کے ساتھ۔ جہاں کوئی تفصیل غیر تصدیق شدہ ہو، ریکارڈ خود بتا دیتا ہے۔',
+  'services.subtitle': 'نمونہ ریکارڈ میں مثالی دستاویزات، طریقہ کار اور ماخذ کی معلومات ہیں۔',
   'services.search': 'سروسز تلاش کریں',
   'services.searchPlaceholder': 'سروس، محکمہ یا دستاویز کے ذریعے تلاش کریں…',
   'services.category': 'قسم',

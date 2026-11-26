@@ -62,25 +62,25 @@ const pipeline = [
   {
     step: '02',
     title: 'Sahara understands',
-    body: 'The question is read for a service, a document or an intent — not just keywords.',
+    body: 'The demo looks for words that match a stored service record.',
     icon: Languages,
   },
   {
     step: '03',
-    title: 'Records are verified',
-    body: 'Only records a reviewer has approved and published are eligible to be retrieved.',
+    title: 'Check the record status',
+    body: 'The current catalogue contains demonstration records that have not yet been verified.',
     icon: ShieldCheck,
   },
   {
     step: '04',
     title: 'Sources are retrieved',
-    body: 'The matching record is pulled with its publisher, official URL and date checked.',
+    body: 'The demo shows the recorded publisher and any available source details.',
     icon: BookOpenCheck,
   },
   {
     step: '05',
-    title: 'The AI explains',
-    body: 'The model explains the record in plain language. It cannot add facts of its own.',
+    title: 'Read the example answer',
+    body: 'This demo assembles a response from stored fields; it does not call a language model.',
     icon: Sparkles,
   },
   {
@@ -92,8 +92,8 @@ const pipeline = [
 ];
 
 const serviceUniverse = [
-  { label: 'Identity', detail: 'Domicile · CNIC', to: '/services?category=identity', icon: BadgeCheck },
-  { label: 'Travel', detail: 'Passport · B-Form', to: '/services?category=travel', icon: MapPin },
+  { label: 'Identity', detail: 'CNIC · Passport', to: '/services?category=identity', icon: BadgeCheck },
+  { label: 'Travel', detail: 'Passport information', to: '/services?q=passport', icon: MapPin },
   { label: 'Welfare', detail: 'BISP · Zakat', to: '/welfare', icon: Building2 },
   { label: 'Utilities', detail: 'Electricity · Gas', to: '/services?category=utilities', icon: Gauge },
   { label: 'Complaints', detail: 'Draft · Escalate', to: '/complaints', icon: ScrollText },
@@ -103,18 +103,18 @@ const serviceUniverse = [
 const capabilities = [
   {
     title: 'Answers with a visible source',
-    body: 'Every response shows the publisher, the record title and the date it was last checked — or says that no reviewed record exists.',
+    body: 'A matching demo answer shows available source details. Check its status and confirm important information with the official office.',
     icon: ShieldCheck,
     tone: 'green' as const,
   },
   {
-    title: 'Voice-first, three languages',
-    body: 'Urdu, Punjabi and English, with a right-to-left interface and browser speech input where it is supported.',
+    title: 'Three languages and optional voice',
+    body: 'Use Urdu, Shahmukhi Punjabi or English. Speech features depend on your browser and installed voices.',
     icon: Mic,
     tone: 'gold' as const,
   },
   {
-    title: 'Finishes the task, not just the answer',
+    title: 'Prepare for the next step',
     body: 'Document checklists, application drafts and complaint templates that you review and submit yourself.',
     icon: FileText,
     tone: 'green' as const,
@@ -141,7 +141,7 @@ export default function HomePage() {
   const { t, language } = useLanguage();
   useDocumentTitle(
     'Sahara AI — Civic services for Pakistani citizens',
-    'Ask about public services, documents, applications, complaints and public information in English, Urdu or Punjabi. Answers cite the reviewed source and the date it was checked.',
+    'Explore public service demonstration records in English, Urdu or Punjabi. Confirm important information with the relevant official office.',
   );
 
   const { data: services, loading, error, reload } = useAsync(() => getPopularServices(4), []);
@@ -361,13 +361,12 @@ export default function HomePage() {
               id="how-it-works"
               className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-ink-950 sm:text-[2rem]"
             >
-              Knowledge provides the facts.
+              A simple way to explore.
               <br />
-              <span className="display-serif italic text-brand-800">The AI explains them.</span>
+              <span className="display-serif italic text-brand-800">With clear limits.</span>
             </h2>
             <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-600">
-              Retrieval happens before generation. That order is what makes an answer checkable — and
-              what stops the model from inventing a fee or a form number.
+              This frontend demonstration searches sample records and assembles a response. The records are not yet verified; confirm important details with the relevant official office.
             </p>
           </Reveal>
 
@@ -489,7 +488,7 @@ export default function HomePage() {
         <Reveal className="mb-6 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-brand-700">
-              Most requested
+              {t('home.popularServices')}
             </p>
             <h2 id="popular-services" className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-ink-950">
               {t('home.popularServices')}
@@ -677,8 +676,7 @@ export default function HomePage() {
                 <span className="display-serif italic text-sand-200">In your own language.</span>
               </h2>
               <p className="mt-3 text-[0.875rem] leading-relaxed text-brand-100/85">
-                You will get an explanation grounded in a reviewed record — or a clear statement that no
-                reliable record exists yet.
+                Explore an example answer from the demo catalogue, or see when no matching record is available. Confirm important details with the relevant office.
               </p>
             </div>
 
