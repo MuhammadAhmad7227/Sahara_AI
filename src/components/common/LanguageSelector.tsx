@@ -54,7 +54,7 @@ export function LanguageSelector({
 }
 
 /** Compact dropdown used in the header. */
-export function LanguageMenu({ compact }: { compact?: boolean }) {
+export function LanguageMenu({ compact, placement = 'bottom', align = 'end' }: { compact?: boolean; placement?: 'top' | 'bottom'; align?: 'start' | 'end' }) {
   const { language, setLanguage, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -89,7 +89,7 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
         aria-expanded={open}
         aria-label={`${t('lang.label')}: ${languageMeta[language].native}`}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm font-medium text-ink-800 transition-colors hover:bg-ink-900/[0.05] dark:text-sand-100"
+        className="inline-flex min-h-11 items-center gap-1.5 rounded-lg px-2.5 text-sm font-medium text-ink-800 transition-colors hover:bg-ink-900/[0.05] dark:text-sand-100"
       >
         <Globe className="size-4" aria-hidden="true" />
         {compact ? (
@@ -122,7 +122,7 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
               event.key === 'ArrowDown' ? (current + 1) % items.length : (current <= 0 ? items.length - 1 : current - 1);
             items[next]?.focus();
           }}
-          className="absolute end-0 z-50 mt-1.5 w-64 rounded-xl border border-ink-200 bg-paper p-1.5 shadow-3 animate-slide-up"
+          className={cn('absolute z-50 w-64 max-w-[calc(100vw-2rem)] rounded-xl border border-ink-200 bg-paper p-1.5 shadow-3 animate-slide-up', placement === 'top' ? 'bottom-full mb-1.5' : 'top-full mt-1.5', align === 'start' ? 'start-0' : 'end-0')}
         >
           <p className="px-2 pb-1 pt-1.5 text-[0.6875rem] font-semibold uppercase tracking-wider text-ink-400">
             {t('lang.interface')}

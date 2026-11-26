@@ -69,6 +69,22 @@ describe('Keyboard accessibility', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
+  it('closes mobile navigation after selecting the current route', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Header />);
+    await user.click(screen.getByRole('button', { name: 'Menu' }));
+    const dialog = screen.getByRole('dialog', { name: 'Site navigation' });
+    await user.click(within(dialog).getByRole('link', { name: 'Home', exact: true }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('supports an upward, start-aligned language menu for constrained spaces', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<LanguageMenu placement="top" align="start" />);
+    await user.click(screen.getByRole('button', { name: /Language.*English/i }));
+    expect(screen.getByRole('menu')).toHaveClass('bottom-full', 'start-0');
+  });
+
   it('supports keyboard language selection without claiming complete translations', async () => {
     const user = userEvent.setup();
     renderWithProviders(<LanguageMenu />);
