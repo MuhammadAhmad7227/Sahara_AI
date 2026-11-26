@@ -16,6 +16,7 @@ import { PageHeader } from '@/components/common/Feedback';
 import { EmptyState, InlineNotice } from '@/components/common/States';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { analyzeScam } from '@/services/api/scams';
+import { extractScamImageText } from '@/services/api/scamImage';
 import { validateFile, formatBytes } from '@/services/api/documents';
 import { errorMessage } from '@/services/api/errors';
 import { cn, formatDate } from '@/utils/cn';
@@ -26,7 +27,7 @@ const riskMeta: Record<ScamRiskLevel, { label: string; tone: string; Icon: typeo
     label: 'High concern',
     tone: 'border-red-300 bg-red-50',
     Icon: AlertOctagon,
-    blurb: 'Several strong fraud indicators were found. Do not act on this message until you verify it independently.',
+    blurb: 'One or more concerning wording indicators were found. Do not act on this message until you verify it independently.',
   },
   needs_caution: {
     label: 'Needs caution',
@@ -50,6 +51,7 @@ export default function ScamDetectorPage() {
 
   const [text, setText] = useState('');
   const [image, setImage] = useState<File | null>(null);
+  const [extractedText, setExtractedText] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<ScamAnalysis | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
@@ -60,7 +62,10 @@ export default function ScamDetectorPage() {
 
   const handleFile = (file: File | undefined) => {
     if (!file) return;
-    const invalid = validateFile(file);
+    setAnalysis(null);
+    setExtractedText(null);
+    setError(null);
+    const invalid = file.type === 'application/pdf' ? 'Please choose a JPG, PNG or WebP image, not a PDF.' : validateFile(file);
     if (invalid) {
       setFileError(invalid);
       setImage(null);
@@ -71,11 +76,23 @@ export default function ScamDetectorPage() {
   };
 
   const analyze = async () => {
-    if (!text.trim()) return;
+    if ((!text.trim() && !image) || analyzing) return;
     setAnalyzing(true);
     setError(null);
+    setAnalysis(null);
+    setExtractedText(null);
     try {
-      const result = await analyzeScam(text);
+      let imageText = '';
+      if (image) {
+        try {
+          imageText = await extractScamImageText(image);
+        } catch {
+          throw new Error('Could not read the screenshot. Try a clear image or remove it and paste the message instead. No scan was completed.');
+        }
+        if (!imageText.trim()) throw new Error('No text could be read from the screenshot. Try a clearer image or remove it and paste the message instead. No scan was completed.');
+      }
+      const result = await analyzeScam([text.trim(), imageText].filter(Boolean).join('\n\n'));
+      if (image) setExtractedText(imageText);
       setAnalysis(result);
     } catch (err) {
       setError(errorMessage(err));
@@ -87,6 +104,8 @@ export default function ScamDetectorPage() {
   const reset = () => {
     setText('');
     setImage(null);
+    setExtractedText(null);
+    if (fileRef.current) fileRef.current.value = '';
     setFileError(null);
     setAnalysis(null);
     setError(null);
@@ -111,7 +130,8 @@ export default function ScamDetectorPage() {
             <textarea
               id="scam-text"
               value={text}
-              onChange={(e) => setText(e.target.value)}
+              onChange={(e) => { setText(e.target.value); setAnalysis(null); setExtractedText(null); setError(null); }}
+              disabled={analyzing}
               rows={6}
               maxLength={2000}
               placeholder={'Example: Dear customer, your account will be blocked within 2 hours. Share the OTP you received to verify your CNIC.'}
@@ -132,18 +152,18 @@ export default function ScamDetectorPage() {
                   <div>
                     <p className="text-sm font-medium text-ink-800">Add a screenshot (optional)</p>
                     <p className="text-xs text-ink-500">
-                      Screenshot analysis requires the backend image service; you can attach a file now and the
-                      upload is validated.
+                      English and Urdu text is read in your browser and scanned together with your message; avoid screenshots containing secrets. Text recognition can miss or misread words; images, logos and authenticity are not assessed. Recognition files are downloaded when needed.
                     </p>
                   </div>
                 </div>
-                <Button variant="outline" size="sm" onClick={() => fileRef.current?.click()} leadingIcon={<Upload className="size-3.5" aria-hidden="true" />}>
+                <Button variant="outline" size="sm" disabled={analyzing} onClick={() => fileRef.current?.click()} leadingIcon={<Upload className="size-3.5" aria-hidden="true" />}>
                   Choose file
                 </Button>
               </div>
               <input
                 ref={fileRef}
                 type="file"
+                disabled={analyzing}
                 accept=".jpg,.jpeg,.png,.webp"
                 className="sr-only"
                 onChange={(e) => handleFile(e.target.files?.[0])}
@@ -158,9 +178,13 @@ export default function ScamDetectorPage() {
                     type="button"
                     onClick={() => {
                       setImage(null);
+                      setAnalysis(null);
+                      setExtractedText(null);
+                      setError(null);
                       if (fileRef.current) fileRef.current.value = '';
                     }}
-                    className="rounded p-1 text-ink-500 hover:bg-ink-100"
+                    disabled={analyzing}
+                    className="rounded p-2 text-ink-500 hover:bg-ink-100"
                     aria-label="Remove attached file"
                   >
                     <Trash2 className="size-3.5" aria-hidden="true" />
@@ -184,13 +208,13 @@ export default function ScamDetectorPage() {
               <Button
                 onClick={() => void analyze()}
                 loading={analyzing}
-                disabled={!text.trim()}
+                disabled={(!text.trim() && !image) || !!fileError}
                 leadingIcon={<ScanLine className="size-4" aria-hidden="true" />}
               >
-                {analyzing ? 'Analyzing…' : 'Analyze message'}
+                {analyzing ? 'Reading and analyzing…' : 'Analyze message'}
               </Button>
-              {(text || analysis) && (
-                <Button variant="ghost" onClick={reset}>
+              {(text || image || analysis || fileError) && (
+                <Button variant="ghost" disabled={analyzing} onClick={reset}>
                   Clear
                 </Button>
               )}
@@ -200,6 +224,11 @@ export default function ScamDetectorPage() {
           {/* Results */}
           {analysis && meta && (
             <>
+              {extractedText !== null && (
+                <SectionCard title="Text read from screenshot" description="Check this text for errors or omissions. The scan checks wording only, not image authenticity; it can miss fraud.">
+                  <p dir="auto" className="whitespace-pre-wrap break-words text-sm leading-relaxed text-ink-700">{extractedText}</p>
+                </SectionCard>
+              )}
               <section className={cn('rounded-xl border-2 p-4 sm:p-5', meta.tone)} aria-labelledby="risk-level">
                 <div className="flex items-start gap-3">
                   <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-white/70 text-ink-900">
@@ -278,7 +307,7 @@ export default function ScamDetectorPage() {
             <EmptyState
               icon={<ScanLine className="size-5" />}
               title="No analysis yet"
-              description="Paste a message above and choose Analyze message. The result explains which indicators appeared and why."
+              description="Paste a message or attach a screenshot and choose Analyze message. The result explains which wording indicators appeared and why."
             />
           )}
         </div>

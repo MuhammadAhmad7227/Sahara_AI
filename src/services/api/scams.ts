@@ -22,7 +22,7 @@ const rules: Rule[] = [
     id: 'otp_request',
     label: 'Asks for an OTP, PIN or password',
     severity: 'high',
-    pattern: /\b(otp|o\.t\.p|one[- ]time password|pin code|pin number|password|پاس ورڈ|او ٹی پی)\b/i,
+    pattern: /\b(otp|o\.t\.p|one[- ]time password|pin code|pin number|password)\b|(?:پاس ورڈ|او ٹی پی)/i,
     explanation:
       'No genuine bank, utility or government office asks for your OTP, PIN or password. Sharing it authorises a transaction on your account.',
   },
@@ -30,7 +30,7 @@ const rules: Rule[] = [
     id: 'urgency',
     label: 'Uses an urgent deadline to pressure you',
     severity: 'high',
-    pattern: /\b(within \d+ (minutes|hours)|expire[sd]?|immediately|urgent|last warning|account (will be )?(blocked|closed|suspended)|آخری موقع|فوراً|بند کر دیا)\b/i,
+    pattern: /\b(within \d+ (minutes|hours)|expire[sd]?|immediately|urgent|last warning|account (will be )?(blocked|closed|suspended))\b|(?:آخری موقع|فوراً|بند کر دیا)/i,
     explanation:
       'A short deadline is used to stop you checking the message with the real organisation. Genuine offices do not demand instant action by SMS.',
   },
@@ -38,13 +38,13 @@ const rules: Rule[] = [
     id: 'payment_request',
     label: 'Demands an immediate payment',
     severity: 'high',
-    pattern: /\b(send (rs\.?|pkr|money)|transfer (rs\.?|pkr|amount)|pay (rs\.?|pkr)|easy ?paisa|jazz ?cash|easypaisa|جاز کیش|ایزی پیسہ)\b/i,
+    pattern: /\b(send (rs\.?|pkr|money)|transfer (rs\.?|pkr|amount)|pay (rs\.?|pkr)|easy ?paisa|jazz ?cash|easypaisa)\b|(?:جاز کیش|ایزی پیسہ)/i,
     explanation:
       'Payments requested through a personal wallet or by message are a common fraud pattern. Official fees are paid at an office or a bank counter with a receipt.',
   },
   {
     id: 'suspicious_link',
-    label: 'Contains a link that is not an official domain',
+    label: 'Contains a link to check',
     severity: 'medium',
     pattern: /(https?:\/\/[^\s]+)|(\bwww\.[^\s]+)|(\b[a-z0-9-]+\.(tk|xyz|top|click|zip|link|shop|online)\b)/i,
     explanation:
@@ -54,7 +54,7 @@ const rules: Rule[] = [
     id: 'prize',
     label: 'Announces a prize, lottery or reward',
     severity: 'medium',
-    pattern: /\b(congratulation|congrats|you (have )?won|winner|lottery|prize|reward|scholarship award|مبارک ہو|انعام)\b/i,
+    pattern: /\b(congratulation|congrats|you (have )?won|winner|lottery|prize|reward|scholarship award)\b|(?:مبارک ہو|انعام)/i,
     explanation:
       'Unexpected prizes are a standard bait. A real programme does not ask a winner to pay a fee or share bank details to release money.',
   },
@@ -62,7 +62,7 @@ const rules: Rule[] = [
     id: 'sensitive_info',
     label: 'Requests CNIC, bank or card details',
     severity: 'high',
-    pattern: /\b(cnic number|card number|cvv|pin code|account number|bank details|date of birth|mother'?s maiden|شناختی کارڈ نمبر)\b/i,
+    pattern: /\b(cnic number|card number|cvv|pin code|account number|bank details|date of birth|mother'?s maiden)\b|(?:شناختی کارڈ نمبر)/i,
     explanation:
       'Identity and card details are used for impersonation and unauthorised transactions. Share them only through an official, verified channel you initiated.',
   },
@@ -70,7 +70,7 @@ const rules: Rule[] = [
     id: 'fake_official',
     label: 'Claims to be a government or bank department',
     severity: 'medium',
-    pattern: /\b(nadra|bisp|fbr|e-?sahulat|benazir|state bank|police department|excise|government of punjab|حکومت)\b/i,
+    pattern: /\b(nadra|bisp|fbr|e-?sahulat|benazir|state bank|police department|excise|government of punjab)\b|(?:حکومت)/i,
     explanation:
       'Fraudsters often use the name of a real department. Verify by contacting the department through the contact details published on its own website — not the ones in the message.',
   },

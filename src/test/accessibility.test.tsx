@@ -74,7 +74,7 @@ describe('Keyboard accessibility', () => {
     renderWithProviders(<Header />);
     await user.click(screen.getByRole('button', { name: 'Menu' }));
     const dialog = screen.getByRole('dialog', { name: 'Site navigation' });
-    await user.click(within(dialog).getByRole('link', { name: 'Home', exact: true }));
+    await user.click(within(dialog).getByRole('link', { name: /^Home$/ }));
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
