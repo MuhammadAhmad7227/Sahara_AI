@@ -13,8 +13,11 @@ import { demoServices } from '@/data/services';
 import { mockRequest } from '@/services/api/client';
 import type { AssistantAnswer, AssistantAskRequest, AssistantFeedback, Language, Service } from '@/types/domain';
 
-const DISCLAIMER =
-  'Sahara AI explains information from reviewed public sources. Please verify important requirements with the relevant official authority.';
+const DISCLAIMERS: Record<Language, string> = {
+  en: 'This is an unverified demonstration record, not official advice. Confirm all important details with the relevant official office.',
+  ur: 'یہ غیر تصدیق شدہ نمونہ ریکارڈ ہے، سرکاری مشورہ نہیں۔ اہم تفصیلات متعلقہ سرکاری دفتر سے تصدیق کریں۔',
+  pa: 'ایہ غیر تصدیق شدہ نمونہ ریکارڈ اے، سرکاری مشورہ نئیں۔ اہم تفصیلاں دی متعلقہ سرکاری دفتر توں تصدیق کرو۔',
+};
 
 function scoreService(service: Service, question: string): number {
   const q = question.toLowerCase();
@@ -66,7 +69,7 @@ function buildAnswer(service: Service, language: Language, question: string): As
    */
   const copy = {
     en: {
-      intro: `This is what the reviewed record for **${service.name}** currently says.`,
+      intro: `This demonstration record for **${service.name}** is not verified. Confirm its details with the official office.`,
       department: 'Department',
       jurisdiction: 'Jurisdiction',
       documents: 'Documents normally required',
@@ -82,7 +85,7 @@ function buildAnswer(service: Service, language: Language, question: string): As
         'This explanation is assembled from the stored record, not from a government database. Your district office may ask for more or fewer documents.',
     },
     ur: {
-      intro: `**${service.name}** کے بارے میں جانچا گیا ریکارڈ فی الحال یہ بتاتا ہے:`,
+      intro: `**${service.name}** کا یہ نمونہ ریکارڈ تصدیق شدہ نہیں۔ تفصیلات سرکاری دفتر سے معلوم کریں:`,
       department: 'محکمہ',
       jurisdiction: 'دائرہ اختیار',
       documents: 'عام طور پر ضروری دستاویزات',
@@ -98,7 +101,7 @@ function buildAnswer(service: Service, language: Language, question: string): As
         'یہ وضاحت محفوظ شدہ ریکارڈ سے تیار کی گئی ہے، کسی سرکاری ڈیٹا بیس سے نہیں۔ آپ کا ضلع دفتر مزید یا کم دستاویزات مانگ سکتا ہے۔',
     },
     pa: {
-      intro: `**${service.name}** بارے جانچیا گیا ریکارڈ ہالے ایہ دسدا اے:`,
+      intro: `**${service.name}** دا ایہ نمونہ ریکارڈ تصدیق شدہ نئیں۔ تفصیلاں سرکاری دفتر توں پچھو:`,
       department: 'محکمہ',
       jurisdiction: 'دائرہ اختیار',
       documents: 'عام طور تے لوڑیندیاں دستاویزاں',
@@ -116,7 +119,7 @@ function buildAnswer(service: Service, language: Language, question: string): As
   } as const;
 
   const c = copy[language];
-  const feeLine = service.fee.amount === null ? c.feeUnverified : c.feeVerified;
+  const feeLine = service.fee.amount === null || service.verification !== 'verified' ? c.feeUnverified : c.feeVerified;
   const optionalList = optional.length
     ? `\n\n**${c.optional}**\n${optional.map((r) => `• ${r.title}`).join('\n')}`
     : '';
@@ -149,7 +152,7 @@ function buildAnswer(service: Service, language: Language, question: string): As
     noReliableRecord: false,
     retrievedRecordCount: 1,
     generatedBy: 'mock-demo',
-    disclaimer: DISCLAIMER,
+    disclaimer: DISCLAIMERS[language],
     createdAt: new Date().toISOString(),
     // `question` is echoed into the id-space only; kept out of the answer text
     // so a demo answer never reads as if it were tailored beyond the record.
@@ -160,17 +163,17 @@ function buildAnswer(service: Service, language: Language, question: string): As
 function noRecordAnswer(question: string, language: Language): AssistantAnswer {
   const text =
     language === 'ur'
-      ? 'اس سوال کے لیے میرے پاس کوئی تصدیق شدہ سرکاری ریکارڈ موجود نہیں ہے، اس لیے میں اندازہ نہیں لگاؤں گا۔ براہِ کرم متعلقہ سرکاری دفتر یا اس کی سرکاری ویب سائٹ سے تصدیق کریں۔'
+      ? 'اس سوال کے لیے میرے پاس کوئی متعلقہ نمونہ ریکارڈ موجود نہیں ہے، اس لیے میں اندازہ نہیں لگاؤں گا۔ براہِ کرم متعلقہ سرکاری دفتر یا اس کی سرکاری ویب سائٹ سے تصدیق کریں۔'
       : language === 'pa'
-        ? 'ایس سوال لئی میرے کول کوئی تصدیق شدہ سرکاری ریکارڈ نئیں، ایس لئی میں اندازہ نئیں لاؤنگا۔ مہربانی کر کے متعلقہ سرکاری دفتر یا ایہدی سرکاری ویب سائٹ توں تصدیق کرو۔'
-        : 'I do not have a reviewed record that answers this question, so I will not guess. Please confirm with the relevant official office or its official website. You can also browse the service catalogue or contact the department directly.';
+        ? 'ایس سوال لئی میرے کول کوئی متعلقہ نمونہ ریکارڈ نئیں، ایس لئی میں اندازہ نئیں لاؤنگا۔ مہربانی کر کے متعلقہ سرکاری دفتر یا ایہدی سرکاری ویب سائٹ توں تصدیق کرو۔'
+        : 'I do not have a matching demonstration record that answers this question, so I will not guess. Please confirm with the relevant official office or its official website. You can also browse the service catalogue or contact the department directly.';
 
   const lead =
     language === 'ur'
-      ? `میں نے "${question.slice(0, 160)}" کے لیے کوئی جانچا گیا ریکارڈ نہیں پایا۔`
+      ? `میں نے "${question.slice(0, 160)}" کے لیے کوئی متعلقہ نمونہ ریکارڈ نہیں پایا۔`
       : language === 'pa'
-        ? `میں نے "${question.slice(0, 160)}" لئی کوئی جانچیا گیا ریکارڈ نئیں لبیا۔`
-        : `I could not find a reviewed record for "${question.slice(0, 160)}".`;
+        ? `میں نے "${question.slice(0, 160)}" لئی کوئی متعلقہ نمونہ ریکارڈ نئیں لبیا۔`
+        : `I could not find a matching demonstration record for "${question.slice(0, 160)}".`;
 
   return {
     id: `ans-${Date.now()}`,
@@ -181,7 +184,7 @@ function noRecordAnswer(question: string, language: Language): AssistantAnswer {
     noReliableRecord: true,
     retrievedRecordCount: 0,
     generatedBy: 'mock-demo',
-    disclaimer: DISCLAIMER,
+    disclaimer: DISCLAIMERS[language],
     createdAt: new Date().toISOString(),
   };
 }

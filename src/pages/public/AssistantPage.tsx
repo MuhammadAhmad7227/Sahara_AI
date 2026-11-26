@@ -240,15 +240,14 @@ export default function AssistantPage() {
             {turns.length === 0 && (
               <div className="mx-auto max-w-lg py-6 text-center">
                 <SaharaOrb size={64} state="idle" className="mx-auto" />
-                <h2 className="mt-4 text-lg font-semibold tracking-tight text-ink-950">What would you like to know?</h2>
+                <h2 className="mt-4 text-lg font-semibold tracking-tight text-ink-950">{t('assistant.greeting')}</h2>
                 <p className="mx-auto mt-1 max-w-sm text-sm leading-relaxed text-ink-600">
-                  Ask about a public service, a document, a complaint or a suspicious message. Sahara AI answers
-                  from reviewed records and shows the source — or tells you plainly that it has none.
+                  {t('assistant.intro')}
                 </p>
 
                 <div className="mt-4 space-y-1.5 text-start">
                   <p className="text-[0.6875rem] font-semibold uppercase tracking-wider text-ink-400">
-                    Try one of these
+                    {t('assistant.tryThese')}
                   </p>
                   {suggestedQuestions.map((question) => (
                     <button

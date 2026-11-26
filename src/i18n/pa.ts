@@ -122,11 +122,11 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'home.secondaryCta': 'خدمتاں ویکھو',
   'home.languages': 'زباناں',
   'home.everyAnswer': 'ہر جواب وچ',
-  'home.everyAnswerValue': 'ماخذ تے جانچ دی تاریخ',
+  'home.everyAnswerValue': 'حیثیت تے دستیاب ماخذ',
   'home.access': 'رسائی',
   'home.accessValue': 'مفت، کھاتے دی لوڑ نئیں',
   'home.howItWorks': 'صحرا کِویں کم کردا اے',
-  'home.popularServices': 'سب توں ودھ منگیاں جان والیاں خدمتاں',
+  'home.popularServices': 'خدمتاں دیاں مثالاں',
   'home.quickActions': 'فوری کم',
   'home.whyTitle': 'صحرا کی کردا اے، تے کی نئیں کردا',
   'home.trustTitle': 'بھروسہ دعوے نال نئیں، ثبوت نال بندا اے',
@@ -134,7 +134,7 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'home.demoAnswer': 'ایس مثال وچ تین دستاویزاں درج نیں۔ فیس دی تصدیق نئیں ہوئی، ایس لئی رقم نئیں دسی گئی۔',
   'home.demoCnic': 'شناختی کارڈ دی نقل',
   'home.demoResidence': 'رہائش دا ثبوت',
-  'home.demoPhotos': 'دو تصویراں',
+  'home.demoPhotos': 'پاسپورٹ سائز تصویراں',
   'home.demoAsk': 'اپنی زبان وچ پچھو…',
   'home.demoPrompt': 'پچھو',
   'home.verificationStates': 'ہر ریکارڈ تے تصدیق دی حیثیت درج اے',
@@ -156,19 +156,16 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
 
   // ---- Assistant ---------------------------------------------------------
   'assistant.pageTitle': 'صحرا نوں پچھو',
-  'assistant.pageDesc':
-    'اردو، پنجابی یا انگریزی وچ کوئی سرکاری سوال پچھو تے جانچے گئے سرکاری ریکارڈ دی بنیاد تے جواب لؤ، ماخذ تے جانچ دی تریخ نال۔',
+  'assistant.pageDesc': 'اردو، پنجابی یا انگریزی وچ سوال پچھو۔ جواب غیر تصدیق شدہ نمونہ ریکارڈ استعمال کردے نیں، سرکاری ڈیٹا بیس نئیں۔',
   'assistant.title': 'صحرا AI مددگار',
   'assistant.subtitle': 'جواب صرف جانچے گئے ریکارڈاں توں',
   'assistant.checking': 'جانچے گئے ریکارڈ ویکھے جا رہے نیں…',
   'assistant.greeting': 'تُسی کی جاننا چاہو گے؟',
-  'assistant.intro':
-    'کسے سرکاری خدمت، دستاویز، شکایت یا مشکوک پیغام بارے پچھو۔ صحرا جانچے گئے ریکارڈاں توں جواب دیندا اے تے ماخذ وکھاندا اے — یا صاف کہندا اے جے ایہدے کول کوئی نئیں۔',
+  'assistant.intro': 'سرکاری خدمت یا دستاویز بارے پچھو۔ ایہ مظاہرہ غیر تصدیق شدہ نمونہ ریکارڈ استعمال کردا اے۔ اہم تفصیلاں سرکاری دفتر توں تصدیق کرو۔',
   'assistant.tryThese': 'اینا وچوں کجھ پچھو',
-  'assistant.noRecordInline':
-    'ایس سوال نال کوئی جانچیا گیا ریکارڈ نئیں لبیا، ایس لئی کوئی اصلی جواب نئیں دتا گیا۔',
-  'assistant.checkingRecords': 'جانچے گئے ریکارڈ لبھے جا رہے نیں…',
-  'assistant.reviewedRecordsOnly': 'جواب صرف جانچے گئے ریکارڈ توں',
+  'assistant.noRecordInline': 'کوئی متعلقہ نمونہ ریکارڈ نئیں لبھیا۔',
+  'assistant.checkingRecords': 'نمونہ ریکارڈ لبھے جا رہے نیں…',
+  'assistant.reviewedRecordsOnly': 'نمونہ ریکارڈ · غیر تصدیق شدہ',
   'assistant.conversationLabel': 'سہارا اے آئی نال گل بات',
   'assistant.preparingAnswer': 'سہارا اے آئی جواب تیار کر رہیا اے',
   'assistant.searchingKnowledge': 'علمی ذخیرہ لبھیا جا رہیا اے…',
@@ -231,12 +228,10 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
 
   // ---- Services ----------------------------------------------------------
   'services.pageTitle': 'سرکاری خدمتاں دی لسٹ',
-  'services.pageDesc':
-    'پنجاب تے وفاقی خدمتاں دے جانچے گئے ریکارڈ ویکھو: دستاویزاں، مرحلے، تصدیق شدہ فیس تے ہر ریکارڈ دا ماخذ۔',
+  'services.pageDesc': 'پنجاب تے وفاقی خدمتاں دے نمونہ ریکارڈ ویکھو۔ ایہناں دی ہالے تصدیق نئیں ہوئی۔',
   'services.eyebrow': 'خدمت کیٹلاگ',
   'services.heading': 'سرکاری خدمتاں، سوکھی زبان وچ',
-  'services.headingDesc':
-    'پنجاب تے وفاقی خدمتاں دے جانچے گئے ریکارڈ لبھو۔ ہر ریکارڈ لوڑیندیاں دستاویزاں تے مرحلے دسدا اے، اپنا ماخذ تے آخری جانچ دی تریخ وکھاندا اے — یا صاف لکھدا اے جے کوئی تفصیل ہالے تصدیق شدہ نئیں۔',
+  'services.headingDesc': 'خدمتاں، دستاویزاں تے طریقہ کار دے نمونہ ریکارڈ لبھو۔ ایہ مثالاں تصدیق شدہ نئیں؛ تفصیلاں سرکاری دفتر توں پچھو۔',
   'services.filters': 'فلٹر',
   'services.loadError': 'خدمتاں لوڈ نئیں ہو سکیاں',
   'services.aboutTitle': 'ایس کیٹلاگ بارے',
@@ -258,8 +253,7 @@ export const pa: Partial<Record<keyof Dictionary, string>> = {
   'service.related': 'متعلقہ خدمتاں',
   'service.whatToDo': 'تُسی کی کرنا چاہو گے؟',
   'services.title': 'خدمتاں',
-  'services.subtitle':
-    'جانچے گئے سرکاری خدمتاں دے ریکارڈ، دستاویزاں، طریقۂ کار تے ماخذ نال۔ جتھے کوئی تفصیل غیر تصدیق شدہ ہووے، ریکارڈ خود دس دیندا اے۔',
+  'services.subtitle': 'نمونہ ریکارڈ وچ مثالی دستاویزاں، طریقہ کار تے ماخذ دی معلومات نیں۔',
   'services.search': 'خدمتاں لبھو',
   'services.searchPlaceholder': 'خدمت، محکمہ یا دستاویز نال لبھو…',
   'services.category': 'قسم',
