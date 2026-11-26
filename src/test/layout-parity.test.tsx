@@ -17,7 +17,7 @@
  * font that is 2px too tall; it can catch a mirrored layout, which was the bug.
  */
 import { describe, expect, it, beforeEach } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { AuthProvider } from '@/contexts/AuthContext';
@@ -26,7 +26,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import HomePage from '@/pages/public/HomePage';
 import type { Language } from '@/types/domain';
-import { supportedLanguages } from '@/i18n';
+import { dictionaries, supportedLanguages } from '@/i18n';
 
 function renderChrome(language: Language) {
   // `storage` JSON-encodes values, so seed it the same way the app writes it.
@@ -128,6 +128,21 @@ describe('Home page renders the same structure in every language', () => {
       }
       expect(heading).not.toHaveAttribute('dir');
       expect(heading?.closest('section')).not.toHaveAttribute('dir');
+      unmount();
+    }
+  });
+
+  it('offers the same task links and a working assistant preview in every language', () => {
+    for (const language of supportedLanguages) {
+      const { container, unmount } = renderChrome(language);
+      const section = container.querySelector<HTMLElement>('section[aria-labelledby="start-heading"]');
+      expect(section).not.toBeNull();
+      const links = within(section!).getAllByRole('link');
+      expect(links.map((link) => link.getAttribute('href'))).toEqual(['/assistant', '/services', '/applications']);
+      expect(section).toHaveTextContent(dictionaries[language]['home.startHeading']!);
+      const demoPrompt = within(container).getByText(dictionaries[language]['home.demoAsk']!);
+      expect(demoPrompt.closest('a')).toHaveAttribute('href', '/assistant');
+      expect(document.documentElement.dir).toBe('ltr');
       unmount();
     }
   });

@@ -8,7 +8,7 @@ import type { Service } from '@/types/domain';
 export function ServiceCard({ service }: { service: Service }) {
   const { t } = useLanguage();
   return (
-    <article className="group relative flex h-full flex-col rounded-lg border border-ink-200 border-t-4 border-t-brand-700 bg-white p-5 shadow-1 transition-[border-color,box-shadow] duration-200 hover:border-brand-400 hover:shadow-2 focus-within:shadow-2">
+    <article className="group relative flex h-full flex-col rounded-lg border border-ink-200 border-t-4 border-t-brand-700 bg-white p-5 shadow-1 transition-[border-color,box-shadow] duration-200 hover:border-brand-400 hover:shadow-2 focus-within:shadow-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-700">
       <div className="mb-2 flex items-start justify-between gap-2">
         <span className="inline-flex items-center gap-1.5 rounded-md bg-brand-50/80 px-1.5 py-0.5 text-[0.6875rem] font-medium uppercase tracking-wide text-brand-800 ring-1 ring-brand-100">
           <Tag className="size-3" aria-hidden="true" />
@@ -32,12 +32,12 @@ export function ServiceCard({ service }: { service: Service }) {
         <div className="flex items-center gap-1.5">
           <Building2 className="size-3.5 shrink-0 text-ink-400" aria-hidden="true" />
           <dt className="sr-only">{t('services.departmentLabel')}</dt>
-          <dd className="truncate">{service.department}</dd>
+          <dd className="min-w-0 break-words">{service.department}</dd>
         </div>
         <div className="flex items-center gap-1.5">
           <MapPin className="size-3.5 shrink-0 text-ink-400" aria-hidden="true" />
           <dt className="sr-only">{t('services.jurisdictionLabel')}</dt>
-          <dd className="truncate">
+          <dd className="min-w-0 break-words">
             {service.jurisdiction}
             {service.district && service.district !== 'All districts' ? ` · ${service.district}` : ''}
           </dd>

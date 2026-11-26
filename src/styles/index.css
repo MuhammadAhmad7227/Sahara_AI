@@ -406,6 +406,7 @@ bdi {
 /* The warm page field: sand light from one corner, green light from the other. */
 @utility surface-page {
   background-color: var(--color-sand-50);
+  background-image: radial-gradient(ellipse at 85% 10%, rgb(185 219 206 / 0.18), transparent 60%);
 }
 
 /* Level-1 surface: paper with a hairline and a top bevel of light. */
@@ -427,6 +428,7 @@ bdi {
 /* Deep command surface used by the hero panel and the footer. */
 @utility panel-night {
   background-color: var(--color-brand-950);
+  background-image: linear-gradient(145deg, var(--color-brand-800), var(--color-brand-950));
   border: 1px solid var(--color-brand-800);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-2);

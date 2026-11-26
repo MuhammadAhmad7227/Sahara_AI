@@ -260,13 +260,13 @@ export default function HomePage() {
 
                       {/* Provenance — the whole point of the product, made visible. */}
                       <div className="mt-2 flex flex-wrap items-center gap-1.5 rounded-lg border border-white/10 bg-brand-950/40 px-2.5 py-1.5">
-                        <span className="text-[0.5625rem] font-semibold uppercase tracking-[0.12em] text-sand-300/60">
+                        <span className="text-[0.6875rem] font-semibold uppercase tracking-wide text-sand-200">
                           {t('home.source')}
                         </span>
                         <span className="text-[0.6875rem] font-medium text-sand-100">
                           District Administration (Punjab)
                         </span>
-                        <span className="ms-auto inline-flex items-center gap-1 rounded bg-amber-400/15 px-1.5 py-0.5 text-[0.5625rem] font-semibold uppercase tracking-wide text-amber-200">
+                        <span className="ms-auto inline-flex items-center gap-1 rounded bg-amber-400/15 px-1.5 py-0.5 text-[0.6875rem] font-semibold tracking-wide text-amber-200">
                           <ShieldAlert className="size-2.5" aria-hidden="true" />
                           {t('verify.pending')}
                         </span>
@@ -277,7 +277,7 @@ export default function HomePage() {
 
                 {/* Composer */}
                 <div className="relative border-t border-white/10 px-3 py-3">
-                  <div className="flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.07] py-1 pe-1 ps-3 backdrop-blur-sm">
+                  <Link to="/assistant" className="flex min-h-11 items-center gap-2 rounded-xl border border-white/20 bg-white/[0.08] py-1 pe-1 ps-3 transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
                     <Mic className="size-3.5 shrink-0 text-sand-300/70" aria-hidden="true" />
                     <span className="flex-1 truncate text-[0.75rem] text-sand-200/60">
                       {t('home.demoAsk')}
@@ -285,21 +285,21 @@ export default function HomePage() {
                     <span className="rounded-lg bg-accent-500 px-2.5 py-1.5 text-[0.6875rem] font-semibold text-brand-950">
                       {t('home.demoPrompt')}
                     </span>
-                  </div>
-                  <p className="mt-2 text-center text-[0.5625rem] leading-relaxed text-sand-300/45">
+                  </Link>
+                  <p className="mt-2 text-center text-xs leading-relaxed text-sand-200/90">
                     {t('home.demoNotice')}
                   </p>
                 </div>
               </div>
 
               {/* Floating corroboration card — level 3 above the hero object. */}
-              <div className="absolute -bottom-5 -start-3 hidden w-44 animate-float-slow panel px-3 py-2.5 sm:block">
+              <div className="absolute -bottom-5 -start-3 hidden w-48 panel px-3 py-2.5 sm:block">
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck className="size-3.5 text-brand-700" aria-hidden="true" />
-                  <p className="text-[0.6875rem] font-semibold text-ink-900">Answer checkable</p>
+                  <p className="text-xs font-semibold text-ink-900">{t('home.sourceCardTitle')}</p>
                 </div>
                 <p className="mt-1 text-[0.625rem] leading-relaxed text-ink-500">
-                  Publisher, record and date are always shown.
+                  {t('home.sourceCardBody')}
                 </p>
               </div>
             </div>
@@ -320,6 +320,31 @@ export default function HomePage() {
             <VerificationBadge status="pending_verification" />
             <VerificationBadge status="demo" />
           </div>
+        </div>
+      </section>
+
+      {/* A short, task-focused starting point for first-time visitors. */}
+      <section className="container-page py-14 sm:py-16" aria-labelledby="start-heading">
+        <div className="max-w-2xl">
+          <p className="text-xs font-semibold uppercase tracking-wider text-brand-700">{t('home.quickActions')}</p>
+          <h2 id="start-heading" className="mt-2 text-2xl font-semibold tracking-tight text-ink-950 sm:text-3xl">{t('home.startHeading')}</h2>
+          <p className="mt-3 text-base leading-relaxed text-ink-600">{t('home.startIntro')}</p>
+        </div>
+        <div className="mt-7 grid gap-4 md:grid-cols-3">
+          {[
+            { to: '/assistant', title: t('nav.talkToSahara'), description: t('home.startAsk'), icon: MessagesSquare },
+            { to: '/services', title: t('home.secondaryCta'), description: t('home.startServices'), icon: Landmark },
+            { to: '/applications', title: t('nav.applications'), description: t('home.startApplication'), icon: FileText },
+          ].map(({ to, title, description, icon: Icon }) => (
+            <Link key={to} to={to} className="group flex min-h-36 items-start gap-4 rounded-2xl border border-brand-900/10 bg-white p-5 shadow-1 transition-[border-color,box-shadow] duration-200 hover:border-brand-400 hover:shadow-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700">
+              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-800" aria-hidden="true"><Icon className="size-5" /></span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-base font-semibold text-ink-950 group-hover:text-brand-800"><bdi dir={getTextDirection(language)} lang={language}>{title}</bdi></span>
+                <span className="mt-1.5 block text-sm leading-relaxed text-ink-600"><bdi dir={getTextDirection(language)} lang={language}>{description}</bdi></span>
+              </span>
+              <ArrowRight className="mt-1 size-4 shrink-0 text-brand-700" aria-hidden="true" />
+            </Link>
+          ))}
         </div>
       </section>
 
