@@ -24,7 +24,7 @@ export function PublicLayout() {
         key is the pathname, so each navigation re-mounts the wrapper. Under
         prefers-reduced-motion the global rule flattens it to an instant swap.
       */}
-      <main id="main-content" className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <div key={location.pathname} className="animate-slide-up">
           <Outlet />
         </div>

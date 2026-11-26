@@ -4,20 +4,15 @@
  * Two behaviours matter here:
  *  1. The menu lists each language in its OWN script, wrapped in <bdi> so the
  *     native name renders correctly inside the left-to-right menu.
- *  2. It states how complete each translation is, instead of implying that all
- *     three languages are finished. That honesty is part of the product.
+ *  2. It explains that some content remains untranslated, without treating
+ *     dictionary-key coverage as coverage of the entire interface.
  */
 import { useEffect, useId, useRef, useState } from 'react';
 import { Check, Globe } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { dictionaries, languageMeta, supportedLanguages } from '@/i18n';
+import { languageMeta, supportedLanguages } from '@/i18n';
 import { cn } from '@/utils/cn';
 import type { Language } from '@/types/domain';
-
-function coverageOf(lang: Language): number {
-  const total = Object.keys(dictionaries.en).length;
-  return Math.round((Object.keys(dictionaries[lang] ?? {}).length / total) * 100);
-}
 
 /** Select-styled switcher used in forms and settings. */
 export function LanguageSelector({
@@ -63,14 +58,19 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
   const { language, setLanguage, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
+    containerRef.current?.querySelector<HTMLButtonElement>('[role="menuitemradio"][aria-checked="true"]')?.focus();
     const onClick = (e: MouseEvent) => {
       if (!containerRef.current?.contains(e.target as Node)) setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
     };
     document.addEventListener('mousedown', onClick);
     document.addEventListener('keydown', onKey);
@@ -84,6 +84,7 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
     <div className="relative" ref={containerRef}>
       <button
         type="button"
+        ref={triggerRef}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label={`${t('lang.label')}: ${languageMeta[language].native}`}
@@ -104,6 +105,23 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
         <div
           role="menu"
           aria-label={t('lang.interface')}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') {
+              event.preventDefault();
+              event.stopPropagation();
+              setOpen(false);
+              triggerRef.current?.focus();
+              return;
+            }
+            if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+            const items = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="menuitemradio"]'));
+            if (!items.length) return;
+            event.preventDefault();
+            const current = items.indexOf(document.activeElement as HTMLButtonElement);
+            const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 :
+              event.key === 'ArrowDown' ? (current + 1) % items.length : (current <= 0 ? items.length - 1 : current - 1);
+            items[next]?.focus();
+          }}
           className="absolute end-0 z-50 mt-1.5 w-64 rounded-xl border border-ink-200 bg-paper p-1.5 shadow-3 animate-slide-up"
         >
           <p className="px-2 pb-1 pt-1.5 text-[0.6875rem] font-semibold uppercase tracking-wider text-ink-400">
@@ -112,7 +130,6 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
 
           {supportedLanguages.map((lang) => {
             const selected = lang === language;
-            const coverage = coverageOf(lang);
             return (
               <button
                 key={lang}
@@ -122,9 +139,10 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
                 onClick={() => {
                   setLanguage(lang);
                   setOpen(false);
+                  triggerRef.current?.focus();
                 }}
                 className={cn(
-                  'flex w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-start transition-colors',
+                  'flex min-h-11 w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-start transition-colors',
                   selected ? 'bg-brand-50 text-brand-900' : 'text-ink-700 hover:bg-ink-100',
                 )}
               >
@@ -138,9 +156,6 @@ export function LanguageMenu({ compact }: { compact?: boolean }) {
                     <span className="text-[0.6875rem] font-normal text-ink-400">
                       {languageMeta[lang].label}
                     </span>
-                  </span>
-                  <span className="mt-0.5 text-[0.625rem] text-ink-500">
-                    {lang === 'en' ? 'Full interface' : `${coverage}% translated`}
                   </span>
                 </span>
                 {selected && <Check className="size-4 shrink-0 text-brand-800" aria-hidden="true" />}
