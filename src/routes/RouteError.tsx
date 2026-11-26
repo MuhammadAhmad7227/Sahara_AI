@@ -1,5 +1,5 @@
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
-import { LinkButton } from '@/components/common/Button';
+import { Button, LinkButton } from '@/components/common/Button';
 import { BrandMark } from '@/components/common/BrandMark';
 
 /**
@@ -13,7 +13,7 @@ export function RouteError() {
   const message =
     status === 404
       ? 'That page could not be found. It may have moved, or the address may be mistyped.'
-      : 'Something went wrong while loading this page. Your data has not been submitted anywhere.';
+      : 'Something went wrong while loading this page. Try reloading, or return to the home page.';
 
   return (
     <div className="grid min-h-dvh place-items-center surface-page px-4">
@@ -31,6 +31,7 @@ export function RouteError() {
           </pre>
         )}
         <div className="mt-5 flex flex-wrap justify-center gap-2">
+          {status !== 404 && <Button onClick={() => window.location.reload()}>Reload page</Button>}
           <LinkButton to="/" variant="primary">
             Go to home
           </LinkButton>

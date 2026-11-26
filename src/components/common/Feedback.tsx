@@ -6,7 +6,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useId,
   useMemo,
   useRef,
@@ -16,6 +15,8 @@ import {
 import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronLeft, ChevronRight, X, CheckCircle2, Info, AlertTriangle, AlertCircle } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { useDialogFocus } from '@/hooks/useDialogFocus';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 /* -------------------------------------------------------------------------- */
 /* Page header & breadcrumbs                                                  */
@@ -293,38 +294,10 @@ export function Modal({
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  const descriptionId = useId();
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'Tab' && panelRef.current) {
-        const focusables = panelRef.current.querySelectorAll<HTMLElement>(
-          'a[href],button:not([disabled]),textarea,input,select,[tabindex]:not([tabindex="-1"])',
-        );
-        if (!focusables.length) return;
-        const first = focusables[0]!;
-        const last = focusables[focusables.length - 1]!;
-        if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        } else if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        }
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    const previous = document.activeElement as HTMLElement | null;
-    panelRef.current?.querySelector<HTMLElement>('button,a[href],input,select,textarea')?.focus();
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = originalOverflow;
-      previous?.focus();
-    };
-  }, [open, onClose]);
+  const { t } = useLanguage();
+  useDialogFocus(open, panelRef, onClose);
 
   if (!open) return null;
 
@@ -334,8 +307,10 @@ export function Modal({
       <div
         ref={panelRef}
         role="dialog"
+        tabIndex={-1}
         aria-modal="true"
         aria-labelledby={titleId}
+        aria-describedby={description ? descriptionId : undefined}
         className={cn(
           'relative z-10 max-h-[92dvh] w-full overflow-y-auto scrollbar-slim rounded-t-xl bg-white p-5 shadow-overlay animate-slide-up sm:rounded-xl',
           size === 'sm' && 'sm:max-w-sm',
@@ -348,13 +323,13 @@ export function Modal({
             <h2 id={titleId} className="text-base font-semibold text-ink-900">
               {title}
             </h2>
-            {description && <p className="mt-1 text-sm text-ink-500">{description}</p>}
+            {description && <p id={descriptionId} className="mt-1 text-sm text-ink-600">{description}</p>}
           </div>
           <button
             type="button"
             onClick={onClose}
             className="rounded-md p-1 text-ink-500 hover:bg-ink-100 hover:text-ink-800"
-            aria-label="Close dialog"
+            aria-label={t('action.close')}
           >
             <X className="size-4.5" aria-hidden="true" />
           </button>

@@ -32,6 +32,7 @@ import { Button, LinkButton } from '@/components/common/Button';
 import { LanguageMenu } from '@/components/common/LanguageSelector';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useDialogFocus } from '@/hooks/useDialogFocus';
 import { cn, initials } from '@/utils/cn';
 import { toolGroups, resourceLinks } from '@/components/layout/navigation';
 
@@ -235,6 +236,8 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  useDialogFocus(drawerOpen, drawerRef, () => setDrawerOpen(false), closeRef);
 
   useEffect(() => {
     setDrawerOpen(false);
@@ -247,20 +250,7 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    if (!drawerOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setDrawerOpen(false);
-    };
-    document.addEventListener('keydown', onKey);
-    const original = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    closeRef.current?.focus();
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = original;
-    };
-  }, [drawerOpen]);
+
 
   return (
     <header
@@ -278,7 +268,7 @@ export function Header() {
         <div className="flex items-center gap-1 lg:gap-4">
           <BrandLockup />
 
-          <nav aria-label="Main" className="hidden items-center gap-0.5 lg:flex">
+          <nav aria-label={t('nav.mainMenu')} className="hidden items-center gap-0.5 lg:flex">
             <NavLink
               to="/"
               end
@@ -378,7 +368,9 @@ export function Header() {
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-ink-950/40" onClick={() => setDrawerOpen(false)} aria-hidden="true" />
           <div
+            ref={drawerRef}
             role="dialog"
+            tabIndex={-1}
             aria-modal="true"
             aria-label={t('nav.siteNavigation')}
             className="absolute inset-y-0 end-0 flex w-[min(21rem,88vw)] flex-col border-s border-ink-200 bg-paper shadow-4 animate-slide-up"
@@ -425,10 +417,10 @@ export function Header() {
 
                 {isAuthenticated && (
                   <MobileSection title={t('nav.profile')}>
-                    <MobileLink to="/dashboard" icon={LayoutDashboard} label="Dashboard" />
-                    <MobileLink to="/profile" icon={UserRound} label="Profile & settings" />
+                    <MobileLink to="/dashboard" icon={LayoutDashboard} label={t('nav.dashboard')} />
+                    <MobileLink to="/profile" icon={UserRound} label={t('nav.profile')} />
                     {user?.role === 'admin' && (
-                      <MobileLink to="/admin" icon={ShieldAlert} label="Admin area" />
+                      <MobileLink to="/admin" icon={ShieldAlert} label={t('nav.admin')} />
                     )}
                   </MobileSection>
                 )}
@@ -474,7 +466,7 @@ export function Header() {
 function MobileSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-4">
-      <p className="mb-1 px-2 text-[0.6875rem] font-semibold uppercase tracking-wider text-ink-400">{title}</p>
+      <p className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-ink-600">{title}</p>
       <div className="space-y-0.5">{children}</div>
     </div>
   );
@@ -487,7 +479,7 @@ function MobileLink({ to, label, icon: Icon }: { to: string; label: string; icon
       end={to === '/'}
       className={({ isActive }) =>
         cn(
-          'flex items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm font-medium',
+          'flex min-h-11 items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm font-medium',
           isActive ? 'bg-brand-50 text-brand-900' : 'text-ink-700 hover:bg-ink-100',
         )
       }

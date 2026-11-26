@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from '@/pages/auth/LoginPage';
 import RegisterPage from '@/pages/auth/RegisterPage';
+import { currentSession, login } from '@/services/api/auth';
 import { renderWithProviders } from '@/test/testUtils';
 
 function renderLogin() {
@@ -78,5 +79,23 @@ describe('Registration form', () => {
     expect(
       await screen.findByText(/understand that Sahara AI provides information from reviewed public sources/i),
     ).toBeInTheDocument();
+  });
+});
+
+
+describe('Stored demo sessions', () => {
+  it.each([
+    '{broken',
+    JSON.stringify({ user: { role: 'citizen' }, token: 'demo', expiresAt: '2099-01-01' }),
+    JSON.stringify({ user: { name: 'Demo', id: 'x', email: 'demo@example.com', role: 'citizen' }, token: 'demo', expiresAt: 'invalid' }),
+    JSON.stringify({ user: { name: 'Demo', id: 'x', email: 'demo@example.com', role: 'citizen' }, token: 'demo', expiresAt: '2000-01-01' }),
+  ])('ignores unusable session data', (raw) => {
+    localStorage.setItem('sahara.demo.session', raw);
+    expect(currentSession()).toBeNull();
+  });
+
+  it('restores a valid demo session', async () => {
+    const session = await login({ email: 'citizen@sahara.demo', password: 'demo1234' });
+    expect(currentSession()).toEqual(session);
   });
 });

@@ -55,12 +55,25 @@ function readSession(): AuthResult | null {
   try {
     const raw = window.localStorage.getItem(SESSION_KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as AuthResult;
-    if (new Date(parsed.expiresAt).getTime() < Date.now()) {
+    const parsed: unknown = JSON.parse(raw);
+    // Storage can contain stale data from an older version, or invalid JSON
+    // written by another script. Never let it crash the shared application shell.
+    if (!parsed || typeof parsed !== 'object') return null;
+    const candidate = parsed as Partial<AuthResult>;
+    const profile = candidate.user;
+    const expiresAt = typeof candidate.expiresAt === 'string' ? Date.parse(candidate.expiresAt) : NaN;
+    if (
+      !profile || typeof profile !== 'object' ||
+      typeof profile.name !== 'string' || !profile.name.trim() ||
+      typeof profile.id !== 'string' || typeof profile.email !== 'string' ||
+      (profile.role !== 'citizen' && profile.role !== 'admin') ||
+      typeof candidate.token !== 'string' ||
+      !Number.isFinite(expiresAt) || expiresAt <= Date.now()
+    ) {
       window.localStorage.removeItem(SESSION_KEY);
       return null;
     }
-    return parsed;
+    return candidate as AuthResult;
   } catch {
     return null;
   }
