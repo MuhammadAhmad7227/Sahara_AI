@@ -265,13 +265,16 @@ export function Header() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-40 border-b transition-[background-color,box-shadow,border-color] duration-300',
-        scrolled
-          ? 'border-ink-900/[0.07] bg-paper/85 shadow-2 backdrop-blur-xl'
-          : 'border-transparent bg-cream/60 backdrop-blur-sm',
+        'sticky top-0 z-40 border-b border-ink-200 bg-white transition-shadow duration-200',
+        scrolled && 'shadow-1',
       )}
     >
-      <div className="container-page flex h-16 items-center justify-between gap-3">
+      <div className="border-b border-brand-800 bg-brand-950 text-sand-100">
+        <div className="container-page py-2 text-xs font-medium leading-relaxed">
+          {t('trust.notGovernment')}
+        </div>
+      </div>
+      <div className="container-page flex min-h-18 items-center justify-between gap-3 py-2">
         <div className="flex items-center gap-1 lg:gap-4">
           <BrandLockup />
 

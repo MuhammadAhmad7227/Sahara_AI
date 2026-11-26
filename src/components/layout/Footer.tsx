@@ -10,11 +10,6 @@ export function Footer() {
 
   return (
     <footer className="relative mt-16 overflow-hidden border-t border-brand-950/40 bg-brand-950 text-sand-100">
-      <div className="pointer-events-none absolute inset-0 grid-lines-dark opacity-40" aria-hidden="true" />
-      <div
-        className="pointer-events-none absolute -start-24 -top-32 size-72 rounded-full bg-brand-700/25 blur-[100px]"
-        aria-hidden="true"
-      />
       <div className="container-page relative py-12">
         <div className="grid gap-8 lg:grid-cols-[1.3fr_repeat(4,minmax(0,1fr))]">
           <div className="max-w-sm">
@@ -22,10 +17,10 @@ export function Footer() {
               <BrandMark />
               <div>
                 <p className="text-sm font-semibold text-white">Sahara AI</p>
-                <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-sand-300/60">Civic assistant</p>
+                <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-sand-200">{t('app.civicAssistant')}</p>
               </div>
             </div>
-            <p className="mt-3.5 max-w-xs text-xs leading-relaxed text-sand-200/70">{t('footer.disclaimer')}</p>
+            <p className="mt-3.5 max-w-xs text-xs leading-relaxed text-sand-100/90">{t('footer.disclaimer')}</p>
             <div className="mt-4 inline-flex rounded-lg bg-white/[0.07] p-0.5 text-sand-100 ring-1 ring-white/10 [&_button]:text-sand-100 [&_button:hover]:bg-white/10">
               <LanguageMenu />
             </div>
@@ -33,7 +28,7 @@ export function Footer() {
 
           {footerColumns.map((column) => (
             <nav key={column.labelKey} aria-label={t(column.labelKey)}>
-              <h2 className="mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sand-300/60">
+              <h2 className="mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-sand-200">
                 {t(column.labelKey)}
               </h2>
               <ul className="space-y-1.5">
@@ -41,7 +36,7 @@ export function Footer() {
                   <li key={link.to + link.labelKey}>
                     <Link
                       to={link.to}
-                      className="text-[0.8125rem] text-sand-100/75 underline-offset-4 transition-colors hover:text-white hover:underline"
+                      className="text-[0.8125rem] text-sand-100/90 underline-offset-4 transition-colors hover:text-white hover:underline"
                     >
                       {t(link.labelKey)}
                     </Link>
@@ -52,7 +47,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-5 text-[0.6875rem] text-sand-300/55 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-5 text-[0.6875rem] text-sand-200/80 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Sahara AI · {t('footer.project')}</p>
           <p className="hidden sm:block" aria-hidden="true">
             ·

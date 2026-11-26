@@ -118,7 +118,9 @@ describe('Brand and honesty', () => {
 
   it('labels the demo conversation on the homepage', () => {
     const home = files.find((f) => f.path === 'pages/public/HomePage.tsx')?.code ?? '';
-    expect(home).toMatch(/demonstration/i);
+    expect(home).toContain("t('home.demoNotice')");
+    const english = files.find((f) => f.path === 'i18n/en.ts')?.code ?? '';
+    expect(english).toMatch(/'home\.demoNotice': 'Demonstration conversation/);
   });
 });
 

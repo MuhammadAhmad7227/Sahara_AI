@@ -152,23 +152,15 @@ export default function HomePage() {
       {/* 1 · Hero                                                           */}
       {/* ================================================================== */}
       <section className="relative overflow-hidden" aria-labelledby="hero-heading">
-        {/* Warm field + surveyed grid. Both are inert decorations. */}
+        {/* Quiet civic backdrop; content and controls retain their fixed order. */}
         <div className="pointer-events-none absolute inset-0 surface-page" aria-hidden="true" />
-        <div
-          className="pointer-events-none absolute inset-0 grid-lines opacity-[0.55] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_20%,black,transparent_75%)]"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -end-40 -top-40 size-[34rem] rounded-full bg-brand-200/25 blur-[120px]"
-          aria-hidden="true"
-        />
 
         <div className="container-page relative pb-16 pt-10 sm:pb-20 sm:pt-14 lg:pb-24 lg:pt-16">
           <div className="grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12 xl:gap-16">
             {/* ---- Copy ---- */}
             <div className="relative">
-              <p className="inline-flex items-center gap-2 rounded-full border border-brand-900/10 bg-paper/80 py-1 pe-3 ps-1 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-brand-800 shadow-1 backdrop-blur">
-                <span className="grid size-5 place-items-center rounded-full bg-brand-900 text-[0.5rem] text-accent-300">
+              <p className="inline-flex items-center gap-2 rounded-md border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-800">
+                <span className="grid size-4 place-items-center text-[0.5rem] text-brand-700">
                   ●
                 </span>
                 {t('home.eyebrow')}
@@ -176,11 +168,11 @@ export default function HomePage() {
 
               <h1
                 id="hero-heading"
-                className="mt-5 text-[2.15rem] font-semibold leading-[1.06] tracking-[-0.03em] text-ink-950 sm:text-[3rem] lg:text-[3.5rem]"
+                className="mt-5 text-[2.15rem] font-bold leading-[1.14] tracking-[-0.025em] text-ink-950 sm:text-[3rem] lg:text-[3.5rem]"
               >
                 <bdi dir={getTextDirection(language)} lang={language}>{t('home.heroLead')}</bdi>
                 <br />
-                <span className="display-serif italic text-brand-800"><bdi dir={getTextDirection(language)} lang={language}>{t('home.titleAccent')}</bdi></span>
+                <span className="text-brand-800"><bdi dir={getTextDirection(language)} lang={language}>{t('home.titleAccent')}</bdi></span>
               </h1>
 
               <p className="mt-5 max-w-[34rem] text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">
@@ -218,21 +210,7 @@ export default function HomePage() {
 
             {/* ---- Product panel: the hero object ---- */}
             <div className="relative mx-auto w-full max-w-[30rem] lg:max-w-none">
-              {/* Contact shadow grounds the panel on the page. */}
-              <div
-                className="pointer-events-none absolute inset-x-8 -bottom-6 h-16 rounded-[50%] bg-brand-950/20 blur-2xl"
-                aria-hidden="true"
-              />
-
-              <div
-                className="relative panel-night overflow-hidden"
-                style={{ transform: 'perspective(1400px) rotateY(-1.5deg) rotateX(1deg)' }}
-              >
-                <div className="pointer-events-none absolute inset-0 grid-lines-dark opacity-60" aria-hidden="true" />
-                <div
-                  className="pointer-events-none absolute -end-16 -top-16 size-56 rounded-full bg-accent-500/20 blur-3xl"
-                  aria-hidden="true"
-                />
+              <div className="relative panel-night overflow-hidden">
 
                 {/* Panel chrome */}
                 <div className="relative flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
@@ -241,13 +219,13 @@ export default function HomePage() {
                     <div className="leading-none">
                       <p className="text-[0.8125rem] font-semibold text-white">Sahara AI</p>
                       <p className="mt-1 text-[0.625rem] uppercase tracking-[0.12em] text-sand-300/70">
-                        Assistant
+                        {t('nav.assistant')}
                       </p>
                     </div>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-emerald-200">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-2 py-0.5 text-[0.625rem] font-semibold tracking-wide text-emerald-100">
                     <span className="size-1.5 rounded-full bg-emerald-300 animate-pulse-soft" />
-                    Grounded
+                    {t('verify.demo')}
                   </span>
                 </div>
 
@@ -255,7 +233,7 @@ export default function HomePage() {
                 <div className="relative space-y-3 px-4 py-4">
                   <div className="flex justify-end">
                     <p className="max-w-[85%] rounded-2xl rounded-ee-md bg-white/12 px-3.5 py-2 text-[0.8125rem] leading-relaxed text-sand-50 ring-1 ring-white/10 backdrop-blur-sm">
-                      Mera domicile banwanay ke liye kya chahiye?
+                      <bdi dir={getTextDirection(language)} lang={language}>{t('home.demoQuestion')}</bdi>
                     </p>
                   </div>
 
@@ -264,12 +242,11 @@ export default function HomePage() {
                     <div className="min-w-0 flex-1">
                       <div className="rounded-2xl rounded-es-md border border-white/10 bg-white/[0.06] px-3.5 py-2.5 backdrop-blur-sm">
                         <p className="text-[0.8125rem] leading-relaxed text-sand-50">
-                          The reviewed record lists three documents. The fee is not currently verified,
-                          so Sahara will not quote one.
+                          <bdi dir={getTextDirection(language)} lang={language}>{t('home.demoAnswer')}</bdi>
                         </p>
 
                         <ul className="mt-2.5 space-y-1.5 border-t border-white/10 pt-2.5">
-                          {['CNIC copy', 'Proof of residence', 'Two photographs'].map((item) => (
+                          {[t('home.demoCnic'), t('home.demoResidence'), t('home.demoPhotos')].map((item) => (
                             <li
                               key={item}
                               className="flex items-center gap-1.5 text-[0.75rem] text-sand-200"
@@ -284,14 +261,14 @@ export default function HomePage() {
                       {/* Provenance — the whole point of the product, made visible. */}
                       <div className="mt-2 flex flex-wrap items-center gap-1.5 rounded-lg border border-white/10 bg-brand-950/40 px-2.5 py-1.5">
                         <span className="text-[0.5625rem] font-semibold uppercase tracking-[0.12em] text-sand-300/60">
-                          Source
+                          {t('home.source')}
                         </span>
                         <span className="text-[0.6875rem] font-medium text-sand-100">
                           District Administration (Punjab)
                         </span>
                         <span className="ms-auto inline-flex items-center gap-1 rounded bg-amber-400/15 px-1.5 py-0.5 text-[0.5625rem] font-semibold uppercase tracking-wide text-amber-200">
                           <ShieldAlert className="size-2.5" aria-hidden="true" />
-                          Pending verification
+                          {t('verify.pending')}
                         </span>
                       </div>
                     </div>
@@ -303,14 +280,14 @@ export default function HomePage() {
                   <div className="flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.07] py-1 pe-1 ps-3 backdrop-blur-sm">
                     <Mic className="size-3.5 shrink-0 text-sand-300/70" aria-hidden="true" />
                     <span className="flex-1 truncate text-[0.75rem] text-sand-200/60">
-                      Ask in your language…
+                      {t('home.demoAsk')}
                     </span>
                     <span className="rounded-lg bg-accent-500 px-2.5 py-1.5 text-[0.6875rem] font-semibold text-brand-950">
-                      Ask
+                      {t('home.demoPrompt')}
                     </span>
                   </div>
                   <p className="mt-2 text-center text-[0.5625rem] leading-relaxed text-sand-300/45">
-                    Demonstration conversation · sample record shown with generic office labels
+                    {t('home.demoNotice')}
                   </p>
                 </div>
               </div>
@@ -336,7 +313,7 @@ export default function HomePage() {
       <section className="border-y border-brand-900/[0.07] bg-paper/70" aria-label="Verification states">
         <div className="container-page flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-ink-500">
-            Every record carries one of three states
+            {t('home.verificationStates')}
           </p>
           <div className="flex flex-wrap items-center gap-2">
             <VerificationBadge status="verified" />
