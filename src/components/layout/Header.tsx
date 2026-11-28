@@ -241,7 +241,7 @@ export function Header() {
 
   useEffect(() => {
     setDrawerOpen(false);
-  }, [location.pathname]);
+  }, [location.key]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -268,7 +268,7 @@ export function Header() {
         <div className="flex items-center gap-1 lg:gap-4">
           <BrandLockup />
 
-          <nav aria-label={t('nav.mainMenu')} className="hidden items-center gap-0.5 lg:flex">
+          <nav aria-label={t('nav.mainMenu')} className="hidden items-center gap-0.5 xl:flex">
             <NavLink
               to="/"
               end
@@ -334,7 +334,7 @@ export function Header() {
           </div>
 
           {isAuthenticated ? (
-            <UserMenu />
+            <div className="hidden xl:block"><UserMenu /></div>
           ) : (
             <div className="hidden items-center gap-1.5 sm:flex">
               <LinkButton to="/login" variant="ghost" size="sm" className="hidden md:inline-flex">
@@ -354,7 +354,7 @@ export function Header() {
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="inline-flex size-10 items-center justify-center rounded-lg text-ink-700 hover:bg-ink-100 lg:hidden"
+            className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl border border-ink-200 bg-white text-ink-700 hover:bg-ink-100 xl:hidden"
             aria-label={t('nav.menu')}
             aria-expanded={drawerOpen}
           >
@@ -365,7 +365,7 @@ export function Header() {
 
       {/* Mobile drawer */}
       {drawerOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 xl:hidden">
           <div className="absolute inset-0 bg-ink-950/40" onClick={() => setDrawerOpen(false)} aria-hidden="true" />
           <div
             ref={drawerRef}
@@ -373,22 +373,25 @@ export function Header() {
             tabIndex={-1}
             aria-modal="true"
             aria-label={t('nav.siteNavigation')}
-            className="absolute inset-y-0 end-0 flex w-[min(21rem,88vw)] flex-col border-s border-ink-200 bg-paper shadow-4 animate-slide-up"
+            className="absolute inset-y-0 end-0 flex w-[min(22rem,92vw)] flex-col border-s border-ink-200 bg-paper shadow-4 animate-slide-up"
           >
-            <div className="flex h-16 items-center justify-between border-b border-ink-200/80 px-4">
+            <div className="flex min-h-16 shrink-0 items-center justify-between border-b border-ink-200/80 px-4">
               <BrandLockup />
               <button
                 ref={closeRef}
                 type="button"
                 onClick={() => setDrawerOpen(false)}
-                className="inline-flex size-10 items-center justify-center rounded-lg text-ink-600 hover:bg-ink-100"
+                className="inline-flex size-11 items-center justify-center rounded-lg text-ink-600 hover:bg-ink-100"
                 aria-label={t('nav.close')}
               >
                 <X className="size-5" aria-hidden="true" />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto scrollbar-slim px-3 py-4">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-slim px-3 py-4">
+              <div className="mb-4 rounded-xl border border-brand-900/10 bg-brand-50/60 px-1">
+                <LanguageMenu align="start" />
+              </div>
               <nav aria-label={t('nav.mainMenu')}>
                 <MobileSection title={t('nav.mainMenu')}>
                   <MobileLink to="/" icon={Landmark} label={t('nav.home')} />
@@ -425,14 +428,12 @@ export function Header() {
                   </MobileSection>
                 )}
               </nav>
-            </div>
 
-            <div className="space-y-2 border-t border-ink-200 p-4">
+              <div className="space-y-3 border-t border-ink-200 px-1 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
               <LinkButton to="/assistant" variant="primary" fullWidth>
                 {t('nav.assistant')}
               </LinkButton>
-              <div className="flex items-center justify-between gap-2">
-                <LanguageMenu />
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 {isAuthenticated ? (
                   <Button
                     variant="ghost"
@@ -455,6 +456,7 @@ export function Header() {
                   </div>
                 )}
               </div>
+            </div>
             </div>
           </div>
         </div>

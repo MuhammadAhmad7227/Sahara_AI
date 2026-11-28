@@ -14,6 +14,7 @@ import { AssistantMessage, TypingIndicator, UserMessage } from '@/components/ass
 import { SaharaOrb } from '@/components/brand/SaharaOrb';
 import { Drawer } from '@/components/ui/Drawer';
 import { AssistantGuide } from '@/components/assistant/AssistantGuide';
+import { LiveVoice } from '@/components/assistant/LiveVoice';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { languageMeta } from '@/i18n';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
@@ -111,7 +112,7 @@ export default function AssistantPage() {
         ]);
         setParams({}, { replace: true });
 
-        if (autoRead) tts.speak(answer.answer, answer.language);
+        if (autoRead && tts.hasVoiceFor(answer.language)) tts.speak(answer.answer, answer.language);
 
       } catch (err) {
         setError(errorMessage(err));
@@ -168,6 +169,7 @@ export default function AssistantPage() {
 
   return (
     <div className="container-page py-5 sm:py-8">
+      <div className="mb-4"><LiveVoice /></div>
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-6">
         {/* Chat column */}
         <div className="flex min-h-[calc(100dvh-12rem)] flex-col overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper shadow-2 shadow-bevel">
@@ -310,6 +312,7 @@ export default function AssistantPage() {
 
           {/* Composer */}
           <div className="border-t border-brand-900/[0.07] bg-paper p-2.5 sm:p-3">
+            <p dir="auto" className="mb-2 px-2 text-xs leading-relaxed text-ink-600">{t('voice.turnBasedNote')}</p>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -380,6 +383,7 @@ export default function AssistantPage() {
                     <input
                       type="checkbox"
                       checked={autoRead}
+                      disabled={!tts.hasVoiceFor(answerLanguage)}
                       onChange={(e) => setAutoRead(e.target.checked)}
                       className="size-3.5 accent-brand-800"
                     />
@@ -401,6 +405,11 @@ export default function AssistantPage() {
                 </div>
               </div>
             </form>
+            {!tts.hasVoiceFor(answerLanguage) && (
+              <p className="mt-1.5 px-2 text-xs leading-relaxed text-ink-500" role="status">
+                {t('reader.unavailable', { language: languageMeta[answerLanguage].native })}
+              </p>
+            )}
             {speech.listening && (
               <p className="mt-1.5 px-2 text-xs text-ink-600" role="status">
                 {t('voice.listeningNote')}

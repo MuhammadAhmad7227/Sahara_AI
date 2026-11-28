@@ -102,7 +102,10 @@ export function useSpeechSynthesis() {
         window.clearInterval(keepAliveRef.current);
         keepAliveRef.current = null;
       }
-      window.speechSynthesis.cancel();
+      if (utteranceRef.current) {
+        utteranceRef.current = null;
+        window.speechSynthesis.cancel();
+      }
     };
   }, []);
 
@@ -118,8 +121,9 @@ export function useSpeechSynthesis() {
       window.clearInterval(keepAliveRef.current);
       keepAliveRef.current = null;
     }
-    window.speechSynthesis.cancel();
+    const owned = utteranceRef.current !== null;
     utteranceRef.current = null;
+    if (owned) window.speechSynthesis.cancel();
     setState('idle');
   }, [supported]);
 
@@ -146,6 +150,7 @@ export function useSpeechSynthesis() {
         window.clearInterval(keepAliveRef.current);
         keepAliveRef.current = null;
       }
+      utteranceRef.current = null;
       window.speechSynthesis.cancel();
 
       const voice = pickVoice(voices, lang);
@@ -170,17 +175,19 @@ export function useSpeechSynthesis() {
       };
 
       utterance.onend = () => {
+        if (utteranceRef.current !== utterance) return;
         clearKeepAlive();
         utteranceRef.current = null;
         setState('idle');
       };
       utterance.onerror = () => {
+        if (utteranceRef.current !== utterance) return;
         clearKeepAlive();
         utteranceRef.current = null;
         setState('error');
       };
-      utterance.onpause = () => setState('paused');
-      utterance.onresume = () => setState('speaking');
+      utterance.onpause = () => { if (utteranceRef.current === utterance) setState('paused'); };
+      utterance.onresume = () => { if (utteranceRef.current === utterance) setState('speaking'); };
 
       utteranceRef.current = utterance;
       setState('speaking');

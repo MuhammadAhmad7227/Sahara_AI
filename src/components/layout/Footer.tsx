@@ -9,10 +9,10 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-16 overflow-hidden border-t border-brand-950/40 bg-brand-950 text-sand-100">
+    <footer className="relative mt-16 border-t border-brand-950/40 bg-brand-950 text-sand-100">
       <div className="container-page relative py-12">
-        <div className="grid gap-8 lg:grid-cols-[1.3fr_repeat(4,minmax(0,1fr))]">
-          <div className="max-w-sm">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-[1.3fr_repeat(4,minmax(0,1fr))]">
+          <div className="col-span-2 max-w-sm lg:col-span-1">
             <div className="flex items-center gap-2.5">
               <BrandMark />
               <div>
@@ -21,8 +21,8 @@ export function Footer() {
               </div>
             </div>
             <p className="mt-3.5 max-w-xs text-xs leading-relaxed text-sand-100/90">{t('footer.disclaimer')}</p>
-            <div className="mt-4 inline-flex rounded-lg bg-white/[0.07] p-0.5 text-sand-100 ring-1 ring-white/10 [&_button]:text-sand-100 [&_button:hover]:bg-white/10">
-              <LanguageMenu />
+            <div className="mt-4 inline-flex rounded-lg bg-white/[0.07] p-0.5 text-sand-100 ring-1 ring-white/10 [&>div>button]:text-sand-100 [&>div>button:hover]:bg-white/10">
+              <LanguageMenu placement="top" align="start" />
             </div>
           </div>
 

@@ -1,5 +1,6 @@
 import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
+import { PageReader } from '@/components/common/PageReader';
 import { Footer } from '@/components/layout/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -19,6 +20,7 @@ export function PublicLayout() {
     <div className="flex min-h-dvh flex-col bg-cream">
       <SkipLink />
       <Header />
+      <PageReader />
       {/*
         A page transition, not an animation: a 260ms fade with a 4px rise. The
         key is the pathname, so each navigation re-mounts the wrapper. Under

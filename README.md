@@ -5,11 +5,11 @@
 Final Year Project · University of Agriculture Faisalabad, Sub-Campus Burewala
 Muhammad Ahmad (2023-ag-7227) · Rana Husnain Ali (2023-ag-7181)
 
-> This repository currently contains the **complete frontend** of Sahara AI. The
-> backend (FastAPI + PostgreSQL + Gemini + retrieval over a reviewed knowledge
-> base) is the next milestone. Every network call in the UI already goes through
-> a typed service layer, so replacing the in-browser mock transport with the real
-> API is a configuration change, not a rewrite.
+> Most features still use in-browser demonstration data and simulated accounts.
+> A separate Vercel serverless endpoint supports an optional private preview of
+> OpenAI real-time voice. It is not connected to verified service records or a
+> government database. A production backend, real authentication and reviewed
+> knowledge base are still needed.
 
 ---
 
@@ -53,10 +53,46 @@ npm run dev        # http://0.0.0.0:5173
 npm run build      # type-check + production bundle into dist/
 npm run preview    # serve the production build on :4173
 npm run typecheck  # tsc -b --noEmit
-npm test           # vitest (103 tests)
+npm test           # frontend and server endpoint tests
 ```
 
 Node 20+ is required (developed on Node 22).
+
+### Private-preview live voice setup
+
+The assistant page contains a separate real-time voice feature using WebRTC and
+an OpenAI Realtime session. It does **not** use the text assistant's demo records,
+has no verified source retrieval and can make mistakes. Confirm important civic
+information with the relevant official office. Audio is sent to OpenAI; users
+must be informed and consent before starting. A compatible browser, HTTPS and
+microphone permission are required. Language and voice quality can vary.
+
+1. In Vercel project settings, add server-side environment variables
+   `OPENAI_API_KEY` and `VOICE_ACCESS_CODE`. Never use a `VITE_` prefix or commit
+   real secrets. The OpenAI project must have Realtime API access and billing.
+2. Create a high-entropy preview code of at least 32 bytes (for example, generate
+   one locally with `openssl rand -hex 32`). Store it as `VOICE_ACCESS_CODE` in
+   the same Vercel environment. Share the code securely only with preview testers;
+   it is entered in the voice panel, never in chat or a repository file.
+3. Redeploy the branch/environment after saving variables. The optional
+   `OPENAI_REALTIME_MODEL` overrides the default `gpt-realtime-2.1` if your OpenAI
+   project supports a different Realtime model.
+4. For local full-stack testing use a Vercel-linked development environment (for
+   example `vercel dev`) with local server-only environment variables. Plain
+   `npm run dev` serves the frontend only and cannot run the serverless endpoint.
+
+**Not ready for unrestricted public use:** the site’s demo accounts are not
+server authentication. The shared preview code is an interim gate, not per-user
+identity, abuse protection or a hard spending limit. Before public access, add
+real server-side authentication and authorization, distributed rate/concurrency
+limits, secure observability, a privacy/retention review and OpenAI project spend
+limits. The five-minute cutoff is client-side only and can be bypassed; it is not
+a billing guarantee. Prompt instructions are not a verification mechanism. The
+server sends the SDP and session configuration to OpenAI and returns only the SDP
+answer; it never sends the OpenAI API key to the browser.
+
+Run `npm run test:api` for server endpoint checks. End-to-end voice testing still
+requires configured credentials and a real supported browser and microphone.
 
 ### Demo accounts
 
@@ -145,8 +181,7 @@ for each module is documented at the top of its file, e.g.
 | `checkWelfareMatches(...)` | `POST /api/welfare/check`       |
 | `submitFeedback(...)`      | `POST /api/feedback`            |
 
-No component imports a `fetch` call directly, and no secret is referenced in the
-client: model keys and database credentials belong to the backend environment.
+The live voice component calls the same-origin session endpoint directly; model keys and database credentials remain in the backend environment. Other listed services currently use the mock transport.
 
 ### Data and honesty markers
 
