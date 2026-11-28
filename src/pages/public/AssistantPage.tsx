@@ -14,6 +14,7 @@ import { AssistantMessage, TypingIndicator, UserMessage } from '@/components/ass
 import { SaharaOrb } from '@/components/brand/SaharaOrb';
 import { Drawer } from '@/components/ui/Drawer';
 import { AssistantGuide } from '@/components/assistant/AssistantGuide';
+import { LiveVoice } from '@/components/assistant/LiveVoice';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { languageMeta } from '@/i18n';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
@@ -168,6 +169,7 @@ export default function AssistantPage() {
 
   return (
     <div className="container-page py-5 sm:py-8">
+      <div className="mb-4"><LiveVoice /></div>
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-6">
         {/* Chat column */}
         <div className="flex min-h-[calc(100dvh-12rem)] flex-col overflow-hidden rounded-2xl border border-brand-900/[0.07] bg-paper shadow-2 shadow-bevel">
