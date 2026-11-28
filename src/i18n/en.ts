@@ -14,6 +14,18 @@ export const en = {
   'app.tagline': 'Civic, legal and public service guidance for Pakistan',
   'app.civicAssistant': 'Civic assistant',
   'skip.toContent': 'Skip to main content',
+  'reader.title': 'Listen to this page',
+  'reader.help': 'Reads visible page text or selected text using a voice on your device. Some pages are partly in English; forms and images may not be read. Speech may be processed by your browser or voice provider. Avoid reading sensitive information aloud in public.',
+  'reader.page': 'Read page',
+  'reader.selection': 'Read selected text',
+  'reader.noSelection': 'Select some text in the page first.',
+  'reader.noText': 'No readable page text was found.',
+  'reader.unavailable': 'No {language} voice is available on this device. Try another browser or install a matching voice.',
+  'reader.stop': 'Stop reading',
+  'reader.pause': 'Pause',
+  'reader.resume': 'Resume',
+  'reader.error': 'Audio could not be played. Please try again.',
+  'voice.turnBasedNote': 'Voice input and read-aloud are separate, turn-by-turn features, not a live voice agent. Review your transcript and send it; answers use unverified demo records. Your browser may send audio to its speech provider.',
 
   // ---- Navigation --------------------------------------------------------
   'nav.home': 'Home',

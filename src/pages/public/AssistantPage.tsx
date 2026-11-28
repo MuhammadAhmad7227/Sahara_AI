@@ -111,7 +111,7 @@ export default function AssistantPage() {
         ]);
         setParams({}, { replace: true });
 
-        if (autoRead) tts.speak(answer.answer, answer.language);
+        if (autoRead && tts.hasVoiceFor(answer.language)) tts.speak(answer.answer, answer.language);
 
       } catch (err) {
         setError(errorMessage(err));
@@ -310,6 +310,7 @@ export default function AssistantPage() {
 
           {/* Composer */}
           <div className="border-t border-brand-900/[0.07] bg-paper p-2.5 sm:p-3">
+            <p dir="auto" className="mb-2 px-2 text-xs leading-relaxed text-ink-600">{t('voice.turnBasedNote')}</p>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -380,6 +381,7 @@ export default function AssistantPage() {
                     <input
                       type="checkbox"
                       checked={autoRead}
+                      disabled={!tts.hasVoiceFor(answerLanguage)}
                       onChange={(e) => setAutoRead(e.target.checked)}
                       className="size-3.5 accent-brand-800"
                     />
@@ -401,6 +403,11 @@ export default function AssistantPage() {
                 </div>
               </div>
             </form>
+            {!tts.hasVoiceFor(answerLanguage) && (
+              <p className="mt-1.5 px-2 text-xs leading-relaxed text-ink-500" role="status">
+                {t('reader.unavailable', { language: languageMeta[answerLanguage].native })}
+              </p>
+            )}
             {speech.listening && (
               <p className="mt-1.5 px-2 text-xs text-ink-600" role="status">
                 {t('voice.listeningNote')}
